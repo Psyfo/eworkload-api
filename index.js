@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const passportConfig = require('./auth/passport');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./graphql/index');
+const SERVER = require('./graphql/index');
 
 const app = express();
 
@@ -42,10 +42,15 @@ app.use(
 app.use(cors());
 app.use(morgan('common'));
 app.use(passport.initialize());
-app.use('/graphql', graphqlHTTP({
-    schema,
-    graphiql: true
-}));
+// app.use('/graphql', graphqlHTTP({
+//     schema,
+//     graphiql: true
+// }));
+
+// GraphQL
+SERVER.applyMiddleware({
+    app: app
+});
 
 // Routes - Plugin jwt strategy as middleware so only verified user can access the route
 app.use('/', require('./routes/index'));
