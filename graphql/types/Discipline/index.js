@@ -1,6 +1,6 @@
 const gql = require('apollo-server-express');
 
-module.exports = `
+export default `
   type Discipline {
     disciplineId: String
     name: String!

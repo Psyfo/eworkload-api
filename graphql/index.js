@@ -1,8 +1,7 @@
-const makeExecutableSchema = require('graphql-tools').makeExecutableSchema;
-const { ApolloServer } = require('apollo-server-express');
+import { ApolloServer } from 'apollo-server-express';
 
-const typeDefs = require('./types');
-const resolvers = require('./resolvers');
+import typeDefs from './types';
+import resolvers from './resolvers';
 
 const SERVER = new ApolloServer({
     typeDefs: typeDefs,
@@ -15,4 +14,4 @@ const SERVER = new ApolloServer({
     }
 });
 
-module.exports = SERVER;
+export default SERVER;

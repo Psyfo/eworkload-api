@@ -1,6 +1,6 @@
 const gql = require('graphql-tag');
 
-module.exports = `
+export default `
     type Event {
         eventId: String!,
         description: String!
