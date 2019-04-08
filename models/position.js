@@ -1,24 +1,27 @@
-const mongoose = require('mongoose');
-const uuidv4 = require('uuid/v4');
+import mongoose from 'mongoose';
+import uuidv4 from 'uuid/v4';
 
-const positionSchema = new mongoose.Schema({
+const positionSchema = new mongoose.Schema(
+  {
     positionId: {
-        type: String,
-        required: true,
-        unique: true,
-        default: uuidv4
+      type: String,
+      required: true,
+      unique: true,
+      default: uuidv4
     },
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     description: {
-        type: String
+      type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 const Position = mongoose.model('Position', positionSchema);
-module.exports = Position;
+export default Position;

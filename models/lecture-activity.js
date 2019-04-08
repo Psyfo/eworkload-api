@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Activity = require('./activity');
-const LectureStack = require('./lecture-stack');
+import mongoose from 'mongoose'
+import Activity from './activity'
+import LectureStack from './lecture-stack'
 
 const lectureActivitySchema = new mongoose.Schema({
     lectureStackId: {
@@ -18,4 +18,4 @@ lectureActivitySchema.virtual('lecture-stack', {
 });
 
 const LectureActivity = Activity.discriminator('LectureActivity', lectureActivitySchema);
-module.exports = LectureActivity;
+export default LectureActivity;

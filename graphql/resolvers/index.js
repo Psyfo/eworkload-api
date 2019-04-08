@@ -1,39 +1,40 @@
-const mergeResolvers = require('merge-graphql-schemas').mergeResolvers;
+import { mergeResolvers } from 'merge-graphql-schemas';
 
-const Block = require('./Block');
-const User = require('./User');
-const Department = require('./Department');
-const Discipline = require('./Discipline');
-const Duty = require('./Duty');
-const Event = require('./Event');
-const Evidence = require('./Evidence');
-const Faculty = require('./Faculty');
-const LectureStack = require('./LectureStack');
-const Module = require('./Module');
-const OfferingType = require('./OfferingType');
-const Position = require('./Position');
-const Qualification = require('./Qualification');
-const Student = require('./Student');
-const Tarrif = require('./Tarrif');
-const Venue = require('./Venue');
-const Activity= require('./Activity');
+import { default as Block } from './Block';
+import { default as User } from './User';
+import { default as Department } from './Department';
+import { default as Discipline } from './Discipline';
+import { default as Duty } from './Duty';
+import { default as Event } from './Event';
+import { default as Evidence } from './Evidence';
+import { default as Faculty } from './Faculty';
+import { default as LectureStack } from './LectureStack';
+import { default as Module } from './Module';
+import { default as OfferingType } from './OfferingType';
+import { default as Position } from './Position';
+import { default as Qualification } from './Qualification';
+import { default as Student } from './Student';
+import { default as Tarrif } from './Tarrif';
+import { default as Venue } from './Venue';
+import { default as Activity } from './Activity';
 
 const resolvers = [
-    Block,
-    User,
-    Department,
-    Discipline,
-    Duty,
-    Event,
-    Evidence,
-    Faculty,
-    LectureStack,
-    Module,
-    OfferingType,
-    Position,
-    Qualification,
-    Student,
-    Activity
+  Block,
+  User,
+  Department,
+  Discipline,
+  Duty,
+  Event,
+  Evidence,
+  Faculty,
+  LectureStack,
+  Module,
+  OfferingType,
+  Position,
+  Qualification,
+  Student,
+  Activity,
+  Venue
 ];
 
-module.exports = mergeResolvers(resolvers);
+export default mergeResolvers(resolvers);

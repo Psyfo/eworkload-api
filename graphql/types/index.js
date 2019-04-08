@@ -33,7 +33,8 @@ const typeDefs = [
   Position,
   Qualification,
   Student,
-  Activity
+  Activity,
+  Venue
 ];
 
 export default mergeTypes(typeDefs, {

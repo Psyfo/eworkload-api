@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const Discipline = require('./discipline');
-const Module = require('./module');
-const uuidv4 = require('uuid/v4');
+import mongoose from 'mongoose';
+import Discipline from './discipline';
+import Module from './module';
+import uuidv4 from 'uuid/v4';
 
 const lectureStackSchema = new mongoose.Schema({
     lectureStackId: {
@@ -48,4 +48,4 @@ lectureStackSchema.virtual('module', {
 });
 
 const LectureStack = mongoose.model('LectureStack', lectureStackSchema);
-module.exports = LectureStack;
+export default LectureStack;

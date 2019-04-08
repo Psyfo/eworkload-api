@@ -1,31 +1,37 @@
-const gql = require('graphql-tag');
+import gql from 'graphql-tag';
 
-export default `
-    type LectureStack {
-        lectureStackId: String!,
-        disciplineId: String!,
-        discipline: Discipline,
-        modules: [String],
-        groups: String
-    }
+export default gql`
+  type LectureStack {
+    lectureStackId: String!
+    disciplineId: String!
+    discipline: Discipline
+    modules: [String]
+    groups: String
+  }
 
-    type Query {
-        lectureStack(lectureStackId: String!): LectureStack
-        lectureStacks: [LectureStack]
-    }
+  type Query {
+    lectureStack(lectureStackId: String!): LectureStack
+    lectureStacks: [LectureStack]
+  }
 
-    type Mutation {
-        addLectureStack(lectureStackId: String!,
-            disciplineId: String!,
-            modules: [String],
-            groups: String): LectureStack
-        editLectureStack(lectureStackId: String!,
-            disciplineId: String!,
-            modules: [String],
-            groups: String): LectureStack
-        deleteLectureStack(lectureStackId: String!,
-            disciplineId: String!,
-            modules: [String],
-            groups: String): LectureStack
-    }
+  type Mutation {
+    addLectureStack(
+      lectureStackId: String!
+      disciplineId: String!
+      modules: [String]
+      groups: String
+    ): LectureStack
+    editLectureStack(
+      lectureStackId: String!
+      disciplineId: String!
+      modules: [String]
+      groups: String
+    ): LectureStack
+    deleteLectureStack(
+      lectureStackId: String!
+      disciplineId: String!
+      modules: [String]
+      groups: String
+    ): LectureStack
+  }
 `;

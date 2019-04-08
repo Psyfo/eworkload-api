@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Activity = require('./activity');
-const Student = require('./student');
+import mongoose from 'mongoose';
+import Activity from './activity';
+import Student from './student';
 
 const supervisionActivitySchema = new mongoose.Schema({
     supervisionRole: {
@@ -23,4 +23,4 @@ supervisionActivitySchema.virtual('student', {
 });
 
 const SupervisionActivity = Activity.discriminator('SupervisionActivity', supervisionActivitySchema);
-module.exports = SupervisionActivity;
+export default SupervisionActivity;

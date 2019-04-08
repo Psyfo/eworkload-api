@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Activity = require('./activity');
+import mongoose from 'mongoose';
+import Activity from './activity';
 
 const researchActivitySchema = new mongoose.Schema({
     researchType: {
@@ -15,4 +15,4 @@ const researchActivitySchema = new mongoose.Schema({
 });
 
 const ResearchActivity = Activity.discriminator('ResearchActivity', researchActivitySchema);
-module.exports = ResearchActivity;
+export default ResearchActivity;

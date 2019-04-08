@@ -1,25 +1,28 @@
-const mongoose = require('mongoose');
-const uuidv4 = require('uuid/v4');
+import mongoose from 'mongoose';
+import uuidv4 from 'uuid/v4';
 
-const evidenceSchema = new mongoose.Schema({
+const evidenceSchema = new mongoose.Schema(
+  {
     evidenceId: {
-        type: String,
-        required: true,
-        unique: true,
-        default: uuidv4
+      type: String,
+      required: true,
+      unique: true,
+      default: uuidv4
     },
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     item: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 const Evidence = mongoose.model('Evidence', evidenceSchema);
-module.exports = Evidence;
+export default Evidence;

@@ -1,6 +1,6 @@
-import { gql } from 'apollo-server-express';
+import gql from 'graphql-tag';
 
-export default `
+export default gql`
   type Block {
     blockId: String!
     name: String!

@@ -1,12 +1,37 @@
-const Activity = require('../../../models/activity');
-const CommInstructionActivity = require('../../../models/comm-instruction-activity');
-const LectureActivity = require('../../../models/lecture-activity');
-const PublicServiceActivity = require('../../../models/public-service-activity');
-const ResearchActivity = require('../../../models/research-activity.js');
-const SupervisionActivity = require('../../../models/supervision-activity');
+import Activity from '../../../models/activity';
+import CommInstructionActivity from '../../../models/comm-instruction-activity';
+import LectureActivity from '../../../models/lecture-activity';
+import PublicServiceActivity from '../../../models/public-service-activity';
+import ResearchActivity from '../../../models/research-activity.js';
+import SupervisionActivity from '../../../models/supervision-activity';
 
 
-module.exports = {
+export default {
+    Activity: {
+        __resolveType(activity, context, info) {
+            if(activity.commInstructionDescription){
+                return 'CommInstructionActivity'
+            }
+
+            if(activity.publicServiceDescription){
+                return 'PublicServiceActivity'
+            }
+
+            if(activity.lectureStackId){
+                return 'LectureActivity'
+            }
+
+            if(activity.researchUrl){
+                return 'ResearchActivity'
+            }
+
+            if(activity.supervisionRole){
+                return 'SupervisionActivity'
+            }
+
+            return null;
+        }
+    },
     Query: {
         activity: (root, args) => {
             return Activity.findOne({
@@ -67,7 +92,7 @@ module.exports = {
                 userId: args.userId,
                 dutyId: args.dutyId,
                 approvalStatus: args.approvalStatus,
-                description: args.description,
+                commInstructionDescription: args.commInstructionDescription,
                 evidenceId: args.evidenceId
             });
 
@@ -85,7 +110,7 @@ module.exports = {
                 }, {
                     $set: {
                         approvalStatus: args.approvalStatus,
-                        description: args.description,
+                        commInstructionDescription: args.commInstructionDescription,
                         evidenceId: args.evidenceId
                     }
                 })
@@ -112,7 +137,7 @@ module.exports = {
                 userId: args.userId,
                 dutyId: args.dutyId,
                 approvalStatus: args.approvalStatus,
-                description: args.description,
+                publicServiceDescription: args.publicServiceDescription,
                 evidenceId: args.evidenceId
             });
 
@@ -130,7 +155,7 @@ module.exports = {
                 }, {
                     $set: {
                         approvalStatus: args.approvalStatus,
-                        description: args.description,
+                        publicServiceDescription: args.publicServiceDescription,
                         evidenceId: args.evidenceId
                     }
                 })
@@ -245,7 +270,7 @@ module.exports = {
                 userId: args.userId,
                 dutyId: args.dutyId,
                 approvalStatus: args.approvalStatus,
-                superVisionRole: args.superVisionRole,
+                supervisionRole: args.supervisionRole,
                 studentId: args.studentId
             });
 
@@ -263,7 +288,7 @@ module.exports = {
                 }, {
                     $set: {
                         approvalStatus: args.approvalStatus,
-                        superVisionRole: args.superVisionRole,
+                        supervisionRole: args.supervisionRole,
                         studentId: args.studentId
                     }
                 })

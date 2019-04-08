@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Block = require('./block');
-const Module = require('./module');
+import mongoose from 'mongoose';
+import Block from './block';
+import Module from './module';
 
 const moduleBlockSchema = new mongoose.Schema({
     moduleId: {
@@ -44,4 +44,4 @@ moduleBlockSchema.virtual('block', {
 });
 
 const ModuleBlock = mongoose.model('ModuleBlock', moduleBlockSchema);
-module.exports = ModuleBlock;
+export default ModuleBlock;

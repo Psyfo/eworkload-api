@@ -12,10 +12,10 @@
   "dependencies": {
     "apollo-server-express": "^2.4.8",
     "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "esm": "^3.2.22",
     "express": "^4.16.4",
-    "express-graphql": "^0.7.1",
     "graphql": "^14.2.1",
     "graphql-iso-date": "^3.6.1",
     "graphql-tag": "^2.10.1",

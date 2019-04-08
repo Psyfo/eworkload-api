@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const uuidv4 = require('uuid/v4');
+import mongoose from 'mongoose'
+import uuidv4 from 'uuid/v4'
 
 const activitySchema = new mongoose.Schema({
     activityId: {
@@ -50,4 +50,4 @@ activitySchema.virtual('duty', {
 });
 
 const Activity = mongoose.model('Activity', activitySchema);
-module.exports = Activity;
+export default Activity;

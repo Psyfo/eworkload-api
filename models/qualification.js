@@ -1,63 +1,66 @@
-const mongoose = require('mongoose');
-const Department = require('./department');
+import mongoose from 'mongoose';
+import Department from './department';
 
-const qualificationSchema = new mongoose.Schema({
+const qualificationSchema = new mongoose.Schema(
+  {
     qualificationId: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
     },
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     type: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     saqaId: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true
     },
     departmentId: {
-        type: String,
-        trim: true,
-        ref: 'Department'
+      type: String,
+      trim: true,
+      ref: 'Department'
     },
     heqsfLevel: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true
     },
     purpose: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true
     },
     exitLevelOutcomes: {
-        type: [String]
+      type: [String]
     },
     graduateAttributes: {
-        type: [String]
+      type: [String]
     }
-}, {
+  },
+  {
     timestamps: true,
     toJSON: {
-        virtuals: true
+      virtuals: true
     },
     toObject: {
-        virtuals: true
+      virtuals: true
     }
-});
+  }
+);
 
 // Virtuals
 qualificationSchema.virtual('department', {
-    ref: 'Department',
-    localField: 'departmentId',
-    foreignField: 'departmentId',
-    justOne: true
+  ref: 'Department',
+  localField: 'departmentId',
+  foreignField: 'departmentId',
+  justOne: true
 });
 
 const Qualification = mongoose.model('Qualification', qualificationSchema);
-module.exports = Qualification;
+export default Qualification;

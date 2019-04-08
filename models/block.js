@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const blockSchema = new mongoose.Schema({
     blockId: {
@@ -21,4 +21,4 @@ const blockSchema = new mongoose.Schema({
 
 
 const Block = mongoose.model('Block', blockSchema);
-module.exports = Block;
+export default Block;

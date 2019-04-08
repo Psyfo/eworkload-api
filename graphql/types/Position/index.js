@@ -1,6 +1,6 @@
-const gql = require('graphql-tag');
+import gql from 'graphql-tag';
 
-export default `
+export default gql`
     type Position {
         positionId: String!,
         name: String!,

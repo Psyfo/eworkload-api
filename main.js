@@ -4,13 +4,13 @@ import morgan from 'morgan';
 import path from 'path';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import passportConfig from './auth/passport';
 import SERVER from './graphql/index';
 
 const app = express();
 
 // Database config
-import { MongoURI as db } from './config/keys';
+import { default as dbConfig } from './config/keys';
+const db = dbConfig.MongoURI;
 
 // Mongoose config
 mongoose
@@ -24,7 +24,7 @@ mongoose
   .catch(err => {
     console.log(err);
   });
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 mongoose.connection.on('error', error => console.log(error));
 mongoose.Promise = global.Promise;
 

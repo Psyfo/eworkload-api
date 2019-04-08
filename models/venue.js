@@ -1,24 +1,27 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const venueSchema = new mongoose.Schema({
+const venueSchema = new mongoose.Schema(
+  {
     venueId: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
     },
-    name: {
-        type: String,
-        required: true,
-        trim: true
+    campus: {
+      type: String,
+      required: true,
+      trim: true
     },
     capacity: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 const Venue = mongoose.model('Venue', venueSchema);
-module.exports = Venue;
+export default Venue;

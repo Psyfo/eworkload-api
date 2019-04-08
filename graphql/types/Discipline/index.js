@@ -1,6 +1,6 @@
-const gql = require('apollo-server-express');
+import gql from 'graphql-tag';
 
-export default `
+export default gql`
   type Discipline {
     disciplineId: String
     name: String!

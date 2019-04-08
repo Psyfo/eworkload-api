@@ -1,24 +1,27 @@
-const mongoose = require('mongoose');
-const uuidv4 = require('uuid/v4');
+import mongoose from 'mongoose';
+import uuidv4 from 'uuid/v4';
 
-const disciplineSchema = new mongoose.Schema({
+const disciplineSchema = new mongoose.Schema(
+  {
     disciplineId: {
-        type: String,
-        required: true,
-        unique: true,
-        default: uuidv4
+      type: String,
+      required: true,
+      unique: true,
+      default: uuidv4
     },
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true
     },
     description: {
-        type: String
+      type: String
     }
-}, {
+  },
+  {
     timestamps: true
-});
+  }
+);
 
 const Discipline = mongoose.model('Discipline', disciplineSchema);
-module.exports = Discipline;
+export default Discipline;

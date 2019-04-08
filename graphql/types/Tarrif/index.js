@@ -1,53 +1,56 @@
-const gql = require('graphql-tag');
+import gql from 'graphql-tag';
 
-export default `
-    type Tarrif {
-        dutyId: String!,
-        eventId: String!,
-        description: String,
-        appliedTarrif: String,
-        minHours: Int,
-        maxHours: Int,
-        explanation: String,
-        TRS: String,
-        evidenceRequired: Boolean
-    }
+export default gql`
+  type Tarrif {
+    dutyId: String!
+    eventId: String!
+    description: String
+    appliedTarrif: String
+    minHours: Int
+    maxHours: Int
+    explanation: String
+    TRS: String
+    evidenceRequired: Boolean
+  }
 
-    type Query {
-        tarrif(dutyId: String!, eventId: String!): Tarrif
-        tarrifs: [Tarrif]
-    }
+  type Query {
+    tarrif(dutyId: String!, eventId: String!): Tarrif
+    tarrifs: [Tarrif]
+  }
 
-    type Mutation {
-        addTarrif(dutyId: String!,
-            eventId: String!,
-            description: String,
-            appliedTarrif: String,
-            minHours: Int,
-            maxHours: Int,
-            explanation: String,
-            TRS: String,
-            evidenceRequired: Boolean
-            }): Tarrif
-        editTarrif(dutyId: String!,
-            eventId: String!,
-            description: String,
-            appliedTarrif: String,
-            minHours: Int,
-            maxHours: Int,
-            explanation: String,
-            TRS: String,
-            evidenceRequired: Boolean
-            }): Tarrif
-        deleteTarrif(dutyId: String!,
-            eventId: String!,
-            description: String,
-            appliedTarrif: String,
-            minHours: Int,
-            maxHours: Int,
-            explanation: String,
-            TRS: String,
-            evidenceRequired: Boolean
-            }): Tarrif
-    }
+  type Mutation {
+    addTarrif(
+      dutyId: String!
+      eventId: String!
+      description: String
+      appliedTarrif: String
+      minHours: Int
+      maxHours: Int
+      explanation: String
+      TRS: String
+      evidenceRequired: Boolean
+    ): Tarrif
+    editTarrif(
+      dutyId: String!
+      eventId: String!
+      description: String
+      appliedTarrif: String
+      minHours: Int
+      maxHours: Int
+      explanation: String
+      TRS: String
+      evidenceRequired: Boolean
+    ): Tarrif
+    deleteTarrif(
+      dutyId: String!
+      eventId: String!
+      description: String
+      appliedTarrif: String
+      minHours: Int
+      maxHours: Int
+      explanation: String
+      TRS: String
+      evidenceRequired: Boolean
+    ): Tarrif
+  }
 `;

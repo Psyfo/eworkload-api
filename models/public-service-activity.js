@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Activity = require('./activity');
-const Evident = require('./evidence');
+import mongoose from 'mongoose';
+import Activity from './activity';
+import Evident from './evidence';
 
 const publicServiceActivitySchema = new mongoose.Schema({
     description: {
@@ -23,4 +23,4 @@ publicServiceActivitySchema.virtual('evidence', {
 });
 
 const PublicServiceActivity = Activity.discriminator('PublicServiceActivity', publicServiceActivitySchema);
-module.exports = PublicServiceActivity;
+export default PublicServiceActivity;

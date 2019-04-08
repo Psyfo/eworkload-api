@@ -1,20 +1,20 @@
-const gql = require('graphql-tag');
+import gql from 'graphql-tag';
 
-export default `
-    type Evidence {
-        evidenceId: String!,
-        name: String!,
-        item: String
-    }
+export default gql`
+  type Evidence {
+    evidenceId: String!
+    name: String!
+    item: String
+  }
 
-    type Query {
-        evidence(evidenceId: String!): Evidence
-        evidences: [Evidence]
-    }
+  type Query {
+    evidence(evidenceId: String!): Evidence
+    evidences: [Evidence]
+  }
 
-    type Mutation {
-        addEvidence(name: String!, item: String): Evidence
-        editEvidence(evidenceId: String, name: String, item: String): Evidence
-        deleteEvidence(evidenceId: String, name: String, item: String): Evidence
-    }
+  type Mutation {
+    addEvidence(name: String!, item: String): Evidence
+    editEvidence(evidenceId: String, name: String, item: String): Evidence
+    deleteEvidence(evidenceId: String, name: String, item: String): Evidence
+  }
 `;

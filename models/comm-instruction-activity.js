@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Activity = require('./activity');
-const Evidence = require('./evidence');
+import mongoose from 'mongoose'
+import Activity from './activity'
+import Evidence from './evidence'
 
 const commInstructionActivitySchema = new mongoose.Schema({
     description: {
@@ -25,4 +25,4 @@ commInstructionActivitySchema.virtual('evidence', {
 });
 
 const CommInstructionActivity = Activity.discriminator('CommInstructionActivity', commInstructionActivitySchema);
-module.exports = CommInstructionActivity;
+export default CommInstructionActivity;
