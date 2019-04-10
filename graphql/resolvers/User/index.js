@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 
 export default {
   Query: {
-    user: (root, args) => {
+    user: (root, args, context) => {
+
       return User.findOne(args)
         .populate('discipline')
         .populate('position')
@@ -29,7 +30,7 @@ export default {
           throw err;
         });
     },
-    login: (root, args) => {
+    login: (root, args, context) => {
       return User.findOne({ userId: args.userId })
         .then(user => {
           if (!user) {
@@ -39,11 +40,15 @@ export default {
             .compare(args.password, user.password)
             .then(res => {
               if (res) {
-                const token = jwt.sign({ userId: user.userId }, 'secretkey', {
+                const token = jwt.sign({ userId: user.userId }, 'secret', {
                   expiresIn: '1h'
                 });
 
-                const payload = { userId: user.userId, token: token, tokenExpiration: 1 };
+                const payload = {
+                  userId: user.userId,
+                  token: token,
+                  tokenExpiration: 1
+                };
                 console.log(payload);
                 return payload;
               }

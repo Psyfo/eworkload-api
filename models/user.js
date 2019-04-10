@@ -37,11 +37,11 @@ const userSchema = new mongoose.Schema(
       type: String
     },
     disciplineId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Discipline'
     },
     positionId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'Position'
     },
     gender: {

@@ -5,6 +5,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 import passport from 'passport';
 import SERVER from './graphql/index';
+import isAuth from './auth/is-auth';
 
 const app = express();
 
@@ -39,12 +40,8 @@ app.use(
   })
 );
 app.use(cors());
-app.use(morgan('combined'));
-app.use(passport.initialize());
-// app.use('/graphql', graphqlHTTP({
-//     schema,
-//     graphiql: true
-// }));
+// app.use(morgan('combined'));
+// app.use(isAuth);
 
 // GraphQL
 SERVER.applyMiddleware({
@@ -52,15 +49,15 @@ SERVER.applyMiddleware({
 });
 
 // Routes - Plugin jwt strategy as middleware so only verified user can access the route
-app.use('/', require('./routes/index'));
-app.use('/auth', require('./routes/auth'));
-app.use(
-  '/users',
-  passport.authenticate('jwt', {
-    session: false
-  }),
-  require('./routes/users')
-);
+// app.use('/', require('./routes/index'));
+// app.use('/auth', require('./routes/auth'));
+// app.use(
+//   '/users',
+//   passport.authenticate('jwt', {
+//     session: false
+//   }),
+//   require('./routes/users')
+// );
 
 // Serve and listen
 const PORT = process.env.PORT || 5000;
