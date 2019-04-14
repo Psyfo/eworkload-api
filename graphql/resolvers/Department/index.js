@@ -6,6 +6,7 @@ export default {
       return Department.findOne({
         departmentId: args.departmentId
       })
+        .populate('faculty')
         .then(result => {
           return result;
         })
@@ -30,7 +31,7 @@ export default {
       const newDepartment = new Department({
         departmentId: args.departmentId,
         name: args.name,
-        faculty: args.faculty
+        facultyId: args.facultyId
       });
 
       return newDepartment

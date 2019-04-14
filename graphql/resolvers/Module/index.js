@@ -5,7 +5,18 @@ export default {
     module: (root, args) => {
       return Module.findOne(args)
         .populate('discipline')
-        .populate('qualification')
+        .populate({
+          path: 'qualification',
+          model: 'Qualification',
+          populate: {
+            path: 'department',
+            model: 'Department',
+            populate: {
+              path: 'faculty',
+              model: 'Faculty'
+            }
+          }
+        })
         .populate('offering-type')
         .then(result => {
           return result;
@@ -20,7 +31,69 @@ export default {
           moduleId: 'asc'
         })
         .populate('discipline')
-        .populate('qualification')
+        .populate({
+          path: 'qualification',
+          model: 'Qualification',
+          populate: {
+            path: 'department',
+            model: 'Department',
+            populate: {
+              path: 'faculty',
+              model: 'Faculty'
+            }
+          }
+        })
+        .populate('offering-type')
+        .then(result => {
+          return result;
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    modulesByDiscipline: (root, args) => {
+      return Module.find({ args })
+        .sort({
+          moduleId: 'asc'
+        })
+        .populate('discipline')
+        .populate({
+          path: 'qualification',
+          model: 'Qualification',
+          populate: {
+            path: 'department',
+            model: 'Department',
+            populate: {
+              path: 'faculty',
+              model: 'Faculty'
+            }
+          }
+        })
+        .populate('offering-type')
+        .then(result => {
+          return result;
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    modulesByModuleIds: (root, args) => {
+      return Module.find({})
+        .where('modules.moduleId')
+        .in(args.moduleIds)
+        .populate('discipline')
+        .populate({
+          path: 'qualification',
+          model: 'Qualification',
+          populate: {
+            path: 'department',
+            model: 'Department',
+            populate: {
+              path: 'faculty',
+              model: 'Faculty'
+            }
+          }
+        })
         .populate('offering-type')
         .then(result => {
           return result;
@@ -35,16 +108,14 @@ export default {
       const newModule = new Module({
         moduleId: args.moduleId,
         name: args.name,
-        description: args.description,
+        type: args.type,
+        assessmentMethod: args.assessmentMethod,
+        prerequisite: args.prerequisite,
         nqfLevel: args.nqfLevel,
         qualificationId: args.qualificationId,
         offeringTypeId: args.offeringTypeId,
         disciplineId: args.disciplineId,
-        credits: args.credits,
-        isMajor: args.isMajor,
-        type: args.type,
-        baseContact: args.baseContact,
-        basePractical: args.basePractical
+        credits: args.credits
       });
 
       return newModule
@@ -64,16 +135,14 @@ export default {
         {
           $set: {
             name: args.name,
-            description: args.description,
-            nqfLevel: args.nqfLevel,
-            qualification: args.qualification,
-            offeringType: args.offeringType,
-            discipline: args.discipline,
-            credits: args.credits,
-            isMajor: args.isMajor,
             type: args.type,
-            baseContact: args.baseContact,
-            basePractical: args.basePractical
+            assessmentMethod: args.assessmentMethod,
+            prerequisite: args.prerequisite,
+            nqfLevel: args.nqfLevel,
+            qualificationId: args.qualificationId,
+            offeringTypeId: args.offeringTypeId,
+            disciplineId: args.disciplineId,
+            credits: args.credits
           }
         }
       )

@@ -5,6 +5,8 @@ export default {
     lectureStack: (root, args) => {
       return LectureStack.findOne(args)
         .populate('discipline')
+        .populate('module')
+        .populate('user')
         .then(result => {
           return result;
         })
@@ -15,6 +17,8 @@ export default {
     lectureStacks: () => {
       return LectureStack.find({})
         .populate('discipline')
+        .populate('module')
+        .populate('user')
         .then(result => {
           return result;
         })
@@ -26,10 +30,10 @@ export default {
   Mutation: {
     addLectureStack: (root, args) => {
       const newLectureStack = new LectureStack({
-        lectureStackId: args.lectureStackId,
         disciplineId: args.disciplineId,
-        modules: args.modules,
-        groups: args.groups
+        moduleIds: args.moduleIds,
+        groups: args.groups,
+        userIds: args.userIds
       });
 
       return newLectureStack
@@ -49,12 +53,15 @@ export default {
         {
           $set: {
             discipline: args.discipline,
-            modules: args.modules,
-            groups: args.groups
+            moduleIds: args.moduleIds,
+            groups: args.groups,
+            userIds: args.userIds
           }
         }
       )
         .populate('discipline')
+        .populate('module')
+        .populate('user')
         .then(result => {
           return result;
         })
@@ -65,6 +72,8 @@ export default {
     deleteLectureStack: (root, args) => {
       return LectureStack.findOneAndRemove(args)
         .populate('discipline')
+        .populate('module')
+        .populate('user')
         .then(result => {
           return result;
         })

@@ -4,65 +4,62 @@ export default gql`
   type Module {
     moduleId: String!
     name: String!
-    description: String!
-    nqfLevel: String!
-    qualificationId: String!
-    offeringTypeId: String!
-    disciplineId: String!
-    credits: Int!
-    isMajor: Boolean
     type: String!
-    baseContact: Int
-    basePractical: Int
+    assessmentMethod: String!
+    nqfLevel: String!
+    prerequisites: [String]
+    qualificationId: String!
+    qualification: Qualification
+    offeringTypeId: String!
+    offeringType: OfferingType
+    disciplineId: String!
+    discipline: Discipline
+    credits: Int!
   }
 
   type Query {
     module(moduleId: String!): Module
     modules: [Module]
+    modulesByDiscipline(disciplineId: String!): [Module]
+    modulesByModuleIds(moduleIds: [String]):[Module]
   }
 
   type Mutation {
     addModule(
       moduleId: String!
       name: String!
-      description: String!
+      type: String!
+      assessmentMethod: String!
       nqfLevel: String!
+      prerequisites: [String]
       qualificationId: String!
       offeringTypeId: String!
       disciplineId: String!
       credits: Int!
-      isMajor: Boolean
-      type: String!
-      baseContact: Int
-      basePractical: Int
     ): Module
     editModule(
-      moduleId: String
+      moduleId: String!
       name: String
-      description: String
+      type: String
+      assessmentMethod: String
       nqfLevel: String
+      prerequisites: [String]
       qualificationId: String
       offeringTypeId: String
       disciplineId: String
       credits: Int
-      isMajor: Boolean
-      type: String
-      baseContact: Int
-      basePractical: Int
     ): Module
     deleteModule(
-      moduleId: String
+      moduleId: String!
       name: String
-      description: String
+      type: String
+      assessmentMethod: String
       nqfLevel: String
+      prerequisites: [String]
       qualificationId: String
       offeringTypeId: String
       disciplineId: String
       credits: Int
-      isMajor: Boolean
-      type: String
-      baseContact: Int
-      basePractical: Int
     ): Module
   }
 `;

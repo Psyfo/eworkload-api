@@ -5,8 +5,11 @@ export default gql`
     lectureStackId: String!
     disciplineId: String!
     discipline: Discipline
-    modules: [String]
-    groups: String
+    moduleIds: [String]
+    modules: [Module]
+    groups: Int
+    userIds: [String]
+    users: [User]
   }
 
   type Query {
@@ -16,22 +19,24 @@ export default gql`
 
   type Mutation {
     addLectureStack(
-      lectureStackId: String!
       disciplineId: String!
-      modules: [String]
-      groups: String
+      moduleIds: [String]
+      groups: Int,
+      userIds: [String]
     ): LectureStack
     editLectureStack(
-      lectureStackId: String!
-      disciplineId: String!
-      modules: [String]
-      groups: String
+      lectureStackId: String
+      disciplineId: String
+      moduleIds: [String]
+      userIds: [String]
+      groups: Int
     ): LectureStack
     deleteLectureStack(
-      lectureStackId: String!
-      disciplineId: String!
-      modules: [String]
-      groups: String
+      lectureStackId: String
+      disciplineId: String
+      moduleIds: [String]
+      userIds: [String]
+      groups: Int
     ): LectureStack
   }
 `;

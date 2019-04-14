@@ -16,14 +16,23 @@ const moduleSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    description: {
-      type: String,
-      required: true,
-      trim: true
+    type: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    assessmentMethod: {
+        type: String,
+        required: true,
+        trim: true
     },
     nqfLevel: {
       type: Number,
       required: true
+    },
+    prerequisites: {
+        type: [String],
+        ref: 'Module'
     },
     qualificationId: {
       type: String,
@@ -31,14 +40,14 @@ const moduleSchema = new mongoose.Schema(
       trim: true,
       ref: 'Qualification'
     },
-    offeringType: {
-      type: mongoose.Schema.Types.ObjectId,
+    offeringTypeId: {
+      type: String,
       required: true,
       trim: true,
       ref: 'OfferingType'
     },
     disciplineId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
       trim: true,
       ref: 'Discipline'
@@ -46,18 +55,6 @@ const moduleSchema = new mongoose.Schema(
     credits: {
       type: Number,
       required: true
-    },
-    isMajor: {
-      type: Boolean
-    },
-    type: {
-      type: String
-    },
-    baseContact: {
-      type: Number
-    },
-    basePractical: {
-      type: Number
     }
   },
   {
