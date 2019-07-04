@@ -1,10 +1,16 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   type Block {
     blockId: String!
     name: String!
     description: String!
+  }
+
+  input BlockInput{
+      blockId: String
+      name: String
+      description: String
   }
 
   type Query {
@@ -13,8 +19,8 @@ export default gql`
   }
 
   type Mutation {
-    addBlock(blockId: String!, name: String!, description: String!): Block
-    editBlock(blockId: String, name: String, description: String): Block
-    deleteBlock(blockId: String, name: String, description: String): Block
+    addBlock(block: BlockInput): Block
+    editBlock(block: BlockInput): Block
+    deleteBlock(block: BlockInput): Block
   }
 `;

@@ -29,15 +29,10 @@ export default {
   Mutation: {
     addQualification: (root, args) => {
       const newQualification = new Qualification({
-        qualificationId: args.qualificationId,
-        name: args.name,
-        type: args.type,
-        saqaId: args.saqaId,
-        department: args.department,
-        heqsfLevel: args.heqsfLevel,
-        purpose: args.purpose,
-        exitLevelOutcomes: args.exitLevelOutcomes,
-        graduateAttributes: args.graduateAttributes
+        qualificationId: args.qualification.qualificationId,
+        name: args.qualification.name,
+        type: args.qualification.type,
+        departmentId: args.qualification.departmentId
       });
 
       return newQualification
@@ -52,18 +47,13 @@ export default {
     editQualification: (root, args) => {
       return Qualification.findOneAndUpdate(
         {
-          qualificationId
+          qualificationId: args.qualification.qualificationId
         },
         {
           $set: {
-            name: args.name,
-            type: args.type,
-            saqaId: args.saqaId,
-            department: args.department,
-            heqsfLevel: args.heqsfLevel,
-            purpose: args.purpose,
-            exitLevelOutcomes: args.exitLevelOutcomes,
-            graduateAttributes: args.graduateAttributes
+            name: args.qualification.name,
+            type: args.qualification.type,
+            departmentId: args.qualification.departmentId
           }
         }
       )

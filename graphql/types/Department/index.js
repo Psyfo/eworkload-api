@@ -1,11 +1,17 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   type Department {
     departmentId: String!
     name: String!
     facultyId: String!
     faculty: Faculty
+  }
+
+  input DepartmentInput {
+    departmentId: String
+    name: String
+    facultyId: String
   }
 
   type Query {
@@ -14,20 +20,8 @@ export default gql`
   }
 
   type Mutation {
-    addDepartment(
-      departmentId: String!
-      name: String!
-      facultyId: String!
-    ): Department
-    editDepartment(
-      departmentId: String
-      name: String
-      facultyId: String
-    ): Department
-    deleteDepartment(
-      departmentId: String
-      name: String
-      facultyId: String
-    ): Department
+    addDepartment(department: DepartmentInput): Department
+    editDepartment(department: DepartmentInput): Department
+    deleteDepartment(department: DepartmentInput): Department
   }
 `;

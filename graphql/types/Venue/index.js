@@ -2,9 +2,17 @@ import gql from 'graphql-tag';
 
 export default gql`
   type Venue {
-    venueId: String!
-    campus: String!
-    capacity: Int!
+    venueId: String
+    campus: String
+    capacity: Int
+    type: String
+  }
+
+  input VenueInput {
+    venueId: String
+    campus: String
+    capacity: Int
+    type: String
   }
 
   type Query {
@@ -13,8 +21,8 @@ export default gql`
   }
 
   type Mutation {
-    addVenue(venueId: String!, campus: String!, capacity: Int!): Venue
-    editVenue(venueId: String, campus: String, capacity: Int): Venue
-    deleteVenue(venueId: String, campus: String, capacity: Int): Venue
+    addVenue(venue: VenueInput): Venue
+    editVenue(venue: VenueInput): Venue
+    deleteVenue(venue: VenueInput): Venue
   }
 `;

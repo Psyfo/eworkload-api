@@ -1,9 +1,13 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
     type OfferingType {
         offeringTypeId: String!,
         description: String!
+    }
+
+    input OfferingTypeInput {
+        description: String
     }
 
     type Query {
@@ -12,8 +16,8 @@ export default gql`
     }
 
     type Mutation {
-        addOfferingType(description: String!): OfferingType
-        editOfferingType(offeringTypeId: String, description: String): OfferingType
-        deleteOfferingType(offeringTypeId: String, description: String): OfferingType
+        addOfferingType(offeringType: OfferingTypeInput): OfferingType
+        editOfferingType(offeringType: OfferingTypeInput): OfferingType
+        deleteOfferingType(offeringType: OfferingTypeInput): OfferingType
     }
 `;

@@ -2,59 +2,91 @@ import mongoose from 'mongoose';
 import Qualification from './qualification';
 import OfferingType from './offering-type';
 import Discipline from './discipline';
+import User from './user';
 
 const moduleSchema = new mongoose.Schema(
   {
     moduleId: {
       type: String,
-      required: true,
-      unique: true,
+      unique: false,
       trim: true
     },
     name: {
       type: String,
-      required: true,
       trim: true
     },
     type: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      trim: true
     },
     assessmentMethod: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      trim: true
     },
     nqfLevel: {
-      type: Number,
-      required: true
-    },
-    prerequisites: {
-        type: [String],
-        ref: 'Module'
+      type: String,
+      trim: true
     },
     qualificationId: {
       type: String,
-      required: true,
       trim: true,
       ref: 'Qualification'
     },
     offeringTypeId: {
       type: String,
-      required: true,
+      unique: false,
       trim: true,
       ref: 'OfferingType'
     },
     disciplineId: {
       type: String,
-      required: true,
       trim: true,
       ref: 'Discipline'
     },
+    venueId: {
+      type: String,
+      ref: 'Venue'
+    },
+    blockId: {
+      type: String,
+      unique: false,
+      ref: 'Block'
+    },
+    userId: {
+      type: String,
+      ref: 'User'
+    },
+    coordinatorId: {
+      type: String,
+      ref: 'User'
+    },
+    moderatorId: {
+      type: String,
+      ref: 'User'
+    },
     credits: {
-      type: Number,
-      required: true
+      type: Number
+    },
+    stackId: {
+      type: String
+    },
+    studyPeriod: {
+      type: String
+    },
+    groupSize: {
+      type: Number
+    },
+    lecturedBy: {
+      type: String
+    },
+    moderation: {
+      type: String
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {
@@ -68,6 +100,12 @@ const moduleSchema = new mongoose.Schema(
   }
 );
 
+// Index
+moduleSchema.index(
+  { moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 },
+  { unique: true }
+);
+
 // Virtuals
 moduleSchema.virtual('discipline', {
   ref: 'Discipline',
@@ -75,7 +113,7 @@ moduleSchema.virtual('discipline', {
   foreignField: 'disciplineId',
   justOne: true
 });
-moduleSchema.virtual('offering-type', {
+moduleSchema.virtual('offeringType', {
   ref: 'OfferingType',
   localField: 'offeringTypeId',
   foreignField: 'offeringTypeId',
@@ -85,6 +123,36 @@ moduleSchema.virtual('qualification', {
   ref: 'Qualification',
   localField: 'qualificationId',
   foreignField: 'qualificationId',
+  justOne: true
+});
+moduleSchema.virtual('venue', {
+  ref: 'Venue',
+  localField: 'venueId',
+  foreignField: 'venueId',
+  justOne: true
+});
+moduleSchema.virtual('block', {
+  ref: 'Block',
+  localField: 'blockId',
+  foreignField: 'blockId',
+  justOne: true
+});
+moduleSchema.virtual('user', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: 'userId',
+  justOne: true
+});
+moduleSchema.virtual('coordinator', {
+  ref: 'User',
+  localField: 'coordinatorId',
+  foreignField: 'userId',
+  justOne: true
+});
+moduleSchema.virtual('moderator', {
+  ref: 'User',
+  localField: 'moderatorId',
+  foreignField: 'userId',
   justOne: true
 });
 

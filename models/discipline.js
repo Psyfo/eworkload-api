@@ -16,6 +16,12 @@ const disciplineSchema = new mongoose.Schema(
     },
     description: {
       type: String
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

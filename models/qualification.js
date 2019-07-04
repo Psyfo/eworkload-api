@@ -19,28 +19,16 @@ const qualificationSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    saqaId: {
-      type: String,
-      trim: true
-    },
     departmentId: {
       type: String,
       trim: true,
       ref: 'Department'
     },
-    heqsfLevel: {
-      type: String,
-      trim: true
+    createdAt: {
+      type: Date
     },
-    purpose: {
-      type: String,
-      trim: true
-    },
-    exitLevelOutcomes: {
-      type: [String]
-    },
-    graduateAttributes: {
-      type: [String]
+    updatedAt: {
+      type: Date
     }
   },
   {

@@ -33,6 +33,12 @@ const studentSchema = new mongoose.Schema(
     year: {
       type: String,
       default: Date.now
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

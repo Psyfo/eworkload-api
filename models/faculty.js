@@ -12,6 +12,12 @@ const facultySchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

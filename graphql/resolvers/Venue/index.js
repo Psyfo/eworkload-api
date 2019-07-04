@@ -3,9 +3,7 @@ import Venue from '../../../models/venue';
 export default {
   Query: {
     venue: (root, args) => {
-      return Venue.findOne(args)
-        .populate()
-        .populate()
+      return Venue.findOne({ venueId: args.venueId })
         .then(result => {
           return result;
         })
@@ -23,15 +21,11 @@ export default {
         .catch(err => {
           throw err;
         });
-    }
+    },
   },
   Mutation: {
     addVenue: (root, args) => {
-      const newVenue = new Venue({
-        venueId: args.venueId,
-        campus: args.campus,
-        capacity: args.capacity
-      });
+      const newVenue = new Venue(args.venue);
 
       return newVenue
         .save()
@@ -45,13 +39,13 @@ export default {
     editVenue: (root, args) => {
       return Venue.findOneAndUpdate(
         {
-          venueId: args.venueId
+          venueId: args.venue.venueId,
         },
         {
           $set: {
-            campus: args.campus,
-            capacity: args.capacity
-          }
+            campus: args.venue.campus,
+            capacity: args.venue.capacity,
+          },
         }
       )
         .populate()
@@ -63,7 +57,7 @@ export default {
         });
     },
     deleteVenue: (root, args) => {
-      return Venue.findOneAndRemove(args)
+      return Venue.findOneAndRemove(args.venue)
         .populate()
         .then(result => {
           return result;
@@ -71,6 +65,6 @@ export default {
         .catch(err => {
           throw err;
         });
-    }
-  }
+    },
+  },
 };

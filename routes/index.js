@@ -1,27 +1,22 @@
-const express = require('express');
-const Department = require('../models/department');
-const router = express.Router();
-
+import Department from '../models/department';
+import { Router as router } from 'express';
 
 router.get('/', (req, res) => {
-    res.json({
-        message: 'Index route is working!'
+  res.json({
+    message: 'Index route is working!'
+  });
+});
+
+router.get('/departments', (req, res) => {
+  //const departmentId = req.body.departmentId;
+  Department.find({})
+    .populate('faculty')
+    .then(results => {
+      res.status(200).json(results);
+    })
+    .catch(err => {
+      res.json({ err });
     });
 });
 
-router.get('/department', (req, res) => {
-    const departmentId = req.body.departmentId;
-    const result = Department.findOne({
-            departmentId: departmentId
-        })
-        .populate('faculty_details')
-        .then(results => {
-            res.status(200).json(results);
-        })
-        .catch(err => {
-
-            res.json({err});
-        });
-});
-
-module.exports = router;
+export default router;

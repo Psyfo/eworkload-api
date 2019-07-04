@@ -1,10 +1,16 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   type Duty {
     dutyId: String!
-    name: String!
-    description: String!
+    name: String
+    description: String
+  }
+
+  input DutyInput {
+    dutyId: String
+    name: String
+    description: String
   }
 
   type Query {
@@ -13,8 +19,8 @@ export default gql`
   }
 
   type Mutation {
-    addDuty(dutyId: String!, name: String!, description: String!): Duty
-    editDuty(dutyId: String, name: String, description: String): Duty
-    deleteDuty(dutyId: String, name: String, description: String): Duty
+    addDuty(duty: DutyInput): Duty
+    editDuty(duty: DutyInput): Duty
+    deleteDuty(duty: DutyInput): Duty
   }
 `;

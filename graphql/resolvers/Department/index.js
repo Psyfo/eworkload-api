@@ -29,9 +29,9 @@ export default {
   Mutation: {
     addDepartment: (root, args) => {
       const newDepartment = new Department({
-        departmentId: args.departmentId,
-        name: args.name,
-        facultyId: args.facultyId
+        departmentId: args.department.departmentId,
+        name: args.department.name,
+        facultyId: args.department.facultyId
       });
 
       return newDepartment
@@ -46,12 +46,12 @@ export default {
     editDepartment: (root, args) => {
       return Department.findOneAndUpdate(
         {
-          departmentId: args.departmentId
+          departmentId: args.department.departmentId
         },
         {
           $set: {
-            name: args.name,
-            facultyId: args.facultyId
+            name: args.department.name,
+            facultyId: args.department.facultyId
           }
         }
       )
@@ -63,7 +63,7 @@ export default {
         });
     },
     deleteDepartment: (root, args) => {
-      return Department.findOneAndRemove(args)
+      return Department.findOneAndRemove(args.department)
         .then(result => {
           return result;
         })

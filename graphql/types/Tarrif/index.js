@@ -1,7 +1,19 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   type Tarrif {
+    dutyId: String!
+    eventId: String!
+    description: String
+    appliedTarrif: String
+    minHours: Int
+    maxHours: Int
+    explanation: String
+    TRS: String
+    evidenceRequired: Boolean
+  }
+
+  input TarrifInput {
     dutyId: String!
     eventId: String!
     description: String
@@ -19,38 +31,8 @@ export default gql`
   }
 
   type Mutation {
-    addTarrif(
-      dutyId: String!
-      eventId: String!
-      description: String
-      appliedTarrif: String
-      minHours: Int
-      maxHours: Int
-      explanation: String
-      TRS: String
-      evidenceRequired: Boolean
-    ): Tarrif
-    editTarrif(
-      dutyId: String!
-      eventId: String!
-      description: String
-      appliedTarrif: String
-      minHours: Int
-      maxHours: Int
-      explanation: String
-      TRS: String
-      evidenceRequired: Boolean
-    ): Tarrif
-    deleteTarrif(
-      dutyId: String!
-      eventId: String!
-      description: String
-      appliedTarrif: String
-      minHours: Int
-      maxHours: Int
-      explanation: String
-      TRS: String
-      evidenceRequired: Boolean
-    ): Tarrif
+    addTarrif(tarrif: TarrifInput): Tarrif
+    editTarrif(tarrif: TarrifInput): Tarrif
+    deleteTarrif(tarrif: TarrifInput): Tarrif
   }
 `;

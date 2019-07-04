@@ -42,6 +42,12 @@ const tarrifSchema = new mongoose.Schema(
     },
     evidenceRequired: {
       type: Boolean
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

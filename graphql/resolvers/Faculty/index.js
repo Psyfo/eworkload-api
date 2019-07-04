@@ -29,8 +29,8 @@ export default {
   Mutation: {
     addFaculty: (root, args) => {
       const newFaculty = new Faculty({
-        facultyId: args.facultyId,
-        name: args.name
+        facultyId: args.faculty.facultyId,
+        name: args.faculty.name
       });
 
       return newFaculty
@@ -45,11 +45,12 @@ export default {
     editFaculty: (root, args) => {
       return Faculty.findOneAndUpdate(
         {
-          facultyId: args.facultyId
+          facultyId: args.faculty.facultyId
         },
         {
           $set: {
-            name: args.name
+            facultyId: args.faculty.facultyId,
+            name: args.faculty.name
           }
         }
       )
@@ -62,7 +63,7 @@ export default {
         });
     },
     deleteFaculty: (root, args) => {
-      return Faculty.findOneAndRemove(args)
+      return Faculty.findOneAndRemove(args.faculty)
         .populate()
         .then(result => {
           return result;

@@ -1,65 +1,78 @@
 import gql from 'graphql-tag';
 
-export default gql`
-  type Module {
+export default gql `
+   type Module {
     moduleId: String!
-    name: String!
-    type: String!
-    assessmentMethod: String!
-    nqfLevel: String!
-    prerequisites: [String]
-    qualificationId: String!
+    name: String
+    type: String
+    assessmentMethod: String
+    nqfLevel: String
+    credits: Int
+    qualificationId: String
     qualification: Qualification
-    offeringTypeId: String!
+    offeringTypeId: String
     offeringType: OfferingType
-    disciplineId: String!
+    disciplineId: String
     discipline: Discipline
-    credits: Int!
+    venueId: String
+    venue: Venue
+    blockId: String
+    block: Block
+    userId: String
+    user: User
+    coordinatorId: String
+    coordinator: User
+    moderatorId: String
+    moderator: User
+    stackId: String
+    studyPeriod: String
+    groupSize: Int
+    lecturedBy: String
+    moderation: String
+  }
+
+  input ModuleInput {
+    moduleId: String
+    name: String
+    type: String
+    assessmentMethod: String
+    nqfLevel: String
+    credits: Int
+    qualificationId: String
+    offeringTypeId: String
+    disciplineId: String
+    venueId: String
+    blockId: String
+    userId: String
+    coordinatorId: String
+    moderatorId: String
+    stackId: String
+    studyPeriod: String
+    groupSize: Int
+    lecturedBy: String
+    moderation: String
   }
 
   type Query {
-    module(moduleId: String!): Module
+    module(
+      moduleId: String!
+      blockId: String!
+      offeringTypeId: String!
+      qualificationId: String!
+    ): Module
     modules: [Module]
     modulesByDiscipline(disciplineId: String!): [Module]
-    modulesByModuleIds(moduleIds: [String]):[Module]
+    unassignedModules: [Module]
+    modulesByUser(userId: String): [Module]
+    modulesByModerator(moderatorId: String): [Module]
+    modulesByCoordinator(coordinatorId: String): [Module]
+    stackedWith(stackId: String): [Module]
   }
 
   type Mutation {
-    addModule(
-      moduleId: String!
-      name: String!
-      type: String!
-      assessmentMethod: String!
-      nqfLevel: String!
-      prerequisites: [String]
-      qualificationId: String!
-      offeringTypeId: String!
-      disciplineId: String!
-      credits: Int!
-    ): Module
-    editModule(
-      moduleId: String!
-      name: String
-      type: String
-      assessmentMethod: String
-      nqfLevel: String
-      prerequisites: [String]
-      qualificationId: String
-      offeringTypeId: String
-      disciplineId: String
-      credits: Int
-    ): Module
-    deleteModule(
-      moduleId: String!
-      name: String
-      type: String
-      assessmentMethod: String
-      nqfLevel: String
-      prerequisites: [String]
-      qualificationId: String
-      offeringTypeId: String
-      disciplineId: String
-      credits: Int
-    ): Module
+    addModule(module: ModuleInput): Module
+    addModules(modules: [ModuleInput]): [Module]
+    editModule(module: ModuleInput): Module
+    deleteModule(module: ModuleInput): Module
   }
 `;

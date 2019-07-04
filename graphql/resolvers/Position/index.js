@@ -26,9 +26,9 @@ export default {
   Mutation: {
     addPosition: (root, args) => {
       const newPosition = new Position({
-        positionId: args.positionId,
-        name: args.name,
-        description: args.description
+        positionId: args.position.positionId,
+        name: args.position.name,
+        description: args.position.description
       });
 
       return newPosition
@@ -43,12 +43,12 @@ export default {
     editPosition: (root, args) => {
       return Position.findOneAndUpdate(
         {
-          positionId: args.positionId
+          positionId: args.position.positionId
         },
         {
           $set: {
-            name: args.name,
-            description: args.description
+            name: args.position.name,
+            description: args.position.description
           }
         }
       )
@@ -61,7 +61,7 @@ export default {
         });
     },
     deletePosition: (root, args) => {
-      return Position.findOneAndRemove(args)
+      return Position.findOneAndRemove(args.position)
         .populate()
         .then(result => {
           return result;

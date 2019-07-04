@@ -25,9 +25,9 @@ export default {
   Mutation: {
     addDiscipline: (root, args) => {
       const newDiscipline = new Discipline({
-        disciplineId: args.disciplineId,
-        name: args.name,
-        description: args.description
+        disciplineId: args.discipline.disciplineId,
+        name: args.discipline.name,
+        description: args.discipline.description
       });
 
       return newDiscipline
@@ -42,12 +42,12 @@ export default {
     editDiscipline: (root, args) => {
       return Discipline.findOneAndUpdate(
         {
-          disciplineId: args.disciplineId
+          disciplineId: args.discipline.disciplineId
         },
         {
           $set: {
-            name: args.name,
-            description: args.description
+            name: args.discipline.name,
+            description: args.discipline.description
           }
         }
       )
@@ -59,7 +59,7 @@ export default {
         });
     },
     deleteDiscipline: (root, args) => {
-      return Discipline.findOneAndRemove(args)
+      return Discipline.findOneAndRemove(args.discipline)
         .then(result => {
           return result;
         })

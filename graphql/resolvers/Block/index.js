@@ -4,7 +4,7 @@ export default {
   Query: {
     block: (root, args) => {
       return Block.findOne({
-        blockId: args.blockId
+        blockId: args.block.blockId
       })
         .then(block => {
           return block;
@@ -26,10 +26,12 @@ export default {
   },
   Mutation: {
     addBlock: (root, args) => {
+      console.log('Block args:', args);
+
       const newBlock = new Block({
-        blockId: args.blockId,
-        name: args.name,
-        description: args.description
+        blockId: args.block.blockId,
+        name: args.block.name,
+        description: args.block.description
       });
 
       return newBlock
@@ -44,12 +46,12 @@ export default {
     editBlock: (root, args) => {
       return Block.findOneAndUpdate(
         {
-          blockId: args.blockId
+          blockId: args.block.blockId
         },
         {
           $set: {
-            name: args.name,
-            description: args.description
+            name: args.block.name,
+            description: args.block.description
           }
         }
       )
@@ -61,7 +63,7 @@ export default {
         });
     },
     deleteBlock: (root, args) => {
-      return Block.findOneAndRemove(args)
+      return Block.findOneAndRemove(args.block)
         .then(result => {
           return result;
         })

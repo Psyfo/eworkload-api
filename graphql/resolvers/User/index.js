@@ -4,11 +4,11 @@ import jwt from 'jsonwebtoken';
 
 export default {
   Query: {
-    user: (root, args, context) => {
-
+    user: (root, args) => {
       return User.findOne(args)
         .populate('discipline')
         .populate('position')
+        .populate('workFocus')
         .then(result => {
           return result;
         })
@@ -30,7 +30,7 @@ export default {
           throw err;
         });
     },
-    login: (root, args, context) => {
+    login: (root, args) => {
       return User.findOne({ userId: args.userId })
         .then(user => {
           if (!user) {
@@ -61,54 +61,74 @@ export default {
         .catch(err => {
           throw err;
         });
+    },
+    userExists: (root, args) => {
+      return User.countDocuments({
+        userId: args.userId
+      })
+        .then(result => {
+          let data = {
+            exists: false
+          };
+          if (result !== 0) {
+            data.exists = true;
+          }
+          return data;
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   },
   Mutation: {
     addUser: (root, args) => {
       const newUser = new User({
-        userId: args.userId,
-        password: args.password,
-        email: args.email,
-        firstName: args.firstName,
-        lastName: args.lastName,
-        photoUrl: args.photoUrl,
-        disciplineId: args.disciplineId,
-        positionId: args.positionId,
-        gender: args.gender,
-        nationality: args.nationality
+        userId: args.user.userId,
+        password: args.user.password,
+        email: args.user.email,
+        firstName: args.user.firstName,
+        lastName: args.user.lastName,
+        photoUrl: args.user.photoUrl,
+        disciplineId: args.user.disciplineId,
+        positionId: args.user.positionId,
+        workFocusName: args.user.workFocusName,
+        gender: args.user.gender,
+        nationality: args.user.nationality
       });
 
       return newUser
         .save()
         .then(result => {
+          console.log(result);
+
           return result;
         })
         .catch(err => {
+          console.log(err);
           throw err;
         });
     },
     editUser: (root, args) => {
       return User.findOneAndUpdate(
         {
-          userId: args.userId
+          userId: args.user.userId
         },
         {
           $set: {
-            password: args.userId,
-            email: args.email,
-            firstName: args.firstName,
-            lastName: args.lastName,
-            photoUrl: args.photoUrl,
-            disciplineId: args.disciplineId,
-            positionId: args.positionId,
-            gender: args.gender,
-            nationality: args.nationality
+            password: args.user.password,
+            email: args.user.email,
+            firstName: args.user.firstName,
+            lastName: args.user.lastName,
+            photoUrl: args.user.photoUrl,
+            disciplineId: args.user.disciplineId,
+            positionId: args.user.positionId,
+            workFocusName: args.user.workFocusName,
+            gender: args.user.gender,
+            nationality: args.user.nationality
           }
         }
       )
         .exec()
-        .populate('discipline')
-        .populate('position')
         .then(result => {
           return result;
         })
@@ -117,15 +137,21 @@ export default {
         });
     },
     deleteUser: (root, args) => {
-      return User.findOneAndRemove(args)
-        .populate('discipline')
-        .populate('position')
+      return User.findOneAndRemove(args.user)
         .then(result => {
           return result;
         })
         .catch(err => {
           throw err;
         });
+    },
+    changePassword: async (root, args) => {
+      let user = await User.findOne({ userId: args.userId });
+      let comparison = await bcrypt.compare(args.oldPassword, user.password);
+      if (comparison !== true) {
+        throw new Error('Password incorrect');
+      }
+      return user;
     }
   }
 };

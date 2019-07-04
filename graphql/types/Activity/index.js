@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   interface Activity {
     activityId: String!
     userId: String!
@@ -8,6 +8,8 @@ export default gql`
     dutyId: String!
     duty: Duty
     approvalStatus: Boolean
+    createdAt: String
+    updatedAt: String
   }
 
   type CommInstructionActivity implements Activity {
@@ -17,9 +19,21 @@ export default gql`
     dutyId: String!
     duty: Duty
     approvalStatus: Boolean
+    createdAt: String
+    updatedAt: String
     commInstructionDescription: String!
     evidenceId: String
     evidence: Evidence
+    workload: Int
+  other: Int
+  }
+
+  input CommInstructionActivityInput {
+    userId: String
+    dutyId: String
+    title: String
+    description: String
+    evidenceId: String
   }
 
   type PublicServiceActivity implements Activity {
@@ -29,20 +43,60 @@ export default gql`
     dutyId: String!
     duty: Duty
     approvalStatus: Boolean
-    publicServiceDescription: String!
+    createdAt: String
+    updatedAt: String
+    title: String
+    description: String
     evidenceId: String
-    evidence: Evidence
   }
 
-  type LectureActivity implements Activity {
+  input PublicServiceActivityInput {
+    userId: String
+    dutyId: String
+    title: String
+    description: String
+    evidenceId: String
+  }
+
+  type FormalInstructionActivity implements Activity {
     activityId: String!
     userId: String!
     user: User
     dutyId: String!
     duty: Duty
     approvalStatus: Boolean
-    lectureStackId: String!
-    lectureStack: LectureStack
+    createdAt: String
+    updatedAt: String
+    moduleId: String
+    module: Module
+    blockId: String
+    block: Block
+    offeringTypeId: String
+    offeringType: OfferingType
+    qualificationId: String
+    qualification: Qualification
+    baseContactHours: Int
+    coordinationHours: Int
+    studentSupportHours: Int
+    preparationTimeHours: Int
+    assessmentSettingHours: Int
+    examMarkingHours: Int
+    courseworkMarkingHours: Int
+    feedbackHours: Int
+    formativeAssessmentHours: Int
+    moderationHours: Int
+    otherHours: Int
+    totalHours: Int
+    teachingPercentage: Int
+  }
+
+  input FormalInstructionActivityInput {
+    userId: String
+    dutyId: String
+    moduleId: String
+    blockId: String
+    offeringTypeId: String
+    qualificationId: String
   }
 
   type ResearchActivity implements Activity {
@@ -52,20 +106,42 @@ export default gql`
     dutyId: String!
     duty: Duty
     approvalStatus: Boolean
+    createdAt: String
+    updatedAt: String
     researchType: String!
     researchUrl: String!
   }
 
+  input ResearchActivityInput {
+      userId: String
+      dutyId: String
+      researchType: String
+      researchTitle: String
+      researchDetails: String
+  }
+
   type SupervisionActivity implements Activity {
-    activityId: String!
-    userId: String!
-    user: User
-    dutyId: String!
-    duty: Duty
-    approvalStatus: Boolean
-    supervisionRole: String!
-    studentId: String!
-    student: Student
+  activityId: String!
+  userId: String!
+  user: User
+  dutyId: String!
+  duty: Duty
+  approvalStatus: Boolean
+  createdAt: String
+  updatedAt: String
+  supervisionRole: String!
+  studentId: String!
+  student: Student
+  workload: Int
+  other: Int
+  }
+
+  input SupervisionActivityInput {
+      userId: String
+      dutyId: String
+      studentId: String
+      topic: String
+      year: String
   }
 
   type Query {
@@ -73,123 +149,37 @@ export default gql`
     activities: [Activity]
     activitiesByDuty(dutyId: String!): [Activity]
     activitiesByUser(userId: String!): [Activity]
+    unapprovedActivities: [Activity]
+    approvedActivities: [Activity]
+    formalInstructionActivity(activityId: String!): FormalInstructionActivity
+    formalInstructionActivities: [FormalInstructionActivity]
+    formalInstructionActivitiesByUser(userId: String!): [FormalInstructionActivity]
+    researchActivity(activityId: String!): ResearchActivity
+    researchActivities: [ResearchActivity]
+    researchActivitiesByUser(userId: String!): [ResearchActivity]
+    supervisionActivity(activityId: String!): SupervisionActivity
+    supervisionActivities: [SupervisionActivity]
   }
 
   type Mutation {
-    addCommInstructionActivity(
-      userId: String!
-      dutyId: String!
-      approvalStatus: Boolean!
-      commInstructionDescription: String!
-      evidenceId: String
-    ): CommInstructionActivity
-    editCommInstructionActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      commInstructionDescription: String
-      evidenceId: String
-    ): CommInstructionActivity
-    deleteCommInstructionActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      commInstructionDescription: String
-      evidenceId: String
-    ): CommInstructionActivity
+    addCommInstructionActivity(commInstructionActivity: CommInstructionActivityInput): CommInstructionActivity
+    editCommInstructionActivity(commInstructionActivity: CommInstructionActivityInput): CommInstructionActivity
+    deleteCommInstructionActivity(commInstructionActivity: CommInstructionActivityInput): CommInstructionActivity
 
-    addPublicServiceActivity(
-      userId: String!
-      dutyId: String!
-      approvalStatus: Boolean!
-      publicServiceDescription: String!
-      evidenceId: String
-    ): PublicServiceActivity
-    editPublicServiceActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      publicServiceDescription: String
-      evidenceId: String
-    ): PublicServiceActivity
-    deletePublicServiceActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      publicServiceDescription: String
-      evidenceId: String
-    ): PublicServiceActivity
+    addPublicServiceActivity(publicServiceActivity: PublicServiceActivityInput): PublicServiceActivity
+    editPublicServiceActivity(publicServiceActivity: PublicServiceActivityInput): PublicServiceActivity
+    deletePublicServiceActivity(publicServiceActivity: PublicServiceActivityInput): PublicServiceActivity
 
-    addLectureActivity(
-      userId: String!
-      dutyId: String!
-      lectureStackId: String!
-    ): LectureActivity
-    editLectureActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      lectureStackId: String
-    ): LectureActivity
-    deleteLectureActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      lectureStackId: String
-    ): LectureActivity
+    addFormalInstructionActivity(formalInstructionActivity: FormalInstructionActivityInput): FormalInstructionActivity
+    editFormalInstructionActivity(formalInstructionActivity: FormalInstructionActivityInput): FormalInstructionActivity
+    deleteFormalInstructionActivity(formalInstructionActivity: FormalInstructionActivityInput): FormalInstructionActivity
 
-    addResearchActivity(
-      userId: String!
-      dutyId: String!
-      approvalStatus: Boolean!
-      researchType: String!
-      researchUrl: String!
-    ): ResearchActivity
-    editResearchActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      researchType: String!
-      researchUrl: String!
-    ): ResearchActivity
-    deleteResearchActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      researchType: String
-      researchUrl: String
-    ): ResearchActivity
+    addResearchActivity(researchActivity: ResearchActivityInput): ResearchActivity
+    editResearchActivity(researchActivity: ResearchActivityInput): ResearchActivity
+    deleteResearchActivity(researchActivity: ResearchActivityInput): ResearchActivity
 
-    addSupervisionActivity(
-      userId: String!
-      dutyId: String!
-      approvalStatus: Boolean
-      supervisionRole: String!
-      studentId: String!
-    ): SupervisionActivity
-    editSupervisionActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      supervisionRole: String
-      studentId: String
-    ): SupervisionActivity
-    deleteSupervisionActivity(
-      activityId: String
-      userId: String
-      dutyId: String
-      approvalStatus: Boolean
-      supervisionRole: String
-      studentId: String
-    ): SupervisionActivity
+    addSupervisionActivity(supervisionActivity: SupervisionActivityInput): SupervisionActivity
+    editSupervisionActivity(supervisionActivity: SupervisionActivityInput): SupervisionActivity
+    deleteSupervisionActivity(supervisionActivity: SupervisionActivityInput): SupervisionActivity
   }
 `;

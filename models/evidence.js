@@ -17,6 +17,12 @@ const evidenceSchema = new mongoose.Schema(
     item: {
       type: String,
       trim: true
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

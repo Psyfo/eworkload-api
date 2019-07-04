@@ -26,7 +26,7 @@ export default {
   Mutation: {
     addOfferingType: (root, args) => {
       const newOfferingType = new OfferingType({
-        description: args.description
+        description: args.offeringType.description
       });
 
       return newOfferingType
@@ -41,11 +41,11 @@ export default {
     editOfferingType: (root, args) => {
       return OfferingType.findOneAndUpdate(
         {
-          offeringTypeId: args.offeringTypeId
+          offeringTypeId: args.offeringType.offeringTypeId
         },
         {
           $set: {
-            description: args.description
+            description: args.offeringType.description
           }
         }
       )
@@ -58,7 +58,7 @@ export default {
         });
     },
     deleteOfferingType: (root, args) => {
-      return OfferingType.findOneAndRemove(args)
+      return OfferingType.findOneAndRemove(args.offeringType)
         .populate()
         .then(result => {
           return result;

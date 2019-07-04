@@ -1,10 +1,16 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
   type Discipline {
-    disciplineId: String
+    disciplineId: String!
     name: String!
     description: String!
+  }
+
+  input DisciplineInput {
+    disciplineId: String
+    name: String
+    description: String
   }
 
   type Query {
@@ -13,16 +19,8 @@ export default gql`
   }
 
   type Mutation {
-    addDiscipline(name: String!, description: String!): Discipline
-    editDiscipline(
-      disciplineId: String
-      name: String
-      description: String
-    ): Discipline
-    deleteDiscipline(
-      disciplineId: String
-      name: String
-      description: String
-    ): Discipline
+    addDiscipline(discipline: DisciplineInput): Discipline
+    editDiscipline(discipline: DisciplineInput): Discipline
+    deleteDiscipline(discipline: DisciplineInput): Discipline
   }
 `;

@@ -26,15 +26,15 @@ export default {
   Mutation: {
     addTarrif: (root, args) => {
       const newTarrif = new Tarrif({
-        dutyId: args.dutyId,
-        eventId: args.eventId,
-        description: args.description,
-        appliedTarrif: args.appliedTarrif,
-        minHours: args.minHours,
-        maxHours: args.maxHours,
-        explanation: args.explanation,
-        TRS: args.TRS,
-        evidenceRequired: args.evidenceRequired
+        dutyId: args.tarrif.dutyId,
+        eventId: args.tarrif.eventId,
+        description: args.tarrif.description,
+        appliedTarrif: args.tarrif.appliedTarrif,
+        minHours: args.tarrif.minHours,
+        maxHours: args.tarrif.maxHours,
+        explanation: args.tarrif.explanation,
+        TRS: args.tarrif.TRS,
+        evidenceRequired: args.tarrif.evidenceRequired
       });
 
       return newTarrif
@@ -49,18 +49,18 @@ export default {
     editTarrif: (root, args) => {
       return Tarrif.findOneAndUpdate(
         {
-          dutyId: args.dutyId,
-          eventId: args.eventId
+          dutyId: args.tarrif.dutyId,
+          eventId: args.tarrif.eventId
         },
         {
           $set: {
-            description: args.description,
-            appliedTarrif: args.appliedTarrif,
-            minHours: args.minHours,
-            maxHours: args.maxHours,
-            explanation: args.explanation,
-            TRS: args.TRS,
-            evidenceRequired: args.evidenceRequired
+            description: args.tarrif.description,
+            appliedTarrif: args.tarrif.appliedTarrif,
+            minHours: args.tarrif.minHours,
+            maxHours: args.tarrif.maxHours,
+            explanation: args.tarrif.explanation,
+            TRS: args.tarrif.TRS,
+            evidenceRequired: args.tarrif.evidenceRequired
           }
         }
       )

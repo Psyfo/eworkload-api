@@ -1,22 +1,23 @@
 import { mergeTypes } from 'merge-graphql-schemas';
 
-import { default as Block } from './Block';
-import { default as User } from './User';
-import { default as Department } from './Department';
-import { default as Discipline } from './Discipline';
-import { default as Duty } from './Duty';
-import { default as Event } from './Event';
-import { default as Evidence } from './Evidence';
-import { default as Faculty } from './Faculty';
-import { default as LectureStack } from './LectureStack';
-import { default as Module } from './Module';
-import { default as OfferingType } from './OfferingType';
-import { default as Position } from './Position';
-import { default as Qualification } from './Qualification';
-import { default as Student } from './Student';
-import { default as Tarrif } from './Tarrif';
-import { default as Venue } from './Venue';
-import { default as Activity } from './Activity';
+import Activity from './Activity';
+import Block from './Block';
+import Department from './Department';
+import Discipline from './Discipline';
+import Duty from './Duty';
+import Event from './Event';
+import Evidence from './Evidence';
+import Faculty from './Faculty';
+import Module from './Module';
+import OfferingType from './OfferingType';
+import Position from './Position';
+import Qualification from './Qualification';
+import Student from './Student';
+import User from './User';
+import Venue from './Venue';
+import Enrollment from './Enrollment';
+import WorkFocus from './WorkFocus';
+import Workload from './Workload';
 
 const typeDefs = [
   Block,
@@ -27,14 +28,16 @@ const typeDefs = [
   Event,
   Evidence,
   Faculty,
-  LectureStack,
   Module,
   OfferingType,
   Position,
   Qualification,
   Student,
   Activity,
-  Venue
+  Venue,
+  Enrollment,
+  WorkFocus,
+  Workload
 ];
 
 export default mergeTypes(typeDefs, {

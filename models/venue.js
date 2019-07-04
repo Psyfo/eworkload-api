@@ -16,6 +16,12 @@ const venueSchema = new mongoose.Schema(
     capacity: {
       type: Number,
       required: true
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

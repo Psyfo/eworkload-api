@@ -27,9 +27,9 @@ export default {
   Mutation: {
     addDuty: (root, args) => {
       const newDuty = new Duty({
-        dutyId: args.dutyId,
-        name: args.name,
-        description: args.description
+        dutyId: args.duty.dutyId,
+        name: args.duty.name,
+        description: args.duty.description
       });
 
       return newDuty
@@ -44,12 +44,12 @@ export default {
     editDuty: (root, args) => {
       return Duty.findOneAndUpdate(
         {
-          dutyId: args.dutyId
+          dutyId: args.duty.dutyId
         },
         {
           $set: {
-            name: args.name,
-            description: args.description
+            name: args.duty.name,
+            description: args.duty.description
           }
         }
       )
@@ -62,7 +62,7 @@ export default {
         });
     },
     deleteDuty: (root, args) => {
-      return Duty.findOneAndRemove(args)
+      return Duty.findOneAndRemove(args.duty)
         .populate()
         .then(result => {
           return result;

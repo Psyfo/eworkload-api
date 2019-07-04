@@ -17,6 +17,12 @@ const departmentSchema = new mongoose.Schema(
     facultyId: {
       type: String,
       ref: 'Faculty'
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

@@ -12,6 +12,12 @@ const offeringTypeSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true
+    },
+    createdAt: {
+      type: Date
+    },
+    updatedAt: {
+      type: Date
     }
   },
   {

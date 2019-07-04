@@ -1,10 +1,16 @@
 import gql from 'graphql-tag';
 
-export default gql`
+export default gql `
     type Position {
         positionId: String!,
         name: String!,
         description: String!
+    }
+
+    input PositionInput {
+        positionId: String,
+        name: String,
+        description: String
     }
 
     type Query {
@@ -13,8 +19,8 @@ export default gql`
     }
 
     type Mutation {
-        addPosition(name: String!, description: String!): Position
-        editPosition(positionId: String, name: String, description: String): Position
-        deletePosition(positionId: String, name: String, description: String): Position
+        addPosition(position: PositionInput): Position
+        editPosition(position: PositionInput): Position
+        deletePosition(position: PositionInput): Position
     }
 `;

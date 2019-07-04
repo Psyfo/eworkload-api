@@ -1,9 +1,9 @@
 import { ApolloServer } from 'apollo-server-express';
-import getUser from '../auth/is-auth';
 import jwt from 'jsonwebtoken';
 
-import typeDefs from './types';
+import getUser from '../auth/is-auth';
 import resolvers from './resolvers';
+import typeDefs from './types';
 
 const SERVER = new ApolloServer({
   typeDefs: typeDefs,
@@ -16,7 +16,7 @@ const SERVER = new ApolloServer({
       if (token.length == 2 && token[0].toLowerCase() == 'bearer') {
         jwt.verify(token[1], 'secret', (err, decodedToken) => {
           if (err) {
-            throw new AuthorizationError('Invalid token');
+            // throw new AuthorizationError('Invalid token');
           }
           req.decodedToken = decodedToken;
           // try to retrieve a user with the token
@@ -33,7 +33,7 @@ const SERVER = new ApolloServer({
     }
   },
   playground: {
-    endpoint: `http://localhost:5000/graphql`,
+    endpoint: 'http://localhost:5000/graphql',
     setting: {
       'editor.theme': 'light'
     }

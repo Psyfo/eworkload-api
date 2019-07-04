@@ -29,12 +29,12 @@ export default {
   Mutation: {
     addStudent: (root, args) => {
       const newStudent = new Student({
-        studentId: args.studentId,
-        email: args.email,
-        firstName: args.firstName,
-        lastName: args.lastName,
-        title: args.title,
-        year: args.year
+        studentId: args.student.studentId,
+        email: args.student.email,
+        firstName: args.student.firstName,
+        lastName: args.student.lastName,
+        title: args.student.title,
+        year: args.student.year
       });
 
       return newStudent
@@ -49,15 +49,15 @@ export default {
     editStudent: (root, args) => {
       return Student.findOneAndUpdate(
         {
-          studentId: args.studentId
+          studentId: args.student.studentId
         },
         {
           $set: {
-            email: args.email,
-            firstName: args.firstName,
-            lastName: args.lastName,
-            title: args.title,
-            year: args.year
+            email: args.student.email,
+            firstName: args.student.firstName,
+            lastName: args.student.lastName,
+            title: args.student.title,
+            year: args.student.year
           }
         }
       )
@@ -70,7 +70,7 @@ export default {
         });
     },
     deleteStudent: (root, args) => {
-      return Student.findOneAndRemove(args)
+      return Student.findOneAndRemove(args.student)
         .populate()
         .then(result => {
           return result;
