@@ -1,83 +1,23 @@
-import Student from '../../../models/student';
+import * as StudentMethods from '../../../controllers/student';
 
 export default {
   Query: {
     student: (root, args) => {
-      return Student.findOne(args)
-        .populate()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return StudentMethods.student(args.studentId);
     },
     students: () => {
-      return Student.find({})
-        .sort({
-          studentId: 'asc'
-        })
-        .populate()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return StudentMethods.students();
     }
   },
   Mutation: {
     addStudent: (root, args) => {
-      const newStudent = new Student({
-        studentId: args.student.studentId,
-        email: args.student.email,
-        firstName: args.student.firstName,
-        lastName: args.student.lastName,
-        title: args.student.title,
-        year: args.student.year
-      });
-
-      return newStudent
-        .save()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return StudentMethods.addStudent(args.student);
     },
     editStudent: (root, args) => {
-      return Student.findOneAndUpdate(
-        {
-          studentId: args.student.studentId
-        },
-        {
-          $set: {
-            email: args.student.email,
-            firstName: args.student.firstName,
-            lastName: args.student.lastName,
-            title: args.student.title,
-            year: args.student.year
-          }
-        }
-      )
-        .populate()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return StudentMethods.editStudent(args.student);
     },
     deleteStudent: (root, args) => {
-      return Student.findOneAndRemove(args.student)
-        .populate()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return StudentMethods.deleteStudent(args.student);
     }
   }
 };

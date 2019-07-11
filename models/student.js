@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import validate from 'validator';
 
 const studentSchema = new mongoose.Schema(
   {
@@ -32,7 +31,10 @@ const studentSchema = new mongoose.Schema(
     },
     year: {
       type: String,
-      default: Date.now
+      default: new Date().getFullYear().toString()
+    },
+    graduationDate: {
+      type: String
     },
     createdAt: {
       type: Date

@@ -1,71 +1,23 @@
-import Discipline from '../../../models/discipline';
+import * as DisciplineMethods from '../../../controllers/discipline';
 
 export default {
   Query: {
     discipline: (root, args) => {
-      return Discipline.findOne(args)
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DisciplineMethods.discipline(args.disciplineId);
     },
     disciplines: () => {
-      return Discipline.find({})
-        .sort('name')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DisciplineMethods.disciplineId();
     }
   },
   Mutation: {
     addDiscipline: (root, args) => {
-      const newDiscipline = new Discipline({
-        disciplineId: args.discipline.disciplineId,
-        name: args.discipline.name,
-        description: args.discipline.description
-      });
-
-      return newDiscipline
-        .save()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DisciplineMethods.addDiscipline(args.discipline);
     },
     editDiscipline: (root, args) => {
-      return Discipline.findOneAndUpdate(
-        {
-          disciplineId: args.discipline.disciplineId
-        },
-        {
-          $set: {
-            name: args.discipline.name,
-            description: args.discipline.description
-          }
-        }
-      )
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DisciplineMethods.editDiscipline(args.discipline);
     },
     deleteDiscipline: (root, args) => {
-      return Discipline.findOneAndRemove(args.discipline)
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DisciplineMethods.deleteDiscipline(args.discipline);
     }
   }
 };

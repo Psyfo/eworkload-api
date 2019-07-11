@@ -32,6 +32,7 @@ const SERVER = new ApolloServer({
       }
     }
   },
+  uploads: true,
   playground: {
     endpoint: 'http://localhost:5000/graphql',
     setting: {

@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
-import Evident from './evidence';
 
 const publicServiceActivitySchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true
+  },
   description: {
     type: String,
     required: true,

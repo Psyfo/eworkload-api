@@ -25,17 +25,7 @@ export default {
   },
   Mutation: {
     addTarrif: (root, args) => {
-      const newTarrif = new Tarrif({
-        dutyId: args.tarrif.dutyId,
-        eventId: args.tarrif.eventId,
-        description: args.tarrif.description,
-        appliedTarrif: args.tarrif.appliedTarrif,
-        minHours: args.tarrif.minHours,
-        maxHours: args.tarrif.maxHours,
-        explanation: args.tarrif.explanation,
-        TRS: args.tarrif.TRS,
-        evidenceRequired: args.tarrif.evidenceRequired
-      });
+      const newTarrif = new Tarrif(args.tarrif);
 
       return newTarrif
         .save()
@@ -53,15 +43,7 @@ export default {
           eventId: args.tarrif.eventId
         },
         {
-          $set: {
-            description: args.tarrif.description,
-            appliedTarrif: args.tarrif.appliedTarrif,
-            minHours: args.tarrif.minHours,
-            maxHours: args.tarrif.maxHours,
-            explanation: args.tarrif.explanation,
-            TRS: args.tarrif.TRS,
-            evidenceRequired: args.tarrif.evidenceRequired
-          }
+          $set: args.tarrif
         }
       )
         .populate()
@@ -73,7 +55,7 @@ export default {
         });
     },
     deleteTarrif: (root, args) => {
-      return Tarrif.findOneAndRemove(args)
+      return Tarrif.findOneAndRemove(args.tarrif)
         .populate()
         .then(result => {
           return result;

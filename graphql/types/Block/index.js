@@ -1,16 +1,16 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-server-core';
 
-export default gql `
+export default gql`
   type Block {
     blockId: String!
     name: String!
     description: String!
   }
 
-  input BlockInput{
-      blockId: String
-      name: String
-      description: String
+  input BlockInput {
+    blockId: String
+    name: String
+    description: String
   }
 
   type Query {

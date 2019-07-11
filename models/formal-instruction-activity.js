@@ -6,74 +6,35 @@ const formalInstructionActivitySchema = new mongoose.Schema(
     moduleId: {
       type: String,
       required: true,
-      ref: 'Module',
+      ref: 'Module'
     },
     blockId: {
       type: String,
-      ref: 'Block',
+      ref: 'Block'
     },
     offeringTypeId: {
       type: String,
-      ref: 'OfferingType',
+      ref: 'OfferingType'
     },
     qualificationId: {
       type: String,
-      ref: 'Qualification',
-    },
-    baseContactHours: {
-      type: Number,
-    },
-    coordinationHours: {
-      type: Number,
-    },
-    studentSupportHours: {
-      type: Number,
-    },
-    preparationTimeHours: {
-      type: Number,
-    },
-    assessmentSettingHours: {
-      type: Number,
-    },
-    examMarkingHours: {
-      type: Number,
-    },
-    courseworkMarkingHours: {
-      type: Number,
-    },
-    feedbackHours: {
-      type: Number,
-    },
-    formativeAssessmentHours: {
-      type: Number,
-    },
-    moderationHours: {
-      type: Number,
-    },
-    otherHours: {
-      type: Number,
-    },
-    totalHours: {
-      type: Number,
-    },
-    teachingPercentage: {
-      type: Number,
+      ref: 'Qualification'
     },
     createdAt: {
-      type: Date,
+      type: Date
     },
     updatedAt: {
-      type: Date,
-    },
+      type: Date
+    }
   },
   {
     timestamps: true,
     toJSON: {
-      virtuals: true,
+      virtuals: true
     },
     toObject: {
-      virtuals: true,
-    },
+      virtuals: true
+    }
   }
 );
 
@@ -88,25 +49,25 @@ formalInstructionActivitySchema.virtual('module', {
   ref: 'Module',
   localField: 'moduleId',
   foreignField: 'moduleId',
-  justOne: true,
+  justOne: true
 });
 formalInstructionActivitySchema.virtual('offeringType', {
   ref: 'OfferingType',
   localField: 'offeringTypeId',
   foreignField: 'offeringTypeId',
-  justOne: true,
+  justOne: true
 });
 formalInstructionActivitySchema.virtual('qualification', {
   ref: 'Qualification',
   localField: 'qualificationId',
   foreignField: 'qualificationId',
-  justOne: true,
+  justOne: true
 });
 formalInstructionActivitySchema.virtual('block', {
   ref: 'Block',
   localField: 'blockId',
   foreignField: 'blockId',
-  justOne: true,
+  justOne: true
 });
 
 const FormalInstructionActivity = Activity.discriminator(

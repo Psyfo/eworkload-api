@@ -1,8 +1,7 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-server-core';
 
-export default gql `
+export default gql`
   type Enrollment {
-    enrollmentId: String!
     enrollmentYear: String
     qualificationId: String
     qualification: Qualification
@@ -19,16 +18,11 @@ export default gql `
     thirdYearEstimated: Int
   }
 
-  type StudentData {
-    students: Int
-  }
-
   type Query {
     enrollment(enrollmentYear: String, qualificationId: String): Enrollment
     enrollments: [Enrollment]
     enrollmentsByYear(enrollmentYear: String): [Enrollment]
     enrollmentsByQualification(qualificationId: String): [Enrollment]
-    studentsEnrolled(moduleId: String): StudentData
   }
 
   type Mutation {

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Faculty from './faculty';
 
 const departmentSchema = new mongoose.Schema(
   {

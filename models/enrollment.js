@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
-import Qualification from './qualification';
 
 const enrollmentSchema = new mongoose.Schema(
   {

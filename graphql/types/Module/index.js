@@ -1,7 +1,7 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-server-core';
 
-export default gql `
-   type Module {
+export default gql`
+  type Module {
     moduleId: String!
     name: String
     type: String
@@ -62,11 +62,11 @@ export default gql `
     ): Module
     modules: [Module]
     modulesByDiscipline(disciplineId: String!): [Module]
-    unassignedModules: [Module]
+    modulesByUnassigned: [Module]
     modulesByUser(userId: String): [Module]
     modulesByModerator(moderatorId: String): [Module]
     modulesByCoordinator(coordinatorId: String): [Module]
-    stackedWith(stackId: String): [Module]
+    modulesByStack(stackId: String): [Module]
   }
 
   type Mutation {

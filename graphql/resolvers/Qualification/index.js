@@ -1,79 +1,26 @@
-import Qualification from '../../../models/qualification';
+import * as QualificationMethods from '../../../controllers/qualification';
 
 export default {
   Query: {
     qualification: (root, args) => {
-      return Qualification.findOne(args)
-        .populate('department')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return QualificationMethods.qualification(args.qualificationId);
     },
     qualifications: () => {
-      return Qualification.find({})
-        .sort({
-          qualificationId: 'asc'
-        })
-        .populate('department')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return QualificationMethods.qualifications();
+    },
+    qualificationsNoEnrollment: async () => {
+      return QualificationMethods.qualificationsNoEnrollment();
     }
   },
   Mutation: {
     addQualification: (root, args) => {
-      const newQualification = new Qualification({
-        qualificationId: args.qualification.qualificationId,
-        name: args.qualification.name,
-        type: args.qualification.type,
-        departmentId: args.qualification.departmentId
-      });
-
-      return newQualification
-        .save()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return QualificationMethods.addQualification(args.qualification);
     },
     editQualification: (root, args) => {
-      return Qualification.findOneAndUpdate(
-        {
-          qualificationId: args.qualification.qualificationId
-        },
-        {
-          $set: {
-            name: args.qualification.name,
-            type: args.qualification.type,
-            departmentId: args.qualification.departmentId
-          }
-        }
-      )
-        .populate('department')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return QualificationMethods.editQualification(args.qualification);
     },
     deleteQualification: (root, args) => {
-      return Qualification.findOneAndRemove(args)
-        .populate('department')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return QualificationMethods.deleteQualification(args.qualification);
     }
   }
 };

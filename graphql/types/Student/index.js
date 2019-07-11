@@ -1,6 +1,6 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-server-core';
 
-export default gql `
+export default gql`
   type Student {
     studentId: String!
     email: String!
@@ -8,6 +8,7 @@ export default gql `
     lastName: String!
     title: String!
     year: String!
+    graduationDate: String
   }
 
   input StudentInput {

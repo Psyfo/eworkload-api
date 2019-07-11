@@ -1,75 +1,23 @@
-import Department from '../../../models/department';
+import * as DepartmentMethods from '../../../controllers/department';
 
 export default {
   Query: {
     department: (root, args) => {
-      return Department.findOne({
-        departmentId: args.departmentId
-      })
-        .populate('faculty')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DepartmentMethods.department(args.departmentId);
     },
     departments: () => {
-      return Department.find({})
-        .sort('departmentId')
-        .populate('faculty')
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DepartmentMethods.departments();
     }
   },
   Mutation: {
     addDepartment: (root, args) => {
-      const newDepartment = new Department({
-        departmentId: args.department.departmentId,
-        name: args.department.name,
-        facultyId: args.department.facultyId
-      });
-
-      return newDepartment
-        .save()
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DepartmentMethods.addDepartment(args.department);
     },
     editDepartment: (root, args) => {
-      return Department.findOneAndUpdate(
-        {
-          departmentId: args.department.departmentId
-        },
-        {
-          $set: {
-            name: args.department.name,
-            facultyId: args.department.facultyId
-          }
-        }
-      )
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DepartmentMethods.editDepartment(args.department);
     },
     deleteDepartment: (root, args) => {
-      return Department.findOneAndRemove(args.department)
-        .then(result => {
-          return result;
-        })
-        .catch(err => {
-          throw err;
-        });
+      return DepartmentMethods.deleteDepartment(args.department);
     }
   }
 };

@@ -1,30 +1,38 @@
 import { mergeTypes } from 'merge-graphql-schemas';
 
-import Activity from './Activity';
-import Block from './Block';
-import Department from './Department';
-import Discipline from './Discipline';
-import Duty from './Duty';
-import Event from './Event';
-import Evidence from './Evidence';
-import Faculty from './Faculty';
-import Module from './Module';
-import OfferingType from './OfferingType';
-import Position from './Position';
-import Qualification from './Qualification';
-import Student from './Student';
-import User from './User';
-import Venue from './Venue';
-import Enrollment from './Enrollment';
-import WorkFocus from './WorkFocus';
-import Workload from './Workload';
+import Activity from './activity';
+import Block from './block';
+import Department from './department';
+import Discipline from './discipline';
+import Duty from './duty';
+import Enrollment from './enrollment';
+import Event from './event';
+import Evidence from './evidence';
+import Faculty from './faculty';
+import Module from './module';
+import OfferingType from './offering-type';
+import Position from './position';
+import Qualification from './qualification';
+import Student from './student';
+import User from './user';
+import Venue from './venue';
+import WorkFocus from './work-focus';
+import Workload from './workload';
+import AcademicAdministrationActivity from './activity/academic-administration-activity';
+import CommunityInstructionActivity from './activity/community-instruction-activity';
+import ExecutiveManagementActivity from './activity/executive-management-activity';
+import FormalInstructionActivity from './activity/formal-instruction-activity';
+import PersonnelDevelopmentActivity from './activity/personnel-development-activity';
+import PublicServiceActivity from './activity/public-service-activity';
+import ResearchActivity from './activity/research-activity';
 
 const typeDefs = [
+  Activity,
   Block,
-  User,
   Department,
   Discipline,
   Duty,
+  Enrollment,
   Event,
   Evidence,
   Faculty,
@@ -33,11 +41,17 @@ const typeDefs = [
   Position,
   Qualification,
   Student,
-  Activity,
+  User,
   Venue,
-  Enrollment,
   WorkFocus,
-  Workload
+  Workload,
+  AcademicAdministrationActivity,
+  CommunityInstructionActivity,
+  ExecutiveManagementActivity,
+  FormalInstructionActivity,
+  PersonnelDevelopmentActivity,
+  PublicServiceActivity,
+  ResearchActivity
 ];
 
 export default mergeTypes(typeDefs, {

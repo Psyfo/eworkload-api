@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import Duty from './duty';
-import Event from './event';
 
 const tarrifSchema = new mongoose.Schema(
   {

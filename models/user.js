@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 import validator from 'validator';
 import transporter from './../config/mail';
-import Position from './position';
-import Discipline from './discipline';
 
 const userSchema = new mongoose.Schema(
   {
@@ -149,6 +147,7 @@ userSchema.methods.isValidPassword = async password => {
 
   // Hash sent password and compare with db hash
   const compare = await bcrypt.compare(password, user.password);
+  return compare;
 };
 
 const User = mongoose.model('User', userSchema);

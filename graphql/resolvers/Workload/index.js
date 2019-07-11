@@ -1,48 +1,64 @@
-import FormalInstructionActivity from '../../../models/formal-instruction-activity';
-import User from '../../../models/user';
-import parameters from '../../../config/parameters';
+import * as FIWorkloadMethods from '../../../controllers/formal-instruction';
 
 export default {
   Query: {
-    formalInstructionWorkload: async (root, args) => {
-      let activities = await FormalInstructionActivity.find({
-        userId: args.userId,
-      });
-      let workFocus = await User.find({ userId: args.userId });
-
-      let totalBaseContact = 0;
-      activities.forEach(element => {
-        totalBaseContact += element.baseContactHours;
-      });
-      console.log(totalBaseContact);
-      let totalOtherHours = 0;
-      activities.forEach(element => {
-        totalOtherHours += element.otherHours;
-      });
-      console.log(totalOtherHours);
-      let totalOverallHours = 0;
-      activities.forEach(element => {
-        totalOverallHours += element.totalHours;
-      });
-      console.log(totalOverallHours);
-      let percentageOfFocus = Math.round(
-        (totalOverallHours / parameters.annual_total_hours) * 100
-      );
-      console.log(percentageOfFocus);
-      let percentageOfTotal = Math.round(
-        (totalOverallHours / parameters.annual_total_hours) * 100
-      );
-      console.log(percentageOfTotal);
-
-      let payload = {
-        totalBaseHours: totalBaseContact,
-        totalOtherHours: totalOtherHours,
-        totalOverallHours: totalOverallHours,
-        percentageOfFocus: percentageOfFocus,
-        percentageOfTotal: percentageOfTotal,
-      };
-      return payload;
+    baseContact: (root, args) => {
+      return FIWorkloadMethods.baseContact(args.activityId);
     },
+    coordination: (root, args) => {
+      return FIWorkloadMethods.coordination(args.activityId);
+    },
+    studentSupport: (root, args) => {
+      return FIWorkloadMethods.studentSupport(args.activityId);
+    },
+    preparationTime: (root, args) => {
+      return FIWorkloadMethods.preparationTime(args.activityId);
+    },
+    assessmentSetting: (root, args) => {
+      return FIWorkloadMethods.assessmentSetting(args.activityId);
+    },
+    examMarking: (root, args) => {
+      return FIWorkloadMethods.examMarking(args.activityId);
+    },
+    courseworkMarking: (root, args) => {
+      return FIWorkloadMethods.courseworkMarking(args.activityId);
+    },
+    feedback: (root, args) => {
+      return FIWorkloadMethods.feedback(args.activityId);
+    },
+    formativeAssessment: (root, args) => {
+      return FIWorkloadMethods.formativeAssessment(args.activityId);
+    },
+    moderation: (root, args) => {
+      return FIWorkloadMethods.moderation(args.activityId);
+    },
+    other: (root, args) => {
+      return FIWorkloadMethods.other(args.activityId);
+    },
+    total: (root, args) => {
+      return FIWorkloadMethods.total(args.activityId);
+    },
+    sumTotal: (root, args) => {
+      return FIWorkloadMethods.sumTotal(args.userId);
+    },
+    teachingFocus: (root, args) => {
+      return FIWorkloadMethods.teachingFocus(args.userId);
+    },
+    percentageOfFocus: (root, args) => {
+      return FIWorkloadMethods.percentageOfFocus(args.activityId);
+    },
+    percentageOfTotal: (root, args) => {
+      return FIWorkloadMethods.percentageOfTotal(args.activityId);
+    },
+    sumPercentageOfTotal: (root, args) => {
+      return FIWorkloadMethods.sumPercentageOfTotal(args.userId);
+    },
+    studentsEnrolled: (root, args) => {
+      return FIWorkloadMethods.studentsEnrolled(args.activityId);
+    },
+    hemis: (root, args) => {
+      return FIWorkloadMethods.hemis(args.userId);
+    }
   },
-  Mutation: {},
+  Mutation: {}
 };

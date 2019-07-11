@@ -1,12 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import morgan from 'morgan';
 import path from 'path';
 import mongoose from 'mongoose';
-import passport from 'passport';
 import SERVER from './graphql/index';
-import isAuth from './auth/is-auth';
-import nodemailer from 'nodemailer';
 
 const app = express();
 
@@ -19,6 +15,7 @@ mongoose
   .connect(db, {
     useNewUrlParser: true,
     useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(() => {
     console.log('MongoDB connected...');
@@ -28,7 +25,7 @@ mongoose
   });
 //mongoose.set('debug', true);
 mongoose.connection.on('error', error => console.log(error));
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '50mb' }));
 app.use(
   express.urlencoded({
-    extended: false,
+    extended: false
   })
 );
 app.use(cors());
@@ -46,7 +43,7 @@ app.use(cors());
 
 // GraphQL
 SERVER.applyMiddleware({
-  app: app,
+  app: app
 });
 
 // Routes - Plugin jwt strategy as middleware so only verified user can access the route

@@ -1,6 +1,6 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-server-core';
 
-export default gql `
+export default gql`
   type Qualification {
     qualificationId: String!
     name: String
@@ -19,6 +19,7 @@ export default gql `
   type Query {
     qualification(qualificationId: String!): Qualification
     qualifications: [Qualification]
+    qualificationsNoEnrollment: [Qualification]
   }
 
   type Mutation {

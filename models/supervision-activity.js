@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
-import Student from './student';
 
 const supervisionActivitySchema = new mongoose.Schema({
   supervisionRole: {
     type: String,
     required: true,
     trim: true
+  },
+  split: {
+    type: Number
   },
   studentId: {
     type: String,
