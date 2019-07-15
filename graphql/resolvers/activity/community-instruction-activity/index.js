@@ -1,4 +1,4 @@
-import * as CIMethods from '../../../../controllers/community-instruction';
+import * as CIMethods from './../../../../controllers/activity/community-instruction';
 
 export default {
   Query: {

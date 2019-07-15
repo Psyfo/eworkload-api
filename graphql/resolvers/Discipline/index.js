@@ -6,7 +6,7 @@ export default {
       return DisciplineMethods.discipline(args.disciplineId);
     },
     disciplines: () => {
-      return DisciplineMethods.disciplineId();
+      return DisciplineMethods.disciplines();
     }
   },
   Mutation: {

@@ -1,4 +1,4 @@
-import * as AAMethods from '../../../../controllers/academic-administration';
+import * as AAMethods from './../../../../controllers/activity/academic-administration';
 
 export default {
   Query: {

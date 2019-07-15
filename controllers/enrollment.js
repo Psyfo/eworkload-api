@@ -1,9 +1,10 @@
 import Enrollment from './../models/enrollment.js';
 
-let enrollment = async enrollmentId => {
-  return await Enrollment.findOne({ enrollmentId: enrollmentId }).populate(
-    'qualification'
-  );
+let enrollment = async (enrollmentYear, qualificationId) => {
+  return await Enrollment.findOne({
+    enrollmentYear: enrollmentYear,
+    qualificationId: qualificationId
+  }).populate('qualification');
 };
 
 let enrollments = async () => {
@@ -25,7 +26,7 @@ let enrollmentsByQualification = async qualificationId => {
 let addEnrollment = async enrollment => {
   const newEnrollment = await new Enrollment(enrollment);
 
-  return await newEnrollment.save().populate('qualification');
+  return await newEnrollment.save();
 };
 
 let editEnrollment = async enrollment => {
@@ -35,13 +36,11 @@ let editEnrollment = async enrollment => {
       $set: enrollment
     },
     { upsert: true }
-  ).populate('qualification');
+  );
 };
 
 let deleteEnrollment = async enrollment => {
-  return await Enrollment.findOneAndRemove(enrollment).populate(
-    'qualification'
-  );
+  return await Enrollment.findOneAndRemove(enrollment);
 };
 
 export {

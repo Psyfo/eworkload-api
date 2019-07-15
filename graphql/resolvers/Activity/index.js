@@ -1,4 +1,4 @@
-import Activity from '../../../models/activity';
+import Activity from '../../../models/activity/activity';
 
 export default {
   Activity: {

@@ -1,4 +1,4 @@
-import * as PSMethods from '../../../../controllers/public-service';
+import * as PSMethods from './../../../../controllers/activity/public-service';
 
 export default {
   Query: {

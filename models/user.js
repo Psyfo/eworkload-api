@@ -73,7 +73,7 @@ userSchema.virtual('position', {
   foreignField: 'positionId',
   justOne: true
 });
-userSchema.virtual('workFocus', {
+userSchema.virtual('work-focus', {
   ref: 'WorkFocus',
   localField: 'workFocusName',
   foreignField: 'name',
@@ -91,6 +91,8 @@ userSchema.virtual('full').get(function() {
     '.' +
     this.photoUrl +
     '.' +
+    this.workFocusName +
+    '.' +
     this.disciplineId +
     '.' +
     this.positionId +
@@ -105,6 +107,9 @@ userSchema.virtual('full').get(function() {
 // Pre-hook to hash password. Make sure to use function and not arrow (lexical 'this' problem)
 userSchema.pre('save', function(next) {
   const user = this;
+
+  // Generate default Work Focus
+  user.workFocusName = 'balanced';
 
   // Generate password and mail it
   user.password = Math.random()

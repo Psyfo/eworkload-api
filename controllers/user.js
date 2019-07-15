@@ -6,26 +6,19 @@ let user = async userId => {
   return await User.findOne({ userId: userId })
     .populate('discipline')
     .populate('position')
-    .populate('workFocus');
+    .populate('work-focus');
 };
-
 let users = async () => {
   return await User.find({})
     .populate('discipline')
     .populate('position')
-    .populate('workFocus');
+    .populate('work-focus');
 };
-
 let addUser = async user => {
   const newUser = await new User(user);
 
-  return await newUser
-    .save()
-    .populate('discipline')
-    .populate('position')
-    .populate('workFocus');
+  return await newUser.save();
 };
-
 let editUser = async user => {
   return await User.findOneAndUpdate(
     { userId: user.userId },
@@ -33,19 +26,11 @@ let editUser = async user => {
       $set: user
     },
     { upsert: true }
-  )
-    .populate('discipline')
-    .populate('position')
-    .populate('workFocus');
+  );
 };
-
 let deleteUser = async user => {
-  return await User.findOneAndRemove(user)
-    .populate('discipline')
-    .populate('position')
-    .populate('workFocus');
+  return await User.findOneAndRemove(user);
 };
-
 let exists = async userId => {
   let result = { exists: false };
   let data = await User.countDocuments({
@@ -57,14 +42,13 @@ let exists = async userId => {
 
   return result;
 };
-
 let login = async (userId, password) => {
   // check user exists
 
   const user = await User.findOne({ userId: userId })
     .populate('discipline')
     .populate('position')
-    .populate('workFocus');
+    .populate('work-focus');
 
   const isMatch = await bcrypt.compare(password, user.password);
 
@@ -82,7 +66,6 @@ let login = async (userId, password) => {
     return payload;
   }
 };
-
 let changePassword = async (userId, oldPassword, newPassword) => {
   let user = await User.findOne({ userId: userId });
   let comparison = await bcrypt.compare(oldPassword, user.password);

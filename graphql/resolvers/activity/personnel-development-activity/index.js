@@ -1,4 +1,4 @@
-import * as PDMethods from '../../../../controllers/personnel-development';
+import * as PDMethods from './../../../../controllers/activity/personnel-development';
 
 export default {
   Query: {

@@ -1,5 +1,5 @@
-import * as FiMethods from '../../../../controllers/formal-instruction';
-import * as SMethods from '../../../../controllers/supervision';
+import * as FiMethods from './../../../../controllers/activity/formal-instruction';
+import * as SMethods from './../../../../controllers/activity/supervision';
 
 export default {
   Query: {

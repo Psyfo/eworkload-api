@@ -1,8 +1,4 @@
 import mongoose from 'mongoose';
-import Qualification from './qualification';
-import OfferingType from './offering-type';
-import Discipline from './discipline';
-import User from './user';
 
 const moduleSchema = new mongoose.Schema(
   {

@@ -1,4 +1,4 @@
-import * as EMMethods from '../../../../controllers/executive-management';
+import * as EMMethods from './../../../../controllers/activity/executive-management';
 
 export default {
   Query: {

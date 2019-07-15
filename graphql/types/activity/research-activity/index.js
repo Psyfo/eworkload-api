@@ -10,17 +10,19 @@ export default gql`
     approvalStatus: String
     createdAt: String
     updatedAt: String
-    researchType: String
-    researchTitle: String
-    researchDetails: String
+    output: String
+    title: String
+    details: String
+    evidenceId: String
+    evidence: Evidence
   }
 
   input ResearchActivityInput {
     userId: String
     dutyId: String
-    researchType: String
-    researchTitle: String
-    researchDetails: String
+    output: String
+    title: String
+    details: String
     evidenceId: String
   }
 

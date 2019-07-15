@@ -3,9 +3,10 @@ import { gql } from 'apollo-server-core';
 export default gql`
   type Student {
     studentId: String!
-    email: String!
     firstName: String!
     lastName: String!
+    email: String!
+    type: String!
     title: String!
     year: String!
     graduationDate: String
@@ -13,9 +14,10 @@ export default gql`
 
   input StudentInput {
     studentId: String!
-    email: String!
     firstName: String!
     lastName: String!
+    email: String!
+    type: String!
     title: String!
     year: String!
   }

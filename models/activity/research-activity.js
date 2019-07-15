@@ -2,15 +2,24 @@ import mongoose from 'mongoose';
 import Activity from './activity';
 
 const researchActivitySchema = new mongoose.Schema({
-  researchType: {
+  output: {
     type: String,
     required: true,
     trim: true
   },
-  researchUrl: {
+  title: {
     type: String,
     required: true,
     trim: true
+  },
+  details: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  evidenceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Evidence'
   }
 });
 

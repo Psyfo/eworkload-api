@@ -1,4 +1,4 @@
-import * as RMethods from '../../../../controllers/research';
+import * as RMethods from './../../../../controllers/activity/research';
 
 export default {
   Query: {
