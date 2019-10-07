@@ -28,7 +28,6 @@ let module = async (moduleId, blockId, offeringTypeId, qualificationId) => {
     .populate('coordinator')
     .populate('venue');
 };
-
 let modules = async () => {
   return await Module.find({})
     .populate('discipline')
@@ -52,9 +51,8 @@ let modules = async () => {
     .populate('coordinator')
     .populate('venue');
 };
-
-let modulesByDiscipline = async disciplineId => {
-  return await Module.find({ disciplineId: disciplineId })
+let modulesByDiscipline = async disciplineIds => {
+  return await Module.find({ disciplineId: { $in: disciplineIds } })
     .populate('discipline')
     .populate({
       path: 'qualification',
@@ -76,7 +74,6 @@ let modulesByDiscipline = async disciplineId => {
     .populate('coordinator')
     .populate('venue');
 };
-
 let modulesByUnassigned = async () => {
   return await Module.find({ userId: null })
     .populate('discipline')
@@ -100,7 +97,29 @@ let modulesByUnassigned = async () => {
     .populate('coordinator')
     .populate('venue');
 };
-
+let modulesByAssigned = async () => {
+  return await Module.find({ userId: { $nin: [null, ''] } })
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
 let modulesByUser = async userId => {
   return await Module.find({ userId: userId })
     .populate('discipline')
@@ -124,7 +143,6 @@ let modulesByUser = async userId => {
     .populate('coordinator')
     .populate('venue');
 };
-
 let modulesByModerator = async moderatorId => {
   return await Module.find({ moderatorId: moderatorId })
     .populate('discipline')
@@ -148,7 +166,6 @@ let modulesByModerator = async moderatorId => {
     .populate('coordinator')
     .populate('venue');
 };
-
 let modulesByCoordinator = async coordinatorId => {
   return await Module.find({ coordinatorId: coordinatorId })
     .populate('discipline')
@@ -172,9 +189,34 @@ let modulesByCoordinator = async coordinatorId => {
     .populate('coordinator')
     .populate('venue');
 };
-
 let modulesByStack = async stackId => {
   return await Module.find({ stackId: stackId })
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let modulesByUnassignedAndDiscipline = async disciplineIds => {
+  return await Module.find({
+    userId: null,
+    disciplineId: { $in: disciplineIds }
+  })
     .populate('discipline')
     .populate({
       path: 'qualification',
@@ -268,7 +310,7 @@ let editModule = async module => {
     {
       $set: module
     },
-    {upsert: true}
+    { upsert: true }
   )
     .populate('discipline')
     .populate({
@@ -316,11 +358,319 @@ let deleteModule = async module => {
     .populate('venue');
 };
 
+let assignUserToModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId,
+  userId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        userId: userId
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let unassignUserFromModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        userId: null
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let assignCoordinatorToModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId,
+  userId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        coordinatorId: userId
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let unassignCoordinatorFromModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        coordinatorId: null
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let assignModeratorToModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId,
+  userId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        moderatorId: userId
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let unassignModeratorFromModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        moderatorId: null
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let unassignAllFromModule = async (
+  moduleId,
+  blockId,
+  offeringTypeId,
+  qualificationId
+) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: moduleId,
+      blockId: blockId,
+      offeringTypeId: offeringTypeId,
+      qualificationId: qualificationId
+    },
+    {
+      $set: {
+        userId: null,
+        coordinatorId: null,
+        moderatorId: null
+      }
+    },
+    { upsert: true }
+  )
+    .populate('discipline')
+    .populate({
+      path: 'qualification',
+      model: 'Qualification',
+      populate: {
+        path: 'department',
+        model: 'Department',
+        populate: {
+          path: 'faculty',
+          model: 'Faculty'
+        }
+      }
+    })
+    .populate('offeringType')
+    .populate('block')
+    .populate('user')
+    .populate('coordinator')
+    .populate('moderator')
+    .populate('coordinator')
+    .populate('venue');
+};
+let unassignAllModules = async () => {
+  await Module.updateMany(
+    { userId: { $nin: [null, ''] } },
+    {
+      $set: {
+        userId: null,
+        coordinatorId: null,
+        moderatorId: null
+      }
+    }
+  );
+  return 'All modules unassigned';
+};
+
 export {
   module,
   modules,
   modulesByDiscipline,
   modulesByUnassigned,
+  modulesByAssigned,
+  modulesByUnassignedAndDiscipline,
   modulesByUser,
   modulesByModerator,
   modulesByCoordinator,
@@ -328,5 +678,13 @@ export {
   addModule,
   addModules,
   editModule,
-  deleteModule
+  deleteModule,
+  assignUserToModule,
+  unassignUserFromModule,
+  assignCoordinatorToModule,
+  unassignCoordinatorFromModule,
+  assignModeratorToModule,
+  unassignModeratorFromModule,
+  unassignAllFromModule,
+  unassignAllModules
 };

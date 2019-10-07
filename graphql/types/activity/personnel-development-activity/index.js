@@ -2,26 +2,27 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type PersonnelDevelopmentActivity implements Activity {
-    activityId: String!
-    userId: String!
+    activityId: String
+    userId: String
     user: User
-    dutyId: String!
+    dutyId: String
     duty: Duty
     approvalStatus: String
     createdAt: String
     updatedAt: String
     title: String
-    description: String
-    evidenceId: String
-    evidence: Evidence
+    date: [String]
+    duration: String
+    evidence: String
   }
 
   input PersonnelDevelopmentActivityInput {
+    activityId: String
     userId: String
     dutyId: String
     title: String
-    description: String
-    evidenceId: String
+    date: [String]
+    duration: String
   }
 
   type Query {
@@ -35,13 +36,13 @@ export default gql`
   }
   type Mutation {
     addPersonnelDevelopmentActivity(
-      personnelDevelopmentActivity: PersonnelDevelopmentActivityInput
+      activity: PersonnelDevelopmentActivityInput
     ): PersonnelDevelopmentActivity
     editPersonnelDevelopmentActivity(
-      personnelDevelopmentActivity: PersonnelDevelopmentActivityInput
+      activity: PersonnelDevelopmentActivityInput
     ): PersonnelDevelopmentActivity
     deletePersonnelDevelopmentActivity(
-      personnelDevelopmentActivity: PersonnelDevelopmentActivityInput
+      activity: PersonnelDevelopmentActivityInput
     ): PersonnelDevelopmentActivity
   }
 `;

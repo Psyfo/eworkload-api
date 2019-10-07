@@ -1,21 +1,44 @@
 import SupervisionActivity from './../../models/activity/supervision-activity';
+import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
+import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
 
 // PS METHODS
 let supervisionActivity = async activityId => {
-  return await SupervisionActivity.findOne({ activityId: activityId });
+  return await SupervisionActivity.findOne({ activityId: activityId })
+    .populate('user')
+    .populate('duty')
+    .populate('student');
 };
 let supervisionActivities = async () => {
-  return await SupervisionActivity.find({});
+  return await SupervisionActivity.find({})
+    .populate('user')
+    .populate('duty')
+    .populate('student');
 };
 let supervisionActivitiesByUser = async userId => {
-  return await SupervisionActivity.find({ userId: userId });
+  return await SupervisionActivity.find({ userId: userId })
+    .populate('user')
+    .populate('duty')
+    .populate('student');
 };
 let addSupervisionActivity = async activity => {
-  const newSupervisionActivity = await new SupervisionActivity(activity);
+  const newSupervisionActivity = new SupervisionActivity(activity);
 
-  return await newSupervisionActivity.save();
+  await newSupervisionActivity.save();
+
+  // Write workload data
+  try {
+    await SWorkloadMethods.addSupervisionWorkload(
+      newSupervisionActivity.userId
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Return activity
+  return await supervisionActivity(newSupervisionActivity.activityId);
 };
 let editSupervisionActivity = async activity => {
   return await SupervisionActivity.findOneAndUpdate(
@@ -23,29 +46,43 @@ let editSupervisionActivity = async activity => {
     {
       $set: activity
     },
-    { updert: true }
+    { upsert: true }
   );
 };
 let deleteSupervisionActivity = async activity => {
-  return await SupervisionActivity.findOneAndRemove(activity);
+  const deletedActivity = await SupervisionActivity.findOneAndRemove(activity);
+
+  // Write workload data
+  try {
+    await SWorkloadMethods.addSupervisionWorkload(activity.userId);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Return activity
+  return deletedActivity;
 };
 
 // WORKLOAD METHODS
 let supervisionGlobalTarrif = async () => {
-  return parameters.global_public_service_tarrif;
+  return 0;
 };
 let supervisionTotalHoursPerActivity = async activityId => {
-  let activity = await supervisionActivity(activityId);
-  let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
+  //let activity = await supervisionActivity(activityId);
+  //let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
 
-  return Math.round(serviceHours / 10);
+  //const total = serviceHours / 10;
+  return 40;
 };
 let supervisionTotalHoursPerUser = async userId => {
   let globalTarrif = await supervisionGlobalTarrif();
   let activities = await supervisionActivitiesByUser(userId);
-  let count = activities.length;
-  let serviceHours = await WorkFocusMethods.serviceHours(userId);
-  let activityHours = Math.round((count * serviceHours) / 10);
+  let activityHours = 0;
+  for (let activity of activities) {
+    activityHours += await supervisionTotalHoursPerActivity(
+      activity.activityId
+    );
+  }
 
   return activityHours + globalTarrif;
 };
@@ -54,29 +91,39 @@ let supervisionPercentageOfWorkFocusPerActivity = async activityId => {
   let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
   let activityHours = await supervisionTotalHoursPerActivity(activityId);
 
-  return Math.round((activityHours / serviceHours) * 100);
+  return (activityHours / serviceHours) * 100;
 };
 let supervisionPercentageOfWorkFocusPerUser = async userId => {
-  let globalTarrif = await supervisionGlobalTarrif();
-  let serviceHours = await WorkFocusMethods.serviceHours(userId);
-  let activityHours =
-    (await supervisionTotalHoursPerUser(userId)) + globalTarrif;
+  let teachingHours = await WorkFocusMethods.teachingHours(userId);
+  let activityHours = await supervisionTotalHoursPerUser(userId);
 
-  return Math.round((activityHours / serviceHours) * 100);
+  return (activityHours / teachingHours) * 100;
 };
 let supervisionPercentageOfAnnualHoursPerActivity = async activityId => {
   let activityHours = await supervisionTotalHoursPerActivity(activityId);
   let annualHours = parameters.annual_total_hours;
 
-  return Math.round((activityHours / annualHours) * 100);
+  return (activityHours / annualHours) * 100;
 };
 let supervisionPercentageOfAnnualHoursPerUser = async userId => {
-  let globalTarrif = await supervisionGlobalTarrif();
-  let activityHours =
-    (await supervisionTotalHoursPerUser(userId)) + globalTarrif;
+  let activityHours = await supervisionTotalHoursPerUser(userId);
   let annualHours = parameters.annual_total_hours;
 
-  return Math.round((activityHours / annualHours) * 100);
+  return (activityHours / annualHours) * 100;
+};
+let supervisionPercentageOfTotalHoursPerActivity = async activityId => {
+  let activity = await supervisionActivity(activityId);
+  let activityHours = 0;
+  activityHours = await supervisionTotalHoursPerActivity(activityId);
+  let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
+
+  return (activityHours / totalHours) * 100;
+};
+let supervisionPercentageOfTotalHoursPerUser = async userId => {
+  let activityHours = await supervisionTotalHoursPerUser(userId);
+  let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
+
+  return (activityHours / totalHours) * 100;
 };
 
 export {
@@ -92,5 +139,7 @@ export {
   supervisionPercentageOfWorkFocusPerActivity,
   supervisionPercentageOfWorkFocusPerUser,
   supervisionPercentageOfAnnualHoursPerActivity,
-  supervisionPercentageOfAnnualHoursPerUser
+  supervisionPercentageOfTotalHoursPerActivity,
+  supervisionPercentageOfAnnualHoursPerUser,
+  supervisionPercentageOfTotalHoursPerUser
 };

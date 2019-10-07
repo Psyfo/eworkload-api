@@ -8,6 +8,10 @@ import typeDefs from './types';
 const SERVER = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
+  uploads: {
+    maxFileSize: 10000000,
+    maxFiles: 20
+  },
   context: ({ req }) => {
     // get the user token from the headers
     const authHeader = req.headers.authorization;
@@ -32,7 +36,6 @@ const SERVER = new ApolloServer({
       }
     }
   },
-  uploads: true,
   playground: {
     endpoint: 'http://localhost:5000/graphql',
     setting: {

@@ -3,8 +3,14 @@ import { gql } from 'apollo-server-core';
 export default gql`
   type Evidence {
     evidenceId: String!
-    name: String!
-    item: String
+    name: String
+    url: String
+  }
+
+  input EvidenceInput {
+    evidenceId: String
+    name: String
+    url: String
   }
 
   type Query {
@@ -13,8 +19,8 @@ export default gql`
   }
 
   type Mutation {
-    addEvidence(name: String!, item: String): Evidence
-    editEvidence(evidenceId: String, name: String, item: String): Evidence
-    deleteEvidence(evidenceId: String, name: String, item: String): Evidence
+    addEvidence(evidence: EvidenceInput): Evidence
+    editEvidence(evidence: EvidenceInput): Evidence
+    deleteEvidence(evidence: EvidenceInput): Evidence
   }
 `;

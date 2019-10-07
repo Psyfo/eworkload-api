@@ -38,9 +38,9 @@ const formalInstructionActivitySchema = new mongoose.Schema(
   }
 );
 
-// Indexes
+// Index
 formalInstructionActivitySchema.index(
-  { moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 },
+  { userId: 1, moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 },
   { unique: true }
 );
 

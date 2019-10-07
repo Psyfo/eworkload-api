@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type Module {
-    moduleId: String!
+    moduleId: String
     name: String
     type: String
     assessmentMethod: String
@@ -61,8 +61,10 @@ export default gql`
       qualificationId: String!
     ): Module
     modules: [Module]
-    modulesByDiscipline(disciplineId: String!): [Module]
+    modulesByDiscipline(disciplineIds: [String!]): [Module]
     modulesByUnassigned: [Module]
+    modulesByAssigned: [Module]
+    modulesByUnassignedAndDiscipline(disciplineIds: [String]): [Module]
     modulesByUser(userId: String): [Module]
     modulesByModerator(moderatorId: String): [Module]
     modulesByCoordinator(coordinatorId: String): [Module]
@@ -74,5 +76,45 @@ export default gql`
     addModules(modules: [ModuleInput]): [Module]
     editModule(module: ModuleInput): Module
     deleteModule(module: ModuleInput): Module
+    assignUserToModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+      userId: String
+    ): Module
+    unassignUserFromModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+    ): Module
+    assignCoordinatorToModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+      userId: String
+    ): Module
+    unassignCoordinatorFromModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+    ): Module
+    assignModeratorToModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+      userId: String
+    ): Module
+    unassignModeratorFromModule(
+      moduleId: String
+      blockId: String
+      offeringTypeId: String
+      qualificationId: String
+    ): Module
+    unassignAllModules: String
   }
 `;

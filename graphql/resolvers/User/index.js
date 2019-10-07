@@ -14,6 +14,7 @@ export default {
     userExists: (root, args) => {
       return UserMethods.exists(args.userId);
     }
+    // profilePicture: () => {}
   },
   Mutation: {
     addUser: (root, args) => {
@@ -31,6 +32,22 @@ export default {
         args.oldPassword,
         args.newPassword
       );
+    },
+    assignProfilePicture: (root, { userId, photoUrl }) => {
+      return UserMethods.assignProfilePicture(userId, photoUrl);
     }
+    // async profilePictureUpload(parent, { file }) {
+    //   const { stream, filename, mimetype, encoding } = await file;
+
+    //   // 1. Validate file metadata.
+
+    //   // 2. Stream file contents into cloud storage:
+    //   // https://nodejs.org/api/stream.html
+
+    //   // 3. Record the file upload in your DB.
+    //   // const id = await recordFile( … )
+
+    //   return { filename, mimetype, encoding };
+    // }
   }
 };

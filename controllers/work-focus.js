@@ -5,7 +5,6 @@ import parameters from '../config/parameters';
 let workFocus = async name => {
   return await WorkFocus.findOne({ name: name });
 };
-
 let workFocuses = async () => {
   return await WorkFocus.find({});
 };
@@ -14,29 +13,25 @@ let teachingHours = async userId => {
   let user = await User.findOne({ userId: userId }).populate('work-focus');
   let workFocusVar = await workFocus(user.workFocusName);
   let teachingFocusPercentage = workFocusVar.teachingRatio;
-  console.log('Teaching percentage: ', teachingFocusPercentage);
 
-  return Math.round(
-    (teachingFocusPercentage / 100) * parameters.annual_total_hours
-  );
+  return (teachingFocusPercentage / 100) * parameters.annual_total_hours;
 };
 let researchHours = async userId => {
   let user = await User.findOne({ userId: userId }).populate('work-focus');
   let workFocusVar = await workFocus(user.workFocusName);
   let researchFocusPercentage = workFocusVar.researchRatio;
 
-  return Math.round(
-    (researchFocusPercentage / 100) * parameters.annual_total_hours
-  );
+  return (researchFocusPercentage / 100) * parameters.annual_total_hours;
 };
 let serviceHours = async userId => {
   let user = await User.findOne({ userId: userId }).populate('work-focus');
   let workFocusVar = await workFocus(user.workFocusName);
   let serviceFocusPercentage = workFocusVar.serviceRatio;
 
-  return Math.round(
-    (serviceFocusPercentage / 100) * parameters.annual_total_hours
-  );
+  return (serviceFocusPercentage / 100) * parameters.annual_total_hours;
+};
+let annualHours = async () => {
+  return parameters.annual_total_hours;
 };
 
 let addWorkFocus = async workFocus => {
@@ -63,6 +58,7 @@ export {
   teachingHours,
   researchHours,
   serviceHours,
+  annualHours,
   addWorkFocus,
   editWorkFocus,
   deleteWorkFocus

@@ -14,9 +14,9 @@ const evidenceSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    item: {
+    file: {
       type: String,
-      trim: true
+      ref: 'Upload'
     },
     createdAt: {
       type: Date

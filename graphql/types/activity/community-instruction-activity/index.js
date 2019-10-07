@@ -2,26 +2,25 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type CommunityInstructionActivity implements Activity {
-    activityId: String!
-    userId: String!
+    activityId: String
+    userId: String
     user: User
-    dutyId: String!
+    dutyId: String
     duty: Duty
     approvalStatus: String
     createdAt: String
     updatedAt: String
     title: String
     description: String
-    evidenceId: String
-    evidence: Evidence
+    evidence: String
   }
 
   input CommunityInstructionActivityInput {
+    activityId: String
     userId: String
     dutyId: String
     title: String
     description: String
-    evidenceId: String
   }
 
   type Query {
@@ -35,13 +34,13 @@ export default gql`
   }
   type Mutation {
     addCommunityInstructionActivity(
-      communityInstructionActivity: CommunityInstructionActivityInput
+      activity: CommunityInstructionActivityInput
     ): CommunityInstructionActivity
     editCommunityInstructionActivity(
-      communityInstructionActivity: CommunityInstructionActivityInput
+      activity: CommunityInstructionActivityInput
     ): CommunityInstructionActivity
     deleteCommunityInstructionActivity(
-      communityInstructionActivity: CommunityInstructionActivityInput
+      activity: CommunityInstructionActivityInput
     ): CommunityInstructionActivity
   }
 `;

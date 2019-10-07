@@ -12,9 +12,8 @@ const executiveManagementActivitySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  evidenceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidence'
+  evidence: {
+    type: String
   }
 });
 

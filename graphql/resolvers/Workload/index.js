@@ -1,40 +1,70 @@
-import * as WorkloadMethods from '../../../controllers/workload';
+import * as AAWorkloadMethods from './../../../controllers/workload/academic-administration';
+import * as CIWorkloadMethods from './../../../controllers/workload/community-instruction';
+import * as EMWorkloadMethods from './../../../controllers/workload/executive-management';
+import * as FIWorkloadMethods from './../../../controllers/workload/formal-instruction';
+import * as PDWorkloadMethods from './../../../controllers/workload/personnel-development';
+import * as PSWorkloadMethods from './../../../controllers/workload/public-service';
+import * as RWorkloadMethods from './../../../controllers/workload/research';
+import * as SWorkloadMethods from './../../../controllers/workload/supervision';
+import * as WorkFocusMethods from './../../../controllers/work-focus';
+import * as WorkloadMethods from './../../../controllers/workload';
 
 export default {
   Query: {
-    academicAdministrationWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.academicAdministrationWorkloadDataPerUser(
-        args.userId
-      );
+    // General data
+    teachingHours: async (root, { userId }) => {
+      return await WorkFocusMethods.teachingHours(userId);
     },
-    communityInstructionWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.communityInstructionWorkloadDataPerUser(
-        args.userId
-      );
+    researchHours: async (root, { userId }) => {
+      return await WorkFocusMethods.researchHours(userId);
     },
-    executiveManagementWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.executiveManagementWorkloadDataPerUser(
-        args.userId
-      );
+    serviceHours: async (root, { userId }) => {
+      return await WorkFocusMethods.serviceHours(userId);
     },
-    formalInstructionWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.formalInstructionWorkloadDataPerUser(
-        args.userId
-      );
+    annualHours: async () => {
+      return await WorkFocusMethods.annualHours();
     },
-    personnelDevelopmentWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.personnelDevelopmentWorkloadDataPerUser(
-        args.userId
-      );
+    totalHoursPerUser: async (root, { userId }) => {
+      return await WorkloadMethods.totalHoursPerUser(userId);
     },
-    publicServiceWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.publicServiceWorkloadDataPerUser(
-        args.userId
-      );
+    teachingHoursPerUser: async (root, { userId }) => {
+      return await WorkloadMethods.teachingHoursPerUser(userId);
     },
-    supervisionWorkloadPerUser: async (root, args) => {
-      return await WorkloadMethods.supervisionWorkloadDataPerUser(args.userId);
+    researchHoursPerUser: async (root, { userId }) => {
+      return await WorkloadMethods.researchHoursPerUser(userId);
+    },
+    serviceHoursPerUser: async (root, { userId }) => {
+      return await WorkloadMethods.serviceHoursPerUser(userId);
+    },
+    workloadSummaries: async () => {
+      return await WorkloadMethods.workloadSummaries();
+    },
+    // Workloads
+    academicAdministrationWorkload: async (root, { userId }) => {
+      return await AAWorkloadMethods.academicAdministrationWorkload(userId);
+    },
+    communityInstructionWorkload: async (root, { userId }) => {
+      return await CIWorkloadMethods.communityInstructionWorkload(userId);
+    },
+    executiveManagementWorkload: async (root, { userId }) => {
+      return await EMWorkloadMethods.executiveManagementWorkload(userId);
+    },
+    formalInstructionWorkload: async (root, { userId }) => {
+      return await FIWorkloadMethods.formalInstructionWorkload(userId);
+    },
+    personnelDevelopmentWorkload: async (root, { userId }) => {
+      return await PDWorkloadMethods.personnelDevelopmentWorkload(userId);
+    },
+    publicServiceWorkload: async (root, { userId }) => {
+      return await PSWorkloadMethods.publicServiceWorkload(userId);
+    },
+    researchWorkload: async (root, { userId }) => {
+      return await RWorkloadMethods.researchWorkload(userId);
+    },
+    supervisionWorkload: async (root, { userId }) => {
+      return await SWorkloadMethods.supervisionWorkload(userId);
     }
   },
+
   Mutation: {}
 };

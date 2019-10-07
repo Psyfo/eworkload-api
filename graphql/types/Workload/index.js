@@ -2,132 +2,180 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type AcademicAdministrationWorkloadPerActivity {
-    academicAdministrationTotalHoursPerActivity: Int
-    academicAdministrationPercentageOfWorkFocusPerActivity: Int
-    academicAdministrationPercentageOfAnnualPerActivity: Int
+    activity: AcademicAdministrationActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type AcademicAdministrationWorkloadPerUser {
-    academicAdministrationWorkloadData: [AcademicAdministrationWorkloadPerActivity]
-    academicAdministrationTotalHoursPerUser: Int
-    academicAdministrationPercentageOfWorkFocusPerUser: Int
-    academicAdministrationPercentageOfAnnualPerUser: Int
+  type AcademicAdministrationWorkload {
+    academicAdministrationWorkloads: [AcademicAdministrationWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type CommunityInstructionWorkloadPerActivity {
-    communityInstructionTotalHoursPerActivity: Int
-    communityInstructionPercentageOfWorkFocusPerActivity: Int
-    communityInstructionPercentageOfAnnualPerActivity: Int
+    activity: CommunityInstructionActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type CommunityInstructionWorkloadPerUser {
-    communityInstructionWorkloadData: [CommunityInstructionWorkloadPerActivity]
-    communityInstructionTotalHoursPerUser: Int
-    communityInstructionPercentageOfWorkFocusPerUser: Int
-    communityInstructionPercentageOfAnnualPerUser: Int
+  type CommunityInstructionWorkload {
+    communityInstructionWorkloads: [CommunityInstructionWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type ExecutiveManagementWorkloadPerActivity {
-    executiveManagementTotalHoursPerActivity: Int
-    executiveManagementPercentageOfWorkFocusPerActivity: Int
-    executiveManagementPercentageOfAnnualPerActivity: Int
+    activity: ExecutiveManagementActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type ExecutiveManagementWorkloadPerUser {
-    executiveManagementWorkloadData: [ExecutiveManagementWorkloadPerActivity]
-    executiveManagementTotalHoursPerUser: Int
-    executiveManagementPercentageOfWorkFocusPerUser: Int
-    executiveManagementPercentageOfAnnualPerUser: Int
+  type ExecutiveManagementWorkload {
+    executiveManagementWorkloads: [ExecutiveManagementWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type FormalInstructionWorkloadPerActivity {
-    formalInstructionBaseContactHours: Int
-    formalInstructionCoordinationHours: Int
-    formalInstructionStudentSupportHours: Int
-    formalInstructionPreparationTimeHours: Int
-    formalInstructionAssessmentSettingHours: Int
-    formalInstructionExamMarkingHours: Int
-    formalInstructionCourseworkMarkingHours: Int
-    formalInstructionFeedbackHours: Int
-    formalInstructionFormativeAssessmentHours: Int
-    formalInstructionModerationHours: Int
-    formalInstructionOtherHoursPerActivity: Int
-    formalInstructionTotalHoursPerActivity: Int
-    formalInstructionPercentageOfWorkFocusPerActivity: Int
-    formalInstructionPercentageOfAnnualPerActivity: Int
+    activity: FormalInstructionActivity
+    studentsEnrolled: Float
+    baseContactHours: Float
+    coordinationHours: Float
+    studentSupportHours: Float
+    preparationTimeHours: Float
+    assessmentSettingHours: Float
+    examMarkingHours: Float
+    courseworkMarkingHours: Float
+    feedbackHours: Float
+    formativeAssessmentHours: Float
+    moderationHours: Float
+    otherHoursPerActivity: Float
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type FormalInstructionWorkloadPerUser {
-    formalInstructionWorkloadData: [FormalInstructionWorkloadPerActivity]
-    formalInstructionTotalHoursPerUser: Int
-    formalInstructionPercentageOfWorkFocusPerUser: Int
-    formalInstructionPercentageOfAnnualPerUser: Int
+  type FormalInstructionWorkload {
+    formalInstructionWorkloads: [FormalInstructionWorkloadPerActivity]
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type PersonnelDevelopmentWorkloadPerActivity {
-    personnelDevelopmentTotalHoursPerActivity: Int
-    personnelDevelopmentPercentageOfWorkFocusPerActivity: Int
-    personnelDevelopmentPercentageOfAnnualPerActivity: Int
+    activity: PersonnelDevelopmentActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type PersonnelDevelopmentWorkloadPerUser {
-    personnelDevelopmentWorkloadData: [PersonnelDevelopmentWorkloadPerActivity]
-    personnelDevelopmentTotalHoursPerUser: Int
-    personnelDevelopmentPercentageOfWorkFocusPerUser: Int
-    personnelDevelopmentPercentageOfAnnualPerUser: Int
+  type PersonnelDevelopmentWorkload {
+    personnelDevelopmentWorkloads: [PersonnelDevelopmentWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type PublicServiceWorkloadPerActivity {
-    publicServiceTotalHoursPerActivity: Int
-    publicServicePercentageOfWorkFocusPerActivity: Int
-    publicServicePercentageOfAnnualPerActivity: Int
+    activity: PublicServiceActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type PublicServiceWorkloadPerUser {
-    publicServiceWorkloadData: [PublicServiceWorkloadPerActivity]
-    publicServiceTotalHoursPerUser: Int
-    publicServicePercentageOfWorkFocusPerUser: Int
-    publicServicePercentageOfAnnualPerUser: Int
+  type PublicServiceWorkload {
+    publicServiceWorkloads: [PublicServiceWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type ResearchWorkloadPerActivity {
-    researchTotalHoursPerActivity: Int
-    researchPercentageOfWorkFocusPerActivity: Int
-    researchPercentageOfAnnualPerActivity: Int
+    activity: ResearchActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type ResearchWorkloadPerUser {
-    researchWorkloadData: [ResearchWorkloadPerActivity]
-    researchTotalHoursPerUser: Int
-    researchPercentageOfWorkFocusPerUser: Int
-    researchPercentageOfAnnualPerUser: Int
+  type ResearchWorkload {
+    researchWorkloads: [ResearchWorkloadPerActivity]
+    globalTarrif: Float
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
   }
 
   type SupervisionWorkloadPerActivity {
-    supervisionTotalHoursPerActivity: Int
-    supervisionPercentageOfWorkFocusPerActivity: Int
-    supervisionPercentageOfAnnualPerActivity: Int
+    activity: SupervisionActivity
+    totalHoursPerActivity: Float
+    percentageOfWorkFocusPerActivity: Float
+    percentageOfAnnualHoursPerActivity: Float
+    percentageOfTotalHoursPerActivity: Float
   }
-  type SupervisionWorkloadPerUser {
-    supervisionWorkloadData: [SupervisionWorkloadPerActivity]
-    supervisionTotalHoursPerUser: Int
-    supervisionPercentageOfWorkFocusPerUser: Int
-    supervisionPercentageOfAnnualPerUser: Int
+  type SupervisionWorkload {
+    supervisionWorkloads: [SupervisionWorkloadPerActivity]
+    totalHoursPerUser: Float
+    percentageOfWorkFocusPerUser: Float
+    percentageOfAnnualHoursPerUser: Float
+    percentageOfTotalHoursPerUser: Float
+  }
+
+  type WorkloadSummary {
+    user: User
+    teachingHours: Float
+    teachingHoursPerUser: Float
+    teachingDifference: Float
+    researchHours: Float
+    researchHoursPerUser: Float
+    researchDifference: Float
+    serviceHours: Float
+    serviceHoursPerUser: Float
+    serviceDifference: Float
   }
 
   type Query {
-    academicAdministrationWorkloadPerUser(
-      userId: String
-    ): AcademicAdministrationWorkloadPerUser
-    communityInstructionWorkloadPerUser(
-      userId: String
-    ): CommunityInstructionWorkloadPerUser
-    executiveManagementWorkloadPerUser(
-      userId: String
-    ): ExecutiveManagementWorkloadPerUser
-    formalInstructionWorkloadPerUser(
-      userId: String
-    ): FormalInstructionWorkloadPerUser
-    personnelDevelopmentWorkloadPerUser(
-      userId: String
-    ): PersonnelDevelopmentWorkloadPerUser
-    publicServiceWorkloadPerUser(userId: String): PublicServiceWorkloadPerUser
-    supervisionWorkloadPerUser(userId: String): SupervisionWorkloadPerUser
-  }
+    # Work focus data
+    teachingHours(userId: String): Float
+    researchHours(userId: String): Float
+    serviceHours(userId: String): Float
+    annualHours: Float
+    totalHoursPerUser(userId: String!): Float
+    teachingHoursPerUser(userId: String!): Float
+    researchHoursPerUser(userId: String!): Float
+    serviceHoursPerUser(userId: String!): Float
+    workloadSummaries: [WorkloadSummary]
 
+    # Workloads
+    academicAdministrationWorkload(
+      userId: String
+    ): AcademicAdministrationWorkload
+    communityInstructionWorkload(userId: String): CommunityInstructionWorkload
+    executiveManagementWorkload(userId: String): ExecutiveManagementWorkload
+    formalInstructionWorkload(userId: String): FormalInstructionWorkload
+    personnelDevelopmentWorkload(userId: String): PersonnelDevelopmentWorkload
+    publicServiceWorkload(userId: String): PublicServiceWorkload
+    researchWorkload(userId: String): ResearchWorkload
+    supervisionWorkload(userId: String): SupervisionWorkload
+  }
   #   type Mutation {
 
   #   }

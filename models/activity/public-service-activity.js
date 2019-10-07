@@ -12,19 +12,12 @@ const publicServiceActivitySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  evidenceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidence'
+  evidence: {
+    type: String
   }
 });
 
 // Virtuals
-publicServiceActivitySchema.virtual('evidence', {
-  ref: 'Evidence',
-  localField: 'evidenceId',
-  foreignField: 'evidenceId',
-  justOne: true
-});
 
 const PublicServiceActivity = Activity.discriminator(
   'PublicServiceActivity',

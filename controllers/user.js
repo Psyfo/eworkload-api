@@ -1,21 +1,27 @@
-import User from './../models/user.js';
+import User from './../models/user';
+import Evidence from './../models/evidence';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 let user = async userId => {
   return await User.findOne({ userId: userId })
-    .populate('discipline')
+    .populate('disciplines')
+    .populate('department')
     .populate('position')
-    .populate('work-focus');
+    .populate('workFocus');
 };
 let users = async () => {
   return await User.find({})
-    .populate('discipline')
+    .populate('disciplines')
+    .populate('department')
     .populate('position')
-    .populate('work-focus');
+    .populate('workFocus');
 };
 let addUser = async user => {
+  console.log('User from client:', user);
+
   const newUser = await new User(user);
+  console.log('New user:', newUser);
 
   return await newUser.save();
 };
@@ -46,9 +52,10 @@ let login = async (userId, password) => {
   // check user exists
 
   const user = await User.findOne({ userId: userId })
-    .populate('discipline')
+    .populate('disciplines')
+    .populate('department')
     .populate('position')
-    .populate('work-focus');
+    .populate('workFocus');
 
   const isMatch = await bcrypt.compare(password, user.password);
 
@@ -76,6 +83,29 @@ let changePassword = async (userId, oldPassword, newPassword) => {
   user.save();
   return user;
 };
+let assignProfilePicture = async (userId, photoUrl) => {
+  return await User.findOneAndUpdate(
+    { userId: userId },
+    {
+      $set: {
+        photoUrl: photoUrl
+      }
+    },
+    { upsert: true }
+  );
+};
+
+let assignEvidence = async (evidenceId, evidenceUrl) => {
+  return await Evidence.findOneAndUpdate(
+    { evidenceId: evidenceId },
+    {
+      $set: {
+        evidenceUrl: evidenceUrl
+      }
+    },
+    { upsert: true }
+  );
+};
 
 export {
   user,
@@ -85,5 +115,7 @@ export {
   deleteUser,
   exists,
   login,
-  changePassword
+  changePassword,
+  assignProfilePicture,
+  assignEvidence
 };

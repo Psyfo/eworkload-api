@@ -2,32 +2,26 @@ import * as CIMethods from './../../../../controllers/activity/community-instruc
 
 export default {
   Query: {
-    communityInstructionActivity: (root, args) => {
-      return CIMethods.communityInstructionActivity(args.activityId);
+    communityInstructionActivity: (root, { activityId }) => {
+      return CIMethods.communityInstructionActivity(activityId);
     },
     communityInstructionActivities: () => {
       return CIMethods.communityInstructionActivities();
     },
-    communityInstructionActivitiesByUser: (root, args) => {
-      return CIMethods.communityInstructionActivitiesByUser(args.userId);
+    communityInstructionActivitiesByUser: (root, { userId }) => {
+      return CIMethods.communityInstructionActivitiesByUser(userId);
     }
   },
   Mutation: {
     // Comm-Insruction
-    addCommunityInstructionActivity: (root, args) => {
-      return CIMethods.addCommunityInstructionActivity(
-        args.communityInstructionActivity
-      );
+    addCommunityInstructionActivity: (root, { activity }) => {
+      return CIMethods.addCommunityInstructionActivity(activity);
     },
-    editCommunityInstructionActivity: (root, args) => {
-      return CIMethods.editCommunityInstructionActivity(
-        args.communityInstructionActivity
-      );
+    editCommunityInstructionActivity: (root, { activity }) => {
+      return CIMethods.editCommunityInstructionActivity(activity);
     },
-    deleteCommunityInstructionActivity: (root, args) => {
-      return CIMethods.deleteCommunityInstructionActivity(
-        args.communityInstructionActivity
-      );
+    deleteCommunityInstructionActivity: (root, { activity }) => {
+      return CIMethods.deleteCommunityInstructionActivity(activity);
     }
   }
 };

@@ -25,6 +25,7 @@ import FormalInstructionActivity from './activity/formal-instruction-activity';
 import PersonnelDevelopmentActivity from './activity/personnel-development-activity';
 import PublicServiceActivity from './activity/public-service-activity';
 import ResearchActivity from './activity/research-activity';
+import File from './upload';
 
 const typeDefs = [
   Activity,
@@ -51,7 +52,8 @@ const typeDefs = [
   FormalInstructionActivity,
   PersonnelDevelopmentActivity,
   PublicServiceActivity,
-  ResearchActivity
+  ResearchActivity,
+  File
 ];
 
 export default mergeTypes(typeDefs, {

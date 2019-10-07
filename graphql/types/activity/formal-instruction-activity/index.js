@@ -2,10 +2,10 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type FormalInstructionActivity implements Activity {
-    activityId: String!
-    userId: String!
+    activityId: String
+    userId: String
     user: User
-    dutyId: String!
+    dutyId: String
     duty: Duty
     approvalStatus: String
     createdAt: String
@@ -21,6 +21,7 @@ export default gql`
   }
 
   input FormalInstructionActivityInput {
+    activityId: String
     userId: String
     dutyId: String
     moduleId: String
@@ -45,6 +46,7 @@ export default gql`
   }
 
   input SupervisionActivityInput {
+    activityId: String
     userId: String
     dutyId: String
     supervisionRole: String
@@ -65,23 +67,23 @@ export default gql`
   }
   type Mutation {
     addFormalInstructionActivity(
-      formalInstructionActivity: FormalInstructionActivityInput
+      activity: FormalInstructionActivityInput
     ): FormalInstructionActivity
     editFormalInstructionActivity(
-      formalInstructionActivity: FormalInstructionActivityInput
+      activity: FormalInstructionActivityInput
     ): FormalInstructionActivity
     deleteFormalInstructionActivity(
-      formalInstructionActivity: FormalInstructionActivityInput
+      activity: FormalInstructionActivityInput
     ): FormalInstructionActivity
 
     addSupervisionActivity(
-      supervisionActivity: SupervisionActivityInput
+      activity: SupervisionActivityInput
     ): SupervisionActivity
     editSupervisionActivity(
-      supervisionActivity: SupervisionActivityInput
+      activity: SupervisionActivityInput
     ): SupervisionActivity
     deleteSupervisionActivity(
-      supervisionActivity: SupervisionActivityInput
+      activity: SupervisionActivityInput
     ): SupervisionActivity
   }
 `;

@@ -2,26 +2,26 @@ import * as RMethods from './../../../../controllers/activity/research';
 
 export default {
   Query: {
-    researchActivity: (root, args) => {
-      return RMethods.researchActivity(args.activityId);
+    researchActivity: (root, { activityId }) => {
+      return RMethods.researchActivity(activityId);
     },
     researchActivities: () => {
       return RMethods.researchActivities();
     },
-    researchActivitiesByUser: (root, args) => {
-      return RMethods.researchActivitiesByUser(args.userId);
+    researchActivitiesByUser: (root, { userId }) => {
+      return RMethods.researchActivitiesByUser(userId);
     }
   },
   Mutation: {
     // Research
-    addResearchActivity: (root, args) => {
-      RMethods.addResearchActivity(args.researchActivity);
+    addResearchActivity: (root, { activity }) => {
+      RMethods.addResearchActivity(activity);
     },
-    editResearchActivity: (root, args) => {
-      RMethods.editResearchActivity(args.researchActivity);
+    editResearchActivity: (root, { activity }) => {
+      RMethods.editResearchActivity(activity);
     },
-    deleteResearchActivity: (root, args) => {
-      RMethods.deleteResearchActivity(args.researchActivity);
+    deleteResearchActivity: (root, { activity }) => {
+      RMethods.deleteResearchActivity(activity);
     }
   }
 };

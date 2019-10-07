@@ -3,16 +3,16 @@ import { gql } from 'apollo-server-core';
 export default gql`
   type WorkFocus {
     name: String!
-    teachingRatio: Int
-    researchRatio: Int
-    serviceRatio: Int
+    teachingRatio: Float
+    researchRatio: Float
+    serviceRatio: Float
   }
 
   input WorkFocusInput {
     name: String
-    teachingRatio: Int
-    researchRatio: Int
-    serviceRatio: Int
+    teachingRatio: Float
+    researchRatio: Float
+    serviceRatio: Float
   }
 
   type Query {

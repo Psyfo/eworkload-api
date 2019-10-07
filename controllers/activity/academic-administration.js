@@ -1,25 +1,73 @@
 import AcademicAdministrationActivity from '../../models/activity/academic-administration-activity';
+import * as AAWorkloadMethods from './../workload/academic-administration';
 import * as WorkFocusMethods from './../work-focus';
+import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
 
 // AA METHODS
 let academicAdministrationActivity = async activityId => {
   return await AcademicAdministrationActivity.findOne({
     activityId: activityId
-  });
+  })
+    .populate({
+      path: 'user',
+      model: 'User',
+      populate: [
+        { path: 'disciplines', model: 'Discipline' },
+        { path: 'position', model: 'Position' },
+        { path: 'workFocus', model: 'WorkFocus' }
+      ]
+    })
+    .populate('duty');
 };
 let academicAdministrationActivities = async () => {
-  return await AcademicAdministrationActivity.find({});
+  return await AcademicAdministrationActivity.find({})
+    .populate({
+      path: 'user',
+      model: 'User',
+      populate: [
+        { path: 'disciplines', model: 'Discipline' },
+        { path: 'position', model: 'Position' },
+        { path: 'workFocus', model: 'WorkFocus' }
+      ]
+    })
+    .populate('duty');
 };
 let academicAdministrationActivitiesByUser = async userId => {
-  return await AcademicAdministrationActivity.find({ userId: userId });
+  return await AcademicAdministrationActivity.find({ userId: userId })
+    .populate({
+      path: 'user',
+      model: 'User',
+      populate: [
+        { path: 'disciplines', model: 'Discipline' },
+        { path: 'position', model: 'Position' },
+        { path: 'workFocus', model: 'WorkFocus' }
+      ]
+    })
+    .populate('duty');
 };
 let addAcademicAdministrationActivity = async activity => {
   const newAcademicAdministrationActivity = await new AcademicAdministrationActivity(
     activity
-  );
+  )
+    .populate('duty')
+    .populate('user');
 
-  return await newAcademicAdministrationActivity.save();
+  await newAcademicAdministrationActivity.save();
+
+  // Write workload data
+  try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      newAcademicAdministrationActivity.userId
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Return activity
+  return await academicAdministrationActivity(
+    newAcademicAdministrationActivity.activityId
+  );
 };
 let editAcademicAdministrationActivity = async activity => {
   return await AcademicAdministrationActivity.findOneAndUpdate(
@@ -27,29 +75,50 @@ let editAcademicAdministrationActivity = async activity => {
     {
       $set: activity
     },
-    { updert: true }
+    { upsert: true }
   );
 };
 let deleteAcademicAdministrationActivity = async activity => {
-  return await AcademicAdministrationActivity.findOneAndRemove(activity);
+  const deletedActivity = await AcademicAdministrationActivity.findOneAndRemove(
+    activity
+  );
+
+  // Write workload data
+  try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(activity.userId);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Return activity
+  return deletedActivity;
 };
 
 // WORKLOAD METHODS
 let academicAdministrationGlobalTarrif = async () => {
-  return parameters.global_personnel_development_tarrif;
+  return parameters.global_academic_administration_tarrif;
+};
+let academicAdministrationBase = async activityId => {
+  let activity = await academicAdministrationActivity(activityId);
+  let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
+  let activityHours = serviceHours * 0.25;
+  return activityHours;
 };
 let academicAdministrationTotalHoursPerActivity = async activityId => {
   let activity = await academicAdministrationActivity(activityId);
   let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
 
-  return Math.round(serviceHours / 10);
+  return serviceHours / 10;
 };
 let academicAdministrationTotalHoursPerUser = async userId => {
   let globalTarrif = await academicAdministrationGlobalTarrif();
   let activities = await academicAdministrationActivitiesByUser(userId);
-  let count = activities.length;
-  let serviceHours = await WorkFocusMethods.serviceHours(userId);
-  let activityHours = Math.round((count * serviceHours) / 10);
+  let activityHours = 0;
+  for (let activity of activities) {
+    activityHours += await academicAdministrationTotalHoursPerActivity(
+      activity.activityId
+    );
+  }
 
   return activityHours + globalTarrif;
 };
@@ -60,15 +129,13 @@ let academicAdministrationPercentageOfWorkFocusPerActivity = async activityId =>
     activityId
   );
 
-  return Math.round((activityHours / serviceHours) * 100);
+  return (activityHours / serviceHours) * 100;
 };
 let academicAdministrationPercentageOfWorkFocusPerUser = async userId => {
-  let globalTarrif = await academicAdministrationGlobalTarrif();
   let serviceHours = await WorkFocusMethods.serviceHours(userId);
-  let activityHours =
-    (await academicAdministrationTotalHoursPerUser(userId)) + globalTarrif;
+  let activityHours = await academicAdministrationTotalHoursPerUser(userId);
 
-  return Math.round((activityHours / serviceHours) * 100);
+  return (activityHours / serviceHours) * 100;
 };
 let academicAdministrationPercentageOfAnnualHoursPerActivity = async activityId => {
   let activityHours = await academicAdministrationTotalHoursPerActivity(
@@ -76,15 +143,30 @@ let academicAdministrationPercentageOfAnnualHoursPerActivity = async activityId 
   );
   let annualHours = parameters.annual_total_hours;
 
-  return Math.round((activityHours / annualHours) * 100);
+  return (activityHours / annualHours) * 100;
 };
 let academicAdministrationPercentageOfAnnualHoursPerUser = async userId => {
-  let globalTarrif = await academicAdministrationGlobalTarrif();
-  let activityHours =
-    (await academicAdministrationTotalHoursPerUser(userId)) + globalTarrif;
+  let activityHours = await academicAdministrationTotalHoursPerUser(userId);
   let annualHours = parameters.annual_total_hours;
 
-  return Math.round((activityHours / annualHours) * 100);
+  return (activityHours / annualHours) * 100;
+};
+let academicAdministrationPercentageOfTotalHoursPerActivity = async activityId => {
+  let activity = await academicAdministrationActivity(activityId);
+
+  let activityHours = await academicAdministrationTotalHoursPerActivity(
+    activityId
+  );
+
+  let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
+
+  return (activityHours / totalHours) * 100;
+};
+let academicAdministrationPercentageOfTotalHoursPerUser = async userId => {
+  let activityHours = await academicAdministrationTotalHoursPerUser(userId);
+  let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
+
+  return (activityHours / totalHours) * 100;
 };
 
 export {
@@ -95,10 +177,13 @@ export {
   editAcademicAdministrationActivity,
   deleteAcademicAdministrationActivity,
   academicAdministrationGlobalTarrif,
+  academicAdministrationBase,
   academicAdministrationTotalHoursPerActivity,
   academicAdministrationTotalHoursPerUser,
   academicAdministrationPercentageOfWorkFocusPerActivity,
   academicAdministrationPercentageOfWorkFocusPerUser,
   academicAdministrationPercentageOfAnnualHoursPerActivity,
-  academicAdministrationPercentageOfAnnualHoursPerUser
+  academicAdministrationPercentageOfAnnualHoursPerUser,
+  academicAdministrationPercentageOfTotalHoursPerActivity,
+  academicAdministrationPercentageOfTotalHoursPerUser
 };

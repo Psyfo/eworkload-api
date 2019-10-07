@@ -7,14 +7,16 @@ const personnelDevelopmentActivitySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  description: {
-    type: String,
-    required: true,
-    trim: true
+  date: [
+    {
+      type: String
+    }
+  ],
+  duration: {
+    type: String
   },
-  evidenceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidence'
+  evidence: {
+    type: String
   }
 });
 

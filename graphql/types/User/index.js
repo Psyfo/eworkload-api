@@ -2,15 +2,17 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type User {
-    userId: String!
+    userId: String
     email: String
     firstName: String
     lastName: String
     photoUrl: String
-    disciplineId: String
-    discipline: Discipline
+    disciplineIds: [String]
+    disciplines: [Discipline]
     positionId: String
     position: Position
+    departmentId: String
+    department: Department
     workFocusName: String
     workFocus: WorkFocus
     gender: String
@@ -18,14 +20,15 @@ export default gql`
   }
 
   input UserInput {
-    userId: String!
+    userId: String
     password: String
     email: String
     firstName: String
     lastName: String
     photoUrl: String
-    disciplineId: String
+    disciplineIds: [String]
     positionId: String
+    departmentId: String
     workFocusName: String
     gender: String
     nationality: String
@@ -46,6 +49,7 @@ export default gql`
     users: [User]
     login(userId: String!, password: String!): AuthData
     userExists(userId: String): ExistData
+    # profilePicture: [File]
   }
 
   type Mutation {
@@ -57,5 +61,6 @@ export default gql`
       oldPassword: String
       newPassword: String
     ): User
+    assignProfilePicture(userId: String, photoUrl: String): User
   }
 `;

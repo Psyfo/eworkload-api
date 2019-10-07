@@ -2,25 +2,25 @@ import * as PSMethods from './../../../../controllers/activity/public-service';
 
 export default {
   Query: {
-    publicServiceActivity: (root, args) => {
-      return PSMethods.publicServiceActivity(args.activityId);
+    publicServiceActivity: (root, { activityId }) => {
+      return PSMethods.publicServiceActivity(activityId);
     },
     publicServiceActivities: () => {
       return PSMethods.publicServiceActivities();
     },
-    publicServiceActivitiesByUser: (root, args) => {
-      return PSMethods.publicServiceActivitiesByUser(args.userId);
+    publicServiceActivitiesByUser: (root, { userId }) => {
+      return PSMethods.publicServiceActivitiesByUser(userId);
     }
   },
   Mutation: {
-    addPublicServiceActivity: (root, args) => {
-      PSMethods.addPublicServiceActivity(args.publicServiceActivity);
+    addPublicServiceActivity: (root, { activity }) => {
+      PSMethods.addPublicServiceActivity(activity);
     },
-    editPublicServiceActivity: (root, args) => {
-      PSMethods.editPublicServiceActivity(args.publicServiceActivity);
+    editPublicServiceActivity: (root, { activity }) => {
+      PSMethods.editPublicServiceActivity(activity);
     },
-    deletePublicServiceActivity: (root, args) => {
-      PSMethods.deletePublicServiceActivity(args.publicServiceActivity);
+    deletePublicServiceActivity: (root, { activity }) => {
+      PSMethods.deletePublicServiceActivity(activity);
     }
   }
 };

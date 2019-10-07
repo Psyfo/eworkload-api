@@ -2,26 +2,25 @@ import * as PDMethods from './../../../../controllers/activity/personnel-develop
 
 export default {
   Query: {
-    personnelDevelopmentActivity: (root, args) => {
-      return PDMethods.personnelDevelopmentActivity(args.activityId);
+    personnelDevelopmentActivity: (root, activityId) => {
+      return PDMethods.personnelDevelopmentActivity(activityId);
     },
     personnelDevelopmentActivities: () => {
       return PDMethods.personnelDevelopmentActivities();
     },
-    personnelDevelopmentActivitiesByUser: (root, args) => {
-      return PDMethods.personnelDevelopmentActivitiesByUser(args.userId);
+    personnelDevelopmentActivitiesByUser: (root, { userId }) => {
+      return PDMethods.personnelDevelopmentActivitiesByUser(userId);
     }
   },
   Mutation: {
-    // PublicService
-    addPublicServiceActivity: (root, args) => {
-      PDMethods.addPublicServiceActivity(args.publicServiceActivity);
+    addPersonnelDevelopmentActivity: (root, { activity }) => {
+      PDMethods.addPersonnelDevelopmentActivity(activity);
     },
-    editPublicServiceActivity: (root, args) => {
-      PDMethods.editPublicServiceActivity(args.publicServiceActivity);
+    editPersonnelDevelopmentActivity: (root, { activity }) => {
+      PDMethods.editPersonnelDevelopmentActivity(activity);
     },
-    deletePublicServiceActivity: (root, args) => {
-      PDMethods.deletePublicServiceActivity(args.publicServiceActivity);
+    deletePersonnelDevelopmentActivity: (root, { activity }) => {
+      PDMethods.deletePersonnelDevelopmentActivity(activity);
     }
   }
 };

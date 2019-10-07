@@ -25,6 +25,8 @@ import FormalInstructionActivity from './activity/formal-instruction-activity';
 import PersonnelDevelopmentActivity from './activity/personnel-development-activity';
 import PublicServiceActivity from './activity/public-service-activity';
 import ResearchActivity from './activity/research-activity';
+import Upload from './upload';
+import File from './upload';
 
 const resolvers = [
   Activity,
@@ -51,7 +53,8 @@ const resolvers = [
   FormalInstructionActivity,
   PersonnelDevelopmentActivity,
   PublicServiceActivity,
-  ResearchActivity
+  ResearchActivity,
+  File
 ];
 
 export default mergeResolvers(resolvers);

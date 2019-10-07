@@ -30,13 +30,19 @@ const userSchema = new mongoose.Schema(
     photoUrl: {
       type: String
     },
-    disciplineId: {
-      type: String,
-      ref: 'Discipline'
-    },
+    disciplineIds: [
+      {
+        type: String,
+        ref: 'Discipline'
+      }
+    ],
     positionId: {
       type: String,
       ref: 'Position'
+    },
+    departmentId: {
+      type: String,
+      ref: 'Department'
     },
     gender: {
       type: String
@@ -46,6 +52,7 @@ const userSchema = new mongoose.Schema(
     },
     workFocusName: {
       type: String,
+      default: 'Balanced',
       ref: 'WorkFocus'
     },
     createdAt: {
@@ -61,11 +68,10 @@ const userSchema = new mongoose.Schema(
 );
 
 // VIRTUALS
-userSchema.virtual('discipline', {
+userSchema.virtual('disciplines', {
   ref: 'Discipline',
-  localField: 'disciplineId',
-  foreignField: 'disciplineId',
-  justOne: true
+  localField: 'disciplineIds',
+  foreignField: 'disciplineId'
 });
 userSchema.virtual('position', {
   ref: 'Position',
@@ -73,10 +79,22 @@ userSchema.virtual('position', {
   foreignField: 'positionId',
   justOne: true
 });
-userSchema.virtual('work-focus', {
+userSchema.virtual('workFocus', {
   ref: 'WorkFocus',
   localField: 'workFocusName',
   foreignField: 'name',
+  justOne: true
+});
+userSchema.virtual('workFocus', {
+  ref: 'WorkFocus',
+  localField: 'workFocusName',
+  foreignField: 'name',
+  justOne: true
+});
+userSchema.virtual('department', {
+  ref: 'Department',
+  localField: 'departmentId',
+  foreignField: 'departmentId',
   justOne: true
 });
 userSchema.virtual('full').get(function() {
@@ -109,7 +127,7 @@ userSchema.pre('save', function(next) {
   const user = this;
 
   // Generate default Work Focus
-  user.workFocusName = 'balanced';
+  user.workFocusName = 'Balanced';
 
   // Generate password and mail it
   user.password = Math.random()

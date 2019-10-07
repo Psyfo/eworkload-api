@@ -9,12 +9,10 @@ const academicAdministrationActivitySchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
     trim: true
   },
-  evidenceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidence'
+  evidence: {
+    type: String
   }
 });
 

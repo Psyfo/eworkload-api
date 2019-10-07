@@ -2,10 +2,10 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   interface Activity {
-    activityId: String!
-    userId: String!
+    activityId: String
+    userId: String
     user: User
-    dutyId: String!
+    dutyId: String
     duty: Duty
     approvalStatus: String
     createdAt: String

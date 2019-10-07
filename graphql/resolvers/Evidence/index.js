@@ -25,11 +25,7 @@ export default {
   },
   Mutation: {
     addEvidence: (root, args) => {
-      const newEvidence = new Evidence({
-        evidenceId: args.evidenceId,
-        name: args.name,
-        item: args.item
-      });
+      const newEvidence = new Evidence(args.evidence);
 
       return newEvidence
         .save()
@@ -43,13 +39,10 @@ export default {
     editEvidence: (root, args) => {
       return Evidence.findOneAndUpdate(
         {
-          evidenceId: args.evidenceId
+          evidenceId: args.evidence.evidenceId
         },
         {
-          $set: {
-            name: args.name,
-            item: args.item
-          }
+          $set: args.evidence
         }
       )
         .populate()
@@ -61,7 +54,7 @@ export default {
         });
     },
     deleteEvidence: (root, args) => {
-      return Evidence.findOneAndRemove(args)
+      return Evidence.findOneAndRemove(args.evidence)
         .populate()
         .then(result => {
           return result;

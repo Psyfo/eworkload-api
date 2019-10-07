@@ -12,21 +12,14 @@ const commInstructionActivitySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  evidenceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Evidence'
+  evidence: {
+    type: String
   }
 });
 
 // Hooks
 
 // Virtuals
-commInstructionActivitySchema.virtual('evidence', {
-  ref: 'Evidence',
-  localField: 'evidenceId',
-  foreignField: 'evidenceId',
-  justOne: true
-});
 
 const CommInstructionActivity = Activity.discriminator(
   'CommInstructionActivity',

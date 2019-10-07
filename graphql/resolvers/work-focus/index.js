@@ -2,22 +2,22 @@ import * as WorkFocusMethods from '../../../controllers/work-focus';
 
 export default {
   Query: {
-    workFocus: (root, args) => {
-      return WorkFocusMethods.workFocus(args.name);
+    workFocus: (root, { name }) => {
+      return WorkFocusMethods.workFocus(name);
     },
     workFocuses: () => {
       return WorkFocusMethods.workFocuses();
     }
   },
   Mutation: {
-    addWorkFocus: (root, args) => {
-      return WorkFocusMethods.addWorkFocus(args.workFocus);
+    addWorkFocus: (root, { workFocus }) => {
+      return WorkFocusMethods.addWorkFocus(workFocus);
     },
-    editWorkFocus: (root, args) => {
-      return WorkFocusMethods.editWorkFocus(args.workFocus);
+    editWorkFocus: (root, { workFocus }) => {
+      return WorkFocusMethods.editWorkFocus(workFocus);
     },
-    deleteWorkFocus: (root, args) => {
-      return WorkFocusMethods.deleteWorkFocus(args.workFocus);
+    deleteWorkFocus: (root, { workFocus }) => {
+      return WorkFocusMethods.deleteWorkFocus(workFocus);
     }
   }
 };

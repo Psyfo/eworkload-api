@@ -2,10 +2,10 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type ResearchActivity implements Activity {
-    activityId: String!
-    userId: String!
+    activityId: String
+    userId: String
     user: User
-    dutyId: String!
+    dutyId: String
     duty: Duty
     approvalStatus: String
     createdAt: String
@@ -13,16 +13,20 @@ export default gql`
     output: String
     title: String
     details: String
-    evidenceId: String
-    evidence: Evidence
+    dates: [String]
+    url: String
+    evidence: String
   }
 
   input ResearchActivityInput {
+    activityId: String
     userId: String
     dutyId: String
     output: String
     title: String
     details: String
+    dates: [String]
+    url: String
     evidenceId: String
   }
 
@@ -32,14 +36,8 @@ export default gql`
     researchActivitiesByUser(userId: String!): [ResearchActivity]
   }
   type Mutation {
-    addResearchActivity(
-      researchActivity: ResearchActivityInput
-    ): ResearchActivity
-    editResearchActivity(
-      researchActivity: ResearchActivityInput
-    ): ResearchActivity
-    deleteResearchActivity(
-      researchActivity: ResearchActivityInput
-    ): ResearchActivity
+    addResearchActivity(activity: ResearchActivityInput): ResearchActivity
+    editResearchActivity(activity: ResearchActivityInput): ResearchActivity
+    deleteResearchActivity(activity: ResearchActivityInput): ResearchActivity
   }
 `;

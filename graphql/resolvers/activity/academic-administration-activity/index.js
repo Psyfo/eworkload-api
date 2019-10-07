@@ -2,32 +2,26 @@ import * as AAMethods from './../../../../controllers/activity/academic-administ
 
 export default {
   Query: {
-    academicAdministrationActivity: (root, args) => {
-      return AAMethods.academicAdministrationActivity(args.activityId);
+    academicAdministrationActivity: (root, { activityId }) => {
+      return AAMethods.academicAdministrationActivity(activityId);
     },
     academicAdministrationActivities: () => {
       return AAMethods.academicAdministrationActivities();
     },
-    academicAdministrationActivitiesByUser: (root, args) => {
-      return AAMethods.academicAdministrationActivitiesByUser(args.userId);
+    academicAdministrationActivitiesByUser: (root, { userId }) => {
+      return AAMethods.academicAdministrationActivitiesByUser(userId);
     }
   },
   Mutation: {
     // AcademicAdministration
-    addAcademicAdministrationActivity: (root, args) => {
-      AAMethods.addAcademicAdministrationActivity(
-        args.academicAdministrationActivity
-      );
+    addAcademicAdministrationActivity: (root, { activity }) => {
+      AAMethods.addAcademicAdministrationActivity(activity);
     },
-    editAcademicAdministrationActivity: (root, args) => {
-      AAMethods.editAcademicAdministrationActivity(
-        args.academicAdministrationActivity
-      );
+    editAcademicAdministrationActivity: (root, { activity }) => {
+      AAMethods.editAcademicAdministrationActivity(activity);
     },
-    deleteAcademicAdministrationActivity: (root, args) => {
-      AAMethods.deleteAcademicAdministrationActivity(
-        args.academicAdministrationActivity
-      );
+    deleteAcademicAdministrationActivity: (root, { activity }) => {
+      AAMethods.deleteAcademicAdministrationActivity(activity);
     }
   }
 };
