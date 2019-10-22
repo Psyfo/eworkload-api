@@ -18,6 +18,7 @@ export default gql`
     offeringType: OfferingType
     qualificationId: String
     qualification: Qualification
+    evidence: String
   }
 
   input FormalInstructionActivityInput {
@@ -43,6 +44,8 @@ export default gql`
     split: Int
     studentId: String!
     student: Student
+    year: String
+    evidence: String
   }
 
   input SupervisionActivityInput {
@@ -52,6 +55,7 @@ export default gql`
     supervisionRole: String
     split: Int
     studentId: String
+    year: String
   }
 
   type Query {

@@ -7,22 +7,17 @@ let evidences = async () => {
   return await Evidence.find({});
 };
 
-let addEvidence = async evidence => {
-  const newEvidence = new Evidence(evidence);
-
-  return newEvidence.save();
-};
-let editEvidence = async evidence => {
+let updateEvidence = async evidence => {
   return await Evidence.findOneAndUpdate(
-    { evidenceId: evidence.evidenceId },
+    { activityId: evidence.activityId },
     {
       $set: evidence
     },
-    { upsert: true }
+    { upsert: true, new: true, setDefaultsOnInsert: true }
   );
 };
 let deleteEvidence = async evidence => {
   return await Evidence.findOneAndRemove(evidence);
 };
 
-export { evidence, evidences, addEvidence, editEvidence, deleteEvidence };
+export { evidence, evidences, updateEvidence, deleteEvidence };

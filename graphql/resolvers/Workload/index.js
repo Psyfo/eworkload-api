@@ -63,6 +63,30 @@ export default {
     },
     supervisionWorkload: async (root, { userId }) => {
       return await SWorkloadMethods.supervisionWorkload(userId);
+    },
+    initializeAAWorkload: async (root, { userId }) => {
+      return await AAWorkloadMethods.initializeAAWorkload(userId);
+    },
+    initializeCIWorkload: async (root, { userId }) => {
+      return await CIWorkloadMethods.initializeCIWorkload(userId);
+    },
+    initializeEMWorkload: async (root, { userId }) => {
+      return await EMWorkloadMethods.initializeEMWorkload(userId);
+    },
+    initializeFIWorkload: async (root, { userId }) => {
+      return await FIWorkloadMethods.initializeFIWorkload(userId);
+    },
+    initializePDWorkload: async (root, { userId }) => {
+      return await PDWorkloadMethods.initializePDWorkload(userId);
+    },
+    initializePSWorkload: async (root, { userId }) => {
+      return await PSWorkloadMethods.initializePSWorkload(userId);
+    },
+    initializeRWorkload: async (root, { userId }) => {
+      return await RWorkloadMethods.initializeRWorkload(userId);
+    },
+    initializeSWorkload: async (root, { userId }) => {
+      return await SWorkloadMethods.initializeSWorkload(userId);
     }
   },
 

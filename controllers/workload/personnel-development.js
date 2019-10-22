@@ -3,8 +3,14 @@ import * as PersonnelDevelopmentMethods from './../activity/personnel-developmen
 import PersonnelDevelopmentActivity from './../../models/activity/personnel-development-activity';
 import PersonnelDevelopmentWorkload from './../../models/workload/personnel-development';
 
+let initializePDWorkload = async userId => {
+  let pdWorkload = new PersonnelDevelopmentWorkload({
+    userId: userId
+  });
+  return await pdWorkload.save();
+};
 let personnelDevelopmentWorkload = async userId => {
-  return await PersonnelDevelopmentWorkload.find({ userId: userId });
+  return await PersonnelDevelopmentWorkload.findOne({ userId: userId });
 };
 let addPersonnelDevelopmentWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -58,7 +64,8 @@ let addPersonnelDevelopmentWorkload = async userId => {
     userId
   );
 
-  let personnelDevelopmentWorkload = new PersonnelDevelopmentWorkload({
+  let personnelDevelopmentWorkload = new PersonnelDevelopmentWorkload();
+  personnelDevelopmentWorkload = new PersonnelDevelopmentWorkload({
     userId: userId,
     personnelDevelopmentWorkloads: personnelDevelopmentWorkloads,
     globalTarrif: globalTarrif,
@@ -69,9 +76,8 @@ let addPersonnelDevelopmentWorkload = async userId => {
   });
 
   personnelDevelopmentWorkload.save();
-  console.log(personnelDevelopmentWorkload);
 
-  console.log('Academic Instruction Workload saved');
+  console.log('Personnel Development Workload saved');
 };
 let deletePersonnelDevelopmentWorkload = async userId => {
   return await PersonnelDevelopmentWorkload.findOneAndRemove({
@@ -80,6 +86,7 @@ let deletePersonnelDevelopmentWorkload = async userId => {
 };
 
 export {
+  initializePDWorkload,
   personnelDevelopmentWorkload,
   addPersonnelDevelopmentWorkload,
   deletePersonnelDevelopmentWorkload

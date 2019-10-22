@@ -8,69 +8,101 @@ const formalInstructionWorkloadSchema = new mongoose.Schema({
   formalInstructionWorkloads: [
     {
       activity: {
-        type: mongoose.Schema.Types.Mixed
+        type: mongoose.Schema.Types
+      },
+      module: {
+        type: mongoose.Schema.Types
+      },
+      block: {
+        type: mongoose.Schema.Types
+      },
+      offeringType: {
+        type: mongoose.Schema.Types
+      },
+      qualification: {
+        type: mongoose.Schema.Types
       },
       studentsEnrolled: {
-        type: Number
+        type: Number,
+        default: 0
       },
       baseContactHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       coordinationHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       studentSupportHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       preparationTimeHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       assessmentSettingsHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       examMarkingHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       courseworkMarkingHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       feedbackHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       formativeAssessmentHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       moderationHours: {
-        type: Number
+        type: Number,
+        default: 0
       },
       otherHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       totalHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfWorkFocusPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfAnnualHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfTotalHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       }
     }
   ],
   totalHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfWorkFocusPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfAnnualHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfTotalHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   }
 });
 

@@ -28,6 +28,7 @@ export default gql`
     studyPeriod: String
     groupSize: Int
     lecturedBy: String
+    enrolled: Int
     moderation: String
   }
 

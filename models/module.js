@@ -75,8 +75,14 @@ const moduleSchema = new mongoose.Schema(
     lecturedBy: {
       type: String
     },
+    enrolled: {
+      type: Number
+    },
     moderation: {
       type: String
+    },
+    isModular: {
+      type: Boolean
     },
     createdAt: {
       type: Date

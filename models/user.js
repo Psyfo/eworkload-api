@@ -2,6 +2,14 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 import validator from 'validator';
 import transporter from './../config/mail';
+import AcademicAdministrationWorkload from './workload/academic-administration';
+import CommunityInstructionWorkload from './workload/community-instruction';
+import ExecutiveManagementWorkload from './workload/executive-management';
+import FormalInstructionWorkload from './workload/formal-instruction';
+import PersonnelDevelopmentWorkload from './workload/personnel-development';
+import PublicServiceWorkload from './workload/public-service';
+import ResearchWorkload from './workload/research';
+import SupervisionWorkload from './workload/supervision';
 
 const userSchema = new mongoose.Schema(
   {
@@ -158,6 +166,64 @@ userSchema.pre('save', function(next) {
       user.password = hash;
     });
   });
+
+  let initializeAAWorkload = async userId => {
+    let aaWorkload = new AcademicAdministrationWorkload({
+      userId: userId
+    });
+    return await aaWorkload.save();
+  };
+  let initializeCIWorkload = async userId => {
+    let ciWorkload = new CommunityInstructionWorkload({
+      userId: userId
+    });
+    return await ciWorkload.save();
+  };
+  let initializeEMWorkload = async userId => {
+    let emWorkload = new ExecutiveManagementWorkload({
+      userId: userId
+    });
+    return await emWorkload.save();
+  };
+  let initializeFIWorkload = async userId => {
+    let fiWorkload = new FormalInstructionWorkload({
+      userId: userId
+    });
+
+    return await fiWorkload.save();
+  };
+  let initializePDWorkload = async userId => {
+    let pdWorkload = new PersonnelDevelopmentWorkload({
+      userId: userId
+    });
+    return await pdWorkload.save();
+  };
+  let initializePSWorkload = async userId => {
+    let psWorkload = new PublicServiceWorkload({
+      userId: userId
+    });
+    return await psWorkload.save();
+  };
+  let initializeRWorkload = async userId => {
+    let rWorkload = new ResearchWorkload({
+      userId: userId
+    });
+    return await rWorkload.save();
+  };
+  let initializeSWorkload = async userId => {
+    let sWorkload = new SupervisionWorkload({
+      userId: userId
+    });
+    return await sWorkload.save();
+  };
+  initializeAAWorkload(user.userId);
+  initializeCIWorkload(user.userId);
+  initializeEMWorkload(user.userId);
+  initializeFIWorkload(user.userId);
+  initializePDWorkload(user.userId);
+  initializePSWorkload(user.userId);
+  initializeRWorkload(user.userId);
+  initializeSWorkload(user.userId);
 
   // Indicates we're done and moves on to the next middleware
   next();

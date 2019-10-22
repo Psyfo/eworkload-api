@@ -3,8 +3,14 @@ import * as SupervisionMethods from './../activity/supervision';
 import SupervisionActivity from './../../models/activity/supervision-activity';
 import SupervisionWorkload from './../../models/workload/supervision';
 
+let initializeSWorkload = async userId => {
+  let sWorkload = new SupervisionWorkload({
+    userId: userId
+  });
+  return await sWorkload.save();
+};
 let supervisionWorkload = async userId => {
-  return await SupervisionWorkload.find({ userId: userId });
+  return await SupervisionWorkload.findOne({ userId: userId });
 };
 let addSupervisionWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -57,7 +63,8 @@ let addSupervisionWorkload = async userId => {
     userId
   );
 
-  let supervisionWorkload = new SupervisionWorkload({
+  let supervisionWorkload = new SupervisionWorkload();
+  supervisionWorkload = new SupervisionWorkload({
     userId: userId,
     supervisionWorkloads: supervisionWorkloads,
     totalHoursPerUser: totalHoursPerUser,
@@ -67,9 +74,8 @@ let addSupervisionWorkload = async userId => {
   });
 
   supervisionWorkload.save();
-  console.log(supervisionWorkload);
 
-  console.log('Academic Instruction Workload saved');
+  console.log('Supervision Workload saved');
 };
 let deleteSupervisionWorkload = async userId => {
   return await SupervisionWorkload.findOneAndRemove({
@@ -78,6 +84,7 @@ let deleteSupervisionWorkload = async userId => {
 };
 
 export {
+  initializeSWorkload,
   supervisionWorkload,
   addSupervisionWorkload,
   deleteSupervisionWorkload

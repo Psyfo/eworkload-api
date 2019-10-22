@@ -2,10 +2,10 @@ import { gql } from 'apollo-server-core';
 
 export default gql`
   type ResearchActivity implements Activity {
-    activityId: String
-    userId: String
+    activityId: String!
+    userId: String!
     user: User
-    dutyId: String
+    dutyId: String!
     duty: Duty
     approvalStatus: String
     createdAt: String
@@ -14,6 +14,8 @@ export default gql`
     title: String
     details: String
     dates: [String]
+    conferenceActivities: [String]
+    authors: [String]
     url: String
     evidence: String
   }
@@ -26,6 +28,8 @@ export default gql`
     title: String
     details: String
     dates: [String]
+    conferenceActivities: [String]
+    authors: [String]
     url: String
     evidenceId: String
   }

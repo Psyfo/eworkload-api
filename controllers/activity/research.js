@@ -1,5 +1,12 @@
 import ResearchActivity from '../../models/activity/research-activity';
+import * as AAWorkloadMethods from './../workload/academic-administration';
+import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
+import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
+import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
+import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
+import * as PSWorkloadMethods from '../../controllers/workload/public-service';
 import * as RWorkloadMethods from '../../controllers/workload/research';
+import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
@@ -51,7 +58,26 @@ let addResearchActivity = async activity => {
 
   // Write workload data
   try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      newResearchActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      newResearchActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      newResearchActivity.userId
+    );
+    await FIWorkloadMethods.addFormalInstructionWorkload(
+      newResearchActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      newResearchActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(
+      newResearchActivity.userId
+    );
     await RWorkloadMethods.addResearchWorkload(newResearchActivity.userId);
+    await SWorkloadMethods.addSupervisionWorkload(newResearchActivity.userId);
   } catch (error) {
     console.log(error);
   }
@@ -73,7 +99,24 @@ let deleteResearchActivity = async activity => {
 
   // Write workload data
   try {
-    await RWorkloadMethods.addResearchWorkload(activity.userId);
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      deletedActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      deletedActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      deletedActivity.userId
+    );
+    await FIWorkloadMethods.addFormalInstructionWorkload(
+      deletedActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      deletedActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
+    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
+    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
   } catch (error) {
     console.log(error);
   }

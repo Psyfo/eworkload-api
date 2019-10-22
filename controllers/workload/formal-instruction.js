@@ -1,10 +1,20 @@
 import * as FormalInstructionMethods from './../activity/formal-instruction';
+import * as ModuleMethods from './../module';
+import * as BlockMethods from './../block';
+import * as OfferingTypeMethods from './../offering-type';
+import * as QualificationMethods from './../qualification';
 
-import FormalInstructionActivity from './../../models/activity/formal-instruction-activity';
 import FormalInstructionWorkload from './../../models/workload/formal-instruction';
 
+let initializeFIWorkload = async userId => {
+  let fiWorkload = new FormalInstructionWorkload({
+    userId: userId
+  });
+
+  return await fiWorkload.save();
+};
 let formalInstructionWorkload = async userId => {
-  return await FormalInstructionWorkload.find({ userId: userId });
+  return await FormalInstructionWorkload.findOne({ userId: userId });
 };
 
 let addFormalInstructionWorkload = async userId => {
@@ -18,13 +28,9 @@ let addFormalInstructionWorkload = async userId => {
 
   let formalInstructionWorkloads = [];
 
-  let activities = await FormalInstructionActivity.find({
-    userId: userId
-  })
-    .populate('module')
-    .populate('block')
-    .populate('offeringType')
-    .populate('qualification');
+  let activities = await FormalInstructionMethods.formalInstructionActivitiesByUser(
+    userId
+  );
 
   for (let activity of activities) {
     let studentsEnrolled = await FormalInstructionMethods.formalInstructionStudentsEnrolled(
@@ -75,9 +81,26 @@ let addFormalInstructionWorkload = async userId => {
     let percentageOfTotalHoursPerActivity = await FormalInstructionMethods.formalInstructionPercentageOfTotalHoursPerActivity(
       activity.activityId
     );
+    let module = await ModuleMethods.module(
+      activity.moduleId,
+      activity.blockId,
+      activity.offeringTypeId,
+      activity.qualificationId
+    );
+    let block = await BlockMethods.block(activity.blockId);
+    let offeringType = await OfferingTypeMethods.offeringType(
+      activity.offeringTypeId
+    );
+    let qualification = await QualificationMethods.qualification(
+      activity.qualificationId
+    );
 
     formalInstructionWorkloads.push({
       activity: activity,
+      module: module,
+      block: block,
+      offeringType: offeringType,
+      qualification: qualification,
       studentsEnrolled: studentsEnrolled,
       baseContactHours: baseContactHours,
       coordinationHours: coordinationHours,
@@ -96,27 +119,36 @@ let addFormalInstructionWorkload = async userId => {
       percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
     });
   }
-  let totalHoursPerUser = await FormalInstructionMethods.formalInstructionTotalHoursPerUser(
+  let totalHoursPerUser = 0;
+
+  totalHoursPerUser = await FormalInstructionMethods.formalInstructionTotalHoursPerUser(
     userId
   );
-  let percentageOfWorkFocusPerUser = await FormalInstructionMethods.formalInstructionPercentageOfWorkFocusPerUser(
+  let percentageOfWorkFocusPerUser = 0;
+  percentageOfWorkFocusPerUser = await FormalInstructionMethods.formalInstructionPercentageOfWorkFocusPerUser(
     userId
   );
-  let percentageOfAnnualHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfAnnualHoursPerUser(
+  let percentageOfAnnualHoursPerUser = 0;
+  percentageOfAnnualHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfAnnualHoursPerUser(
     userId
   );
-  let percentageOfTotalHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfTotalHoursPerUser(
+  let percentageOfTotalHoursPerUser = 0;
+  percentageOfTotalHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfTotalHoursPerUser(
     userId
   );
 
-  return {
+  let formalInstructionWorkload = new FormalInstructionWorkload({
     userId: userId,
     formalInstructionWorkloads: formalInstructionWorkloads,
     totalHoursPerUser: totalHoursPerUser,
     percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
     percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  };
+  });
+
+  await formalInstructionWorkload.save();
+
+  console.log('Formal Instruction Workload saved');
 };
 
 let deleteFormalInstructionWorkload = async userId => {
@@ -126,6 +158,7 @@ let deleteFormalInstructionWorkload = async userId => {
 };
 
 export {
+  initializeFIWorkload,
   formalInstructionWorkload,
   addFormalInstructionWorkload,
   deleteFormalInstructionWorkload

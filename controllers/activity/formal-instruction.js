@@ -1,5 +1,12 @@
 import FormalInstructionActivity from '../../models/activity/formal-instruction-activity';
+import * as AAWorkloadMethods from './../workload/academic-administration';
+import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
+import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
 import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
+import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
+import * as PSWorkloadMethods from '../../controllers/workload/public-service';
+import * as RWorkloadMethods from '../../controllers/workload/research';
+import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as EnrollmentMethods from '../enrollment';
 import * as ModuleMethods from '../module';
 import * as WorkFocusMethods from './../work-focus';
@@ -118,7 +125,28 @@ let addFormalInstructionActivity = async activity => {
 
   // Write workload data
   try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      newFormalInstructionActivity.userId
+    );
     await FIWorkloadMethods.addFormalInstructionWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await RWorkloadMethods.addResearchWorkload(
+      newFormalInstructionActivity.userId
+    );
+    await SWorkloadMethods.addSupervisionWorkload(
       newFormalInstructionActivity.userId
     );
   } catch (error) {
@@ -128,6 +156,7 @@ let addFormalInstructionActivity = async activity => {
   // Return activity
   return await formalInstructionActivity(formalInstructionActivity.activityId);
 };
+
 let editFormalInstructionActivity = async activity => {
   return await FormalInstructionActivity.findOneAndUpdate(
     { activityId: activity.activityId },
@@ -137,6 +166,7 @@ let editFormalInstructionActivity = async activity => {
     { upsert: true }
   );
 };
+
 let deleteFormalInstructionActivity = async activity => {
   await ModuleMethods.unassignUserFromModule(
     activity.moduleId,
@@ -144,11 +174,31 @@ let deleteFormalInstructionActivity = async activity => {
     activity.offeringTypeId,
     activity.qualificationId
   );
-  const deletedActivity = await FormalInstructionActivity.findOneAndRemove(activity);
+  const deletedActivity = await FormalInstructionActivity.findOneAndRemove(
+    activity
+  );
+  console.log('Deleted activity:', deletedActivity);
 
   // Write workload data
   try {
-    await FIWorkloadMethods.addFormalInstructionWorkload(activity.userId);
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      deletedActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      deletedActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      deletedActivity.userId
+    );
+    await FIWorkloadMethods.addFormalInstructionWorkload(
+      deletedActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      deletedActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
+    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
+    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
   } catch (error) {
     console.log(error);
   }
@@ -190,7 +240,6 @@ let formalInstructionBaseContactHours = async activityId => {
   let activity = await FormalInstructionActivity.findOne({
     activityId: activityId
   }).populate({ path: 'module', model: 'Module' });
-  console.log('Activity:', activity);
 
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);

@@ -11,6 +11,8 @@ export default gql`
     createdAt: String
     updatedAt: String
     title: String
+    qualificationId: String
+    qualification: Qualification
     description: String
     evidence: String
   }
@@ -20,6 +22,7 @@ export default gql`
     userId: String
     dutyId: String
     title: String
+    qualificationId: String
     description: String
   }
 

@@ -11,33 +11,42 @@ const publicServiceWorkloadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed
       },
       totalHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfWorkFocusPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfAnnualHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       },
       percentageOfTotalHoursPerActivity: {
-        type: Number
+        type: Number,
+        default: 0
       }
     }
   ],
   globalTarrif: {
-    type: Number
+    type: Number,
+    default: 0
   },
   totalHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfWorkFocusPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfAnnualHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   },
   percentageOfTotalHoursPerUser: {
-    type: Number
+    type: Number,
+    default: 0
   }
 });
 

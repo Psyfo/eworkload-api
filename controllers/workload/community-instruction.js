@@ -3,8 +3,14 @@ import * as CommunityInstructionMethods from './../activity/community-instructio
 import CommunityInstructionActivity from './../../models/activity/community-instruction-activity';
 import CommunityInstructionWorkload from './../../models/workload/community-instruction';
 
+let initializeCIWorkload = async userId => {
+  let ciWorkload = new CommunityInstructionWorkload({
+    userId: userId
+  });
+  return await ciWorkload.save();
+};
 let communityInstructionWorkload = async userId => {
-  return await CommunityInstructionWorkload.find({ userId: userId });
+  return await CommunityInstructionWorkload.findOne({ userId: userId });
 };
 let addCommunityInstructionWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -58,7 +64,8 @@ let addCommunityInstructionWorkload = async userId => {
     userId
   );
 
-  let communityInstructionWorkload = new CommunityInstructionWorkload({
+  let communityInstructionWorkload = new CommunityInstructionWorkload();
+  communityInstructionWorkload = new CommunityInstructionWorkload({
     userId: userId,
     communityInstructionWorkloads: communityInstructionWorkloads,
     globalTarrif: globalTarrif,
@@ -69,7 +76,6 @@ let addCommunityInstructionWorkload = async userId => {
   });
 
   communityInstructionWorkload.save();
-  console.log(communityInstructionWorkload);
 
   console.log('Community Instruction Workload saved');
 };
@@ -80,6 +86,7 @@ let deleteCommunityInstructionWorkload = async userId => {
 };
 
 export {
+  initializeCIWorkload,
   communityInstructionWorkload,
   addCommunityInstructionWorkload,
   deleteCommunityInstructionWorkload

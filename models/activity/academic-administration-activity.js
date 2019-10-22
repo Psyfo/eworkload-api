@@ -7,6 +7,9 @@ const academicAdministrationActivitySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  qualificationId: {
+    type: String
+  },
   description: {
     type: String,
     trim: true
@@ -14,6 +17,13 @@ const academicAdministrationActivitySchema = new mongoose.Schema({
   evidence: {
     type: String
   }
+});
+
+academicAdministrationActivitySchema.virtual('qualification', {
+  ref: 'Qualification',
+  localField: 'qualificationId',
+  foreignField: 'qualificationId',
+  justOne: true
 });
 
 const AcademicAdministrationActivity = Activity.discriminator(

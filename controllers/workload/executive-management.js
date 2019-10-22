@@ -3,8 +3,14 @@ import * as ExecutiveManagementMethods from './../activity/executive-management'
 import ExecutiveManagementActivity from './../../models/activity/executive-management-activity';
 import ExecutiveManagementWorkload from './../../models/workload/executive-management';
 
+let initializeEMWorkload = async userId => {
+  let emWorkload = new ExecutiveManagementWorkload({
+    userId: userId
+  });
+  return await emWorkload.save();
+};
 let executiveManagementWorkload = async userId => {
-  return await ExecutiveManagementWorkload.find({ userId: userId });
+  return await ExecutiveManagementWorkload.findOne({ userId: userId });
 };
 let addExecutiveManagementWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -58,7 +64,8 @@ let addExecutiveManagementWorkload = async userId => {
     userId
   );
 
-  let executiveManagementWorkload = new ExecutiveManagementWorkload({
+  let executiveManagementWorkload = new ExecutiveManagementWorkload();
+  executiveManagementWorkload = new ExecutiveManagementWorkload({
     userId: userId,
     executiveManagementWorkloads: executiveManagementWorkloads,
     globalTarrif: globalTarrif,
@@ -69,9 +76,8 @@ let addExecutiveManagementWorkload = async userId => {
   });
 
   executiveManagementWorkload.save();
-  console.log(executiveManagementWorkload);
 
-  console.log('Academic Instruction Workload saved');
+  console.log('Executive Management Workload saved');
 };
 let deleteExecutiveManagementWorkload = async userId => {
   return await ExecutiveManagementWorkload.findOneAndRemove({
@@ -80,6 +86,7 @@ let deleteExecutiveManagementWorkload = async userId => {
 };
 
 export {
+  initializeEMWorkload,
   executiveManagementWorkload,
   addExecutiveManagementWorkload,
   deleteExecutiveManagementWorkload

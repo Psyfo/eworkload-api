@@ -3,8 +3,14 @@ import * as ResearchMethods from './../activity/research';
 import ResearchActivity from './../../models/activity/research-activity';
 import ResearchWorkload from './../../models/workload/research';
 
+let initializeRWorkload = async userId => {
+  let rWorkload = new ResearchWorkload({
+    userId: userId
+  });
+  return await rWorkload.save();
+};
 let researchWorkload = async userId => {
-  return await ResearchWorkload.find({ userId: userId });
+  return await ResearchWorkload.findOne({ userId: userId });
 };
 let addResearchWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -56,7 +62,8 @@ let addResearchWorkload = async userId => {
     userId
   );
 
-  let researchWorkload = new ResearchWorkload({
+  let researchWorkload = new ResearchWorkload();
+  researchWorkload = new ResearchWorkload({
     userId: userId,
     researchWorkloads: researchWorkloads,
     globalTarrif: globalTarrif,
@@ -67,9 +74,8 @@ let addResearchWorkload = async userId => {
   });
 
   researchWorkload.save();
-  console.log(researchWorkload);
 
-  console.log('Academic Instruction Workload saved');
+  console.log('Research Workload saved');
 };
 let deleteResearchWorkload = async userId => {
   return await ResearchWorkload.findOneAndRemove({
@@ -77,4 +83,9 @@ let deleteResearchWorkload = async userId => {
   });
 };
 
-export { researchWorkload, addResearchWorkload, deleteResearchWorkload };
+export {
+  initializeRWorkload,
+  researchWorkload,
+  addResearchWorkload,
+  deleteResearchWorkload
+};

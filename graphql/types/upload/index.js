@@ -10,16 +10,24 @@ export default gql`
   type Query {
     files: [File]
   }
+  type Location {
+    location: String
+  }
 
   type Mutation {
     singleUpload(file: Upload!): File!
     multipleUpload(files: [Upload!]!): [File!]!
-    uploadProfilePicture(file: Upload!, userId: String!): File!
-    uploadEvidence(file: Upload!, activityId: String!): File!
-    uploadAcademicAdministrationEvidence(
+    uploadProfilePicture(file: Upload!, userId: String!): Location
+    uploadEvidence(file: Upload!, activityId: String!): Location
+    uploadAcademicAdministrationEvidenceAWS(
       file: Upload!
+      userId: String!
       activityId: String!
-    ): File!
-    uploadResearchEvidence(file: Upload!, activityId: String!): File!
+    ): Location
+    uploadResearchEvidenceAWS(
+      file: Upload!
+      userId: String!
+      activityId: String!
+    ): Location
   }
 `;

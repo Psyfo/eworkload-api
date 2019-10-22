@@ -1,4 +1,11 @@
 import SupervisionActivity from './../../models/activity/supervision-activity';
+import * as AAWorkloadMethods from './../workload/academic-administration';
+import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
+import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
+import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
+import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
+import * as PSWorkloadMethods from '../../controllers/workload/public-service';
+import * as RWorkloadMethods from '../../controllers/workload/research';
 import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
@@ -30,6 +37,25 @@ let addSupervisionActivity = async activity => {
 
   // Write workload data
   try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      newSupervisionActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      newSupervisionActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      newSupervisionActivity.userId
+    );
+    await FIWorkloadMethods.addFormalInstructionWorkload(
+      newSupervisionActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      newSupervisionActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(
+      newSupervisionActivity.userId
+    );
+    await RWorkloadMethods.addResearchWorkload(newSupervisionActivity.userId);
     await SWorkloadMethods.addSupervisionWorkload(
       newSupervisionActivity.userId
     );
@@ -54,7 +80,24 @@ let deleteSupervisionActivity = async activity => {
 
   // Write workload data
   try {
-    await SWorkloadMethods.addSupervisionWorkload(activity.userId);
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(
+      deletedActivity.userId
+    );
+    await CIWorkloadMethods.addCommunityInstructionWorkload(
+      deletedActivity.userId
+    );
+    await EMWorkloadMethods.addExecutiveManagementWorkload(
+      deletedActivity.userId
+    );
+    await FIWorkloadMethods.addFormalInstructionWorkload(
+      deletedActivity.userId
+    );
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
+      deletedActivity.userId
+    );
+    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
+    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
+    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
   } catch (error) {
     console.log(error);
   }
@@ -68,11 +111,13 @@ let supervisionGlobalTarrif = async () => {
   return 0;
 };
 let supervisionTotalHoursPerActivity = async activityId => {
-  //let activity = await supervisionActivity(activityId);
-  //let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
+  const activity = await supervisionActivity(activityId);
 
-  //const total = serviceHours / 10;
-  return 40;
+  let total = 40;
+  if (activity.split !== 100) {
+    total = 40 * (activity.split / 100);
+  }
+  return total;
 };
 let supervisionTotalHoursPerUser = async userId => {
   let globalTarrif = await supervisionGlobalTarrif();

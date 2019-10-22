@@ -8,39 +8,48 @@ export default {
   },
   Mutation: {
     singleUpload: async (root, { file }) => {
-      console.log('singleUpload resolver firing:', file);
+      console.log('singleUpload resolver firing:', await file);
 
       return await FileMethods.processUpload(file);
     },
     uploadProfilePicture: async (root, { file, userId }) => {
-      console.log('uploadProfilePic resolver firing:', file);
+      console.log('uploadProfilePic resolver firing');
+      console.log('file: ', await file);
       console.log('User ID: ', userId);
 
-      return await FileMethods.uploadProfilePicture(file, userId);
+      return await FileMethods.uploadProfilePictureAWS(file, userId);
     },
-    uploadEvidence: async (root, { file, activityId }) => {
-      console.log('uploadEvidence resolver firing:', file);
+    uploadEvidence: async (root, { file, userId, activityId }) => {
+      console.log('uploadEvidence resolver firing');
+      console.log('file: ', await file);
+      console.log('activityId: ', activityId);
 
-      return await FileMethods.uploadEvidence(file, activityId);
+      return await FileMethods.uploadEvidenceAWS(file, userId, activityId);
     },
-    uploadAcademicAdministrationEvidence: async (
+    uploadAcademicAdministrationEvidenceAWS: async (
       root,
-      { file, activityId }
+      { file, userId, activityId }
     ) => {
-      console.log(
-        'uploadAcademicAdministrationEvidence resolver firing:',
-        file
-      );
+      console.log('uploadAAEvidence resolver firing');
+      console.log('file: ', await file);
+      console.log('activityId: ', activityId);
 
-      return await FileMethods.uploadAcademicAdministrationEvidence(
+      return await FileMethods.uploadAcademicAdministrationEvidenceAWS(
         file,
+        userId,
         activityId
       );
     },
-    uploadResearchEvidence: async (root, { file, activityId }) => {
-      console.log('uploadResearchEvidence resolver firing:', file);
+    uploadResearchEvidenceAWS: async (root, { file, userId, activityId }) => {
+      console.log('uploadAAEvidence resolver firing');
+      console.log('file: ', await file);
+      console.log('activityId: ', activityId);
 
-      return await FileMethods.uploadResearchEvidence(file, activityId);
+      return await FileMethods.uploadResearchEvidenceAWS(
+        file,
+        userId,
+        activityId
+      );
     }
 
     // async multipleUpload(

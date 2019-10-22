@@ -10,6 +10,25 @@ const researchActivitySchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  conferenceActivities: [
+    {
+      type: String
+    }
+  ],
+  authors: [
+    {
+      type: String
+    }
+  ],
+  url: {
+    type: String,
+    trim: true
+  },
+  dates: [
+    {
+      type: Date
+    }
+  ],
   details: {
     type: String,
     trim: true

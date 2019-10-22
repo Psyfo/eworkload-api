@@ -21,17 +21,14 @@ const activitySchema = new mongoose.Schema(
       type: String,
       default: 'awaiting'
     },
-    workload: {
-      type: Number
-    },
-    other: {
-      type: Number
-    },
     createdAt: {
       type: Date
     },
     updatedAt: {
       type: Date
+    },
+    evidence: {
+      type: String
     }
   },
   {

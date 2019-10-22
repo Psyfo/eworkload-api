@@ -6,14 +6,28 @@ import jwt from 'jsonwebtoken';
 let user = async userId => {
   return await User.findOne({ userId: userId })
     .populate('disciplines')
-    .populate('department')
+    .populate({
+      path: 'department',
+      model: 'Department',
+      populate: {
+        path: 'faculty',
+        model: 'Faculty'
+      }
+    })
     .populate('position')
     .populate('workFocus');
 };
 let users = async () => {
   return await User.find({})
     .populate('disciplines')
-    .populate('department')
+    .populate({
+      path: 'department',
+      model: 'Department',
+      populate: {
+        path: 'faculty',
+        model: 'Faculty'
+      }
+    })
     .populate('position')
     .populate('workFocus');
 };
@@ -53,7 +67,14 @@ let login = async (userId, password) => {
 
   const user = await User.findOne({ userId: userId })
     .populate('disciplines')
-    .populate('department')
+    .populate({
+      path: 'department',
+      model: 'Department',
+      populate: {
+        path: 'faculty',
+        model: 'Faculty'
+      }
+    })
     .populate('position')
     .populate('workFocus');
 

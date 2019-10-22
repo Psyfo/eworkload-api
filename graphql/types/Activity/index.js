@@ -8,6 +8,7 @@ export default gql`
     dutyId: String
     duty: Duty
     approvalStatus: String
+    evidence: String
     createdAt: String
     updatedAt: String
   }

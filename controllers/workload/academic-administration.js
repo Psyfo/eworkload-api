@@ -3,9 +3,17 @@ import * as AcademicAdministrationMethods from './../activity/academic-administr
 import AcademicAdministrationActivity from './../../models/activity/academic-administration-activity';
 import AcademicAdministrationWorkload from './../../models/workload/academic-administration';
 
+let initializeAAWorkload = async userId => {
+  let aaWorkload = new AcademicAdministrationWorkload({
+    userId: userId
+  });
+  return await aaWorkload.save();
+};
+
 let academicAdministrationWorkload = async userId => {
   return await AcademicAdministrationWorkload.findOne({ userId: userId });
 };
+
 let addAcademicAdministrationWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
@@ -58,22 +66,22 @@ let addAcademicAdministrationWorkload = async userId => {
     userId
   );
 
-  let academicAdministrationWorkload = await new AcademicAdministrationWorkload(
-    {
-      userId: userId,
-      academicAdministrationWorkloads: academicAdministrationWorkloads,
-      globalTarrif: globalTarrif,
-      totalHoursPerUser: totalHoursPerUser,
-      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    }
-  );
+  let academicAdministrationWorkload = new AcademicAdministrationWorkload();
+  academicAdministrationWorkload = await new AcademicAdministrationWorkload({
+    userId: userId,
+    academicAdministrationWorkloads: academicAdministrationWorkloads,
+    globalTarrif: globalTarrif,
+    totalHoursPerUser: totalHoursPerUser,
+    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+  });
 
   await academicAdministrationWorkload.save();
 
   console.log('Academic Administration Workload saved');
 };
+
 let deleteAcademicAdministrationWorkload = async userId => {
   return await AcademicAdministrationWorkload.findOneAndRemove({
     userId: userId
@@ -81,6 +89,7 @@ let deleteAcademicAdministrationWorkload = async userId => {
 };
 
 export {
+  initializeAAWorkload,
   academicAdministrationWorkload,
   addAcademicAdministrationWorkload,
   deleteAcademicAdministrationWorkload

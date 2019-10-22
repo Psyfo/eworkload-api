@@ -13,9 +13,17 @@ const supervisionActivitySchema = new mongoose.Schema({
   studentId: {
     type: String,
     ref: 'Student'
+  },
+  year: {
+    type: String
   }
 });
 
+// Index
+supervisionActivitySchema.index(
+  { studentId: 1, userId: 1, year: 1 },
+  { unique: true }
+);
 // Virtuals
 supervisionActivitySchema.virtual('student', {
   ref: 'Student',

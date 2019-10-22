@@ -3,8 +3,14 @@ import * as PublicServiceMethods from './../activity/public-service';
 import PublicServiceActivity from './../../models/activity/public-service-activity';
 import PublicServiceWorkload from './../../models/workload/public-service';
 
+let initializePSWorkload = async userId => {
+  let psWorkload = new PublicServiceWorkload({
+    userId: userId
+  });
+  return await psWorkload.save();
+};
 let publicServiceWorkload = async userId => {
-  return await PublicServiceWorkload.find({ userId: userId });
+  return await PublicServiceWorkload.findOne({ userId: userId });
 };
 let addPublicServiceWorkload = async userId => {
   // Only one workload record so delete first if it exists
@@ -58,7 +64,8 @@ let addPublicServiceWorkload = async userId => {
     userId
   );
 
-  let publicServiceWorkload = new PublicServiceWorkload({
+  let publicServiceWorkload = new PublicServiceWorkload();
+  publicServiceWorkload = new PublicServiceWorkload({
     userId: userId,
     publicServiceWorkloads: publicServiceWorkloads,
     globalTarrif: globalTarrif,
@@ -69,9 +76,8 @@ let addPublicServiceWorkload = async userId => {
   });
 
   publicServiceWorkload.save();
-  console.log(publicServiceWorkload);
 
-  console.log('Academic Instruction Workload saved');
+  console.log('Public Service Workload saved');
 };
 let deletePublicServiceWorkload = async userId => {
   return await PublicServiceWorkload.findOneAndRemove({
@@ -80,6 +86,7 @@ let deletePublicServiceWorkload = async userId => {
 };
 
 export {
+  initializePSWorkload,
   publicServiceWorkload,
   addPublicServiceWorkload,
   deletePublicServiceWorkload
