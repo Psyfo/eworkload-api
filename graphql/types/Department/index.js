@@ -6,12 +6,15 @@ export default gql`
     name: String!
     facultyId: String!
     faculty: Faculty
+    hodId: String
+    hod: User
   }
 
   input DepartmentInput {
     departmentId: String
     name: String
     facultyId: String
+    hodId: String
   }
 
   type Query {

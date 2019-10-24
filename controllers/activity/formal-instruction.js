@@ -112,8 +112,8 @@ let addFormalInstructionActivity = async activity => {
     activity
   );
 
-  // Assign selected module to user
-  ModuleMethods.assignUserToModule(
+  // Assign module
+  await ModuleMethods.assignUserToModule(
     activity.moduleId,
     activity.blockId,
     activity.offeringTypeId,
@@ -156,8 +156,40 @@ let addFormalInstructionActivity = async activity => {
   // Return activity
   return await formalInstructionActivity(formalInstructionActivity.activityId);
 };
-
 let editFormalInstructionActivity = async activity => {
+  // Assign module
+  await ModuleMethods.assignUserToModule(
+    activity.moduleId,
+    activity.blockId,
+    activity.offeringTypeId,
+    activity.qualificationId,
+    activity.userId
+  );
+
+  // Write workload data
+  try {
+    await AAWorkloadMethods.addAcademicAdministrationWorkload(activity.userId);
+    await CIWorkloadMethods.addCommunityInstructionWorkload(activity.userId);
+    await EMWorkloadMethods.addExecutiveManagementWorkload(activity.userId);
+    await FIWorkloadMethods.addFormalInstructionWorkload(activity.userId);
+    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(activity.userId);
+    await PSWorkloadMethods.addPublicServiceWorkload(activity.userId);
+    await RWorkloadMethods.addResearchWorkload(activity.userId);
+    await SWorkloadMethods.addSupervisionWorkload(activity.userId);
+  } catch (error) {
+    console.log(error);
+  }
+
+  let previousActivity = await formalInstructionActivity(activity.activityId);
+  await ModuleMethods.unassignUserFromModule(
+    previousActivity.moduleId,
+    previousActivity.blockId,
+    previousActivity.offeringTypeId,
+    previousActivity.qualificationId,
+    previousActivity.userId
+  );
+
+  // Edit Activity
   return await FormalInstructionActivity.findOneAndUpdate(
     { activityId: activity.activityId },
     {
@@ -166,7 +198,6 @@ let editFormalInstructionActivity = async activity => {
     { upsert: true }
   );
 };
-
 let deleteFormalInstructionActivity = async activity => {
   await ModuleMethods.unassignUserFromModule(
     activity.moduleId,

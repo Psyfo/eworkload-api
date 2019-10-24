@@ -1,10 +1,25 @@
 import Student from './../models/student.js';
+import * as SupervisionMethods from './../controllers/activity/supervision';
 
 let student = async studentId => {
   return await Student.findOne({ studentId: studentId });
 };
 let students = async () => {
   return await Student.find({});
+};
+
+let studentsUnassigned = async userId => {
+  // supervision activities
+  const activities = await SupervisionMethods.supervisionActivitiesByUser(
+    userId
+  );
+  // students already assigned
+  const students = activities.map(activity => {
+    return activity.student.studentId;
+  });
+  console.log('Students: ', students);
+
+  return await Student.find({ studentId: { $nin: students } });
 };
 let addStudent = async student => {
   const newStudent = new Student(student);
@@ -23,4 +38,11 @@ let deleteStudent = async student => {
   return await Student.findOneAndRemove(student);
 };
 
-export { student, students, addStudent, editStudent, deleteStudent };
+export {
+  student,
+  students,
+  studentsUnassigned,
+  addStudent,
+  editStudent,
+  deleteStudent
+};

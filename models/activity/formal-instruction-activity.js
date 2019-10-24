@@ -20,6 +20,9 @@ const formalInstructionActivitySchema = new mongoose.Schema(
       type: String,
       ref: 'Qualification'
     },
+    isCoordinator: {
+      type: Boolean
+    },
     createdAt: {
       type: Date
     },

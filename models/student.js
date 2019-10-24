@@ -34,10 +34,6 @@ const studentSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    year: {
-      type: String,
-      default: new Date().getFullYear().toString()
-    },
     graduationDate: {
       type: String
     },

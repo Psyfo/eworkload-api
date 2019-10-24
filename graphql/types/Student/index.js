@@ -8,7 +8,6 @@ export default gql`
     email: String
     type: String
     title: String
-    year: String
     graduationDate: String
   }
 
@@ -19,12 +18,12 @@ export default gql`
     email: String
     type: String
     title: String
-    year: String
   }
 
   type Query {
     student(studentId: String!): Student
     students: [Student]
+    studentsUnassigned(userId: String!): [Student]
   }
 
   type Mutation {

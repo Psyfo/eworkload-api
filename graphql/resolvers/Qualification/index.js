@@ -8,6 +8,9 @@ export default {
     qualifications: () => {
       return QualificationMethods.qualifications();
     },
+    qualificationsPostgraduate: () => {
+      return QualificationMethods.qualificationsPostgraduate();
+    },
     qualificationsNoEnrollment: async () => {
       return QualificationMethods.qualificationsNoEnrollment();
     }

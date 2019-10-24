@@ -1,19 +1,24 @@
 import Department from './../models/department.js';
 
 let department = async departmentId => {
-  return await Department.findOne({ departmentId: departmentId }).populate(
-    'faculty'
-  );
+  return await Department.findOne({ departmentId: departmentId })
+    .populate('faculty')
+    .populate('hod');
 };
 
 let departments = async () => {
-  return await Department.find({}).populate('faculty');
+  return await Department.find({})
+    .populate('faculty')
+    .populate('hod');
 };
 
 let addDepartment = async department => {
   const newDepartment = await new Department(department);
 
-  return await newDepartment.save().populate('faculty');
+  return await newDepartment
+    .save()
+    .populate('faculty')
+    .populate('hod');
 };
 
 let editDepartment = async department => {
@@ -23,11 +28,15 @@ let editDepartment = async department => {
       $set: department
     },
     { upsert: true }
-  ).populate('faculty');
+  )
+    .populate('faculty')
+    .populate('hod');
 };
 
 let deleteDepartment = async department => {
-  return await Department.findOneAndRemove(department).populate('faculty');
+  return await Department.findOneAndRemove(department)
+    .populate('faculty')
+    .populate('hod');
 };
 
 export {

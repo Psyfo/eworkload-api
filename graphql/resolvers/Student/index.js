@@ -7,6 +7,9 @@ export default {
     },
     students: () => {
       return StudentMethods.students();
+    },
+    studentsUnassigned: (root, { userId }) => {
+      return StudentMethods.studentsUnassigned(userId);
     }
   },
   Mutation: {

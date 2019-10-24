@@ -17,6 +17,10 @@ const departmentSchema = new mongoose.Schema(
       type: String,
       ref: 'Faculty'
     },
+    hodId: {
+      type: String,
+      ref: 'User'
+    },
     createdAt: {
       type: Date
     },
@@ -42,6 +46,12 @@ departmentSchema.virtual('faculty', {
   ref: 'Faculty',
   localField: 'facultyId',
   foreignField: 'facultyId',
+  justOne: true
+});
+departmentSchema.virtual('hod', {
+  ref: 'User',
+  localField: 'hodId',
+  foreignField: 'userId',
   justOne: true
 });
 

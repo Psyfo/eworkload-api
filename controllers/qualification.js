@@ -12,6 +12,12 @@ let qualifications = async () => {
   return await Qualification.find({}).populate('department');
 };
 
+let qualificationsPostgraduate = async () => {
+  return await Qualification.find({
+    type: { $in: ['Masters', 'Doctorate'] }
+  }).populate('department');
+};
+
 let qualificationsNoEnrollment = async () => {
   const year = new Date().getFullYear().toString();
   let enrollments = await Enrollment.find({ enrollmentYear: year });
@@ -47,6 +53,7 @@ let deleteQualification = async qualification => {
 export {
   qualification,
   qualifications,
+  qualificationsPostgraduate,
   qualificationsNoEnrollment,
   addQualification,
   editQualification,

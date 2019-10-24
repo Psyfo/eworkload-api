@@ -19,6 +19,7 @@ export default gql`
     qualificationId: String
     qualification: Qualification
     evidence: String
+    isCoordinator: Boolean
   }
 
   input FormalInstructionActivityInput {
@@ -29,6 +30,7 @@ export default gql`
     blockId: String
     offeringTypeId: String
     qualificationId: String
+    isCoordinator: Boolean
   }
 
   type SupervisionActivity implements Activity {
