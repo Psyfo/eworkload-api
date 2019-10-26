@@ -31,6 +31,20 @@ let users = async () => {
     .populate('position')
     .populate('workFocus');
 };
+let usersByPosition = async () => {
+  return await User.find({ positionId: 'HOD' })
+    .populate('disciplines')
+    .populate({
+      path: 'department',
+      model: 'Department',
+      populate: {
+        path: 'faculty',
+        model: 'Faculty'
+      }
+    })
+    .populate('position')
+    .populate('workFocus');
+};
 let addUser = async user => {
   console.log('User from client:', user);
 
@@ -131,6 +145,7 @@ let assignEvidence = async (evidenceId, evidenceUrl) => {
 export {
   user,
   users,
+  usersByPosition,
   addUser,
   editUser,
   deleteUser,

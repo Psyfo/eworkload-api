@@ -212,9 +212,8 @@ let modulesByStack = async stackId => {
     .populate('coordinator')
     .populate('venue');
 };
-let modulesByUnassignedAndDiscipline = async disciplineIds => {
+let modulesByUnassignedAndDiscipline = async (userId, disciplineIds) => {
   return await Module.find({
-    userId: null,
     disciplineId: { $in: disciplineIds }
   })
     .populate('discipline')

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
+import * as WorkloadMethods from './../../controllers/workload';
 
 const academicAdministrationActivitySchema = new mongoose.Schema({
   title: {
@@ -19,6 +20,26 @@ const academicAdministrationActivitySchema = new mongoose.Schema({
   }
 });
 
+// HOOKS
+academicAdministrationActivitySchema.post('save', async function() {
+  const activity = this;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+academicAdministrationActivitySchema.post('findOneAndUpdate', async function(
+  doc
+) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  console.log('Academic administration update complete: ', activity);
+});
+academicAdministrationActivitySchema.post('findOneAndRemove', async function(
+  doc
+) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+
+// VIRTUALS
 academicAdministrationActivitySchema.virtual('qualification', {
   ref: 'Qualification',
   localField: 'qualificationId',

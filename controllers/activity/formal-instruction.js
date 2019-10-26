@@ -1,14 +1,5 @@
 import FormalInstructionActivity from '../../models/activity/formal-instruction-activity';
-import * as AAWorkloadMethods from './../workload/academic-administration';
-import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
-import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
-import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
-import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
-import * as PSWorkloadMethods from '../../controllers/workload/public-service';
-import * as RWorkloadMethods from '../../controllers/workload/research';
-import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as EnrollmentMethods from '../enrollment';
-import * as ModuleMethods from '../module';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
@@ -112,84 +103,9 @@ let addFormalInstructionActivity = async activity => {
     activity
   );
 
-  // Assign module
-  await ModuleMethods.assignUserToModule(
-    activity.moduleId,
-    activity.blockId,
-    activity.offeringTypeId,
-    activity.qualificationId,
-    activity.userId
-  );
-
-  await newFormalInstructionActivity.save();
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await RWorkloadMethods.addResearchWorkload(
-      newFormalInstructionActivity.userId
-    );
-    await SWorkloadMethods.addSupervisionWorkload(
-      newFormalInstructionActivity.userId
-    );
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return await formalInstructionActivity(formalInstructionActivity.activityId);
+  return await newFormalInstructionActivity.save();
 };
 let editFormalInstructionActivity = async activity => {
-  // Assign module
-  await ModuleMethods.assignUserToModule(
-    activity.moduleId,
-    activity.blockId,
-    activity.offeringTypeId,
-    activity.qualificationId,
-    activity.userId
-  );
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(activity.userId);
-    await CIWorkloadMethods.addCommunityInstructionWorkload(activity.userId);
-    await EMWorkloadMethods.addExecutiveManagementWorkload(activity.userId);
-    await FIWorkloadMethods.addFormalInstructionWorkload(activity.userId);
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(activity.userId);
-    await PSWorkloadMethods.addPublicServiceWorkload(activity.userId);
-    await RWorkloadMethods.addResearchWorkload(activity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(activity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  let previousActivity = await formalInstructionActivity(activity.activityId);
-  await ModuleMethods.unassignUserFromModule(
-    previousActivity.moduleId,
-    previousActivity.blockId,
-    previousActivity.offeringTypeId,
-    previousActivity.qualificationId,
-    previousActivity.userId
-  );
-
-  // Edit Activity
   return await FormalInstructionActivity.findOneAndUpdate(
     { activityId: activity.activityId },
     {
@@ -199,43 +115,7 @@ let editFormalInstructionActivity = async activity => {
   );
 };
 let deleteFormalInstructionActivity = async activity => {
-  await ModuleMethods.unassignUserFromModule(
-    activity.moduleId,
-    activity.blockId,
-    activity.offeringTypeId,
-    activity.qualificationId
-  );
-  const deletedActivity = await FormalInstructionActivity.findOneAndRemove(
-    activity
-  );
-  console.log('Deleted activity:', deletedActivity);
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      deletedActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      deletedActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      deletedActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      deletedActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      deletedActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
-    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return deletedActivity;
+  return await FormalInstructionActivity.findOneAndRemove(activity);
 };
 let formalInstructionLectureWeeks = async activityId => {
   let activity = await formalInstructionActivity(activityId);

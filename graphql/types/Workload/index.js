@@ -180,14 +180,7 @@ export default gql`
     researchWorkload(userId: String): ResearchWorkload
     supervisionWorkload(userId: String): SupervisionWorkload
 
-    initializeAAWorkload(userId: String): AcademicAdministrationWorkload
-    initializeCIWorkload(userId: String): CommunityInstructionWorkload
-    initializeEMWorkload(userId: String): ExecutiveManagementWorkload
-    initializeFIWorkload(userId: String): FormalInstructionWorkload
-    initializePDWorkload(userId: String): PersonnelDevelopmentWorkload
-    initializePSWorkload(userId: String): PublicServiceWorkload
-    initializeRWorkload(userId: String): ResearchWorkload
-    initializeSWorkload(userId: String): SupervisionWorkload
+    initializeWorkloads(userId: String!): String
   }
   #   type Mutation {
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
+import * as WorkloadMethods from './../../controllers/workload';
 
 const formalInstructionActivitySchema = new mongoose.Schema(
   {
@@ -41,13 +42,27 @@ const formalInstructionActivitySchema = new mongoose.Schema(
   }
 );
 
-// Index
+// INDEX
 formalInstructionActivitySchema.index(
   { userId: 1, moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 },
   { unique: true }
 );
 
-// Virtuals
+// HOOKS
+formalInstructionActivitySchema.post('save', async function() {
+  const activity = this;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+formalInstructionActivitySchema.post('findOneAndUpdate', async function(doc) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+formalInstructionActivitySchema.post('findOneAndRemove', async function(doc) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+
+// VIRTUALS
 formalInstructionActivitySchema.virtual('module', {
   ref: 'Module',
   localField: 'moduleId',

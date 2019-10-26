@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
+import * as WorkloadMethods from './../../controllers/workload';
 
-const commInstructionActivitySchema = new mongoose.Schema({
+const communityInstructionActivitySchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -17,12 +18,28 @@ const commInstructionActivitySchema = new mongoose.Schema({
   }
 });
 
-// Hooks
+// HOOKS
+communityInstructionActivitySchema.post('save', async function() {
+  const activity = this;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+communityInstructionActivitySchema.post('findOneAndUpdate', async function(
+  doc
+) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+communityInstructionActivitySchema.post('findOneAndRemove', async function(
+  doc
+) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
 
-// Virtuals
+// VIRTUALS
 
 const CommInstructionActivity = Activity.discriminator(
   'CommInstructionActivity',
-  commInstructionActivitySchema
+  communityInstructionActivitySchema
 );
 export default CommInstructionActivity;

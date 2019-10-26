@@ -47,6 +47,7 @@ export default gql`
   type Query {
     user(userId: String!): User
     users: [User]
+    usersByPosition: [User]
     login(userId: String!, password: String!): AuthData
     userExists(userId: String): ExistData
     # profilePicture: [File]

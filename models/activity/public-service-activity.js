@@ -19,7 +19,6 @@ const publicServiceActivitySchema = new mongoose.Schema({
 });
 
 // HOOKS
-// Hooks
 publicServiceActivitySchema.post('save', async function() {
   const activity = this;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);

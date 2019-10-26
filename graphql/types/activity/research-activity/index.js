@@ -13,7 +13,7 @@ export default gql`
     output: String
     title: String
     details: String
-    dates: [String]
+    dates: [Date]
     conferenceActivities: [String]
     authors: [String]
     url: String
@@ -27,7 +27,7 @@ export default gql`
     output: String
     title: String
     details: String
-    dates: [String]
+    dates: [Date]
     conferenceActivities: [String]
     authors: [String]
     url: String

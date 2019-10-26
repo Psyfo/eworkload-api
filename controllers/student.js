@@ -17,7 +17,6 @@ let studentsUnassigned = async userId => {
   const students = activities.map(activity => {
     return activity.student.studentId;
   });
-  console.log('Students: ', students);
 
   return await Student.find({ studentId: { $nin: students } });
 };

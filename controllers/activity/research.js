@@ -1,12 +1,4 @@
 import ResearchActivity from '../../models/activity/research-activity';
-import * as AAWorkloadMethods from './../workload/academic-administration';
-import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
-import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
-import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
-import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
-import * as PSWorkloadMethods from '../../controllers/workload/public-service';
-import * as RWorkloadMethods from '../../controllers/workload/research';
-import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
@@ -54,36 +46,7 @@ let researchActivitiesByUser = async userId => {
 let addResearchActivity = async activity => {
   const newResearchActivity = await new ResearchActivity(activity);
 
-  await newResearchActivity.save();
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      newResearchActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      newResearchActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      newResearchActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      newResearchActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      newResearchActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(
-      newResearchActivity.userId
-    );
-    await RWorkloadMethods.addResearchWorkload(newResearchActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(newResearchActivity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return await researchActivity(newResearchActivity.activityId);
+  return await newResearchActivity.save();
 };
 let editResearchActivity = async activity => {
   return await ResearchActivity.findOneAndUpdate(
@@ -95,45 +58,49 @@ let editResearchActivity = async activity => {
   );
 };
 let deleteResearchActivity = async activity => {
-  const deletedActivity = await ResearchActivity.findOneAndRemove(activity);
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      deletedActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      deletedActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      deletedActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      deletedActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      deletedActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
-    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return deletedActivity;
+  return await ResearchActivity.findOneAndRemove(activity);
 };
 
 // WORKLOAD METHODS
 let researchGlobalTarrif = async () => {
   return parameters.global_research_tarrif;
 };
+// public outputTypes: SelectItem[] = [
+//     { label: 'Conference Proceedings', value: 1 },
+//     { label: 'Journal', value: 2 },
+//     { label: 'Book', value: 3 },
+//     { label: 'Chapter', value: 4 },
+//     { label: 'Patent', value: 5 }
+// ];
+
+// public conferenceActivities: SelectItem[] = [
+//     { label: 'Presented Paper', value: 'Presented Paper' },
+//     { label: 'Presented Poster', value: 'Presented Poster' },
+//     { label: 'Attended', value: 'Attended' },
+//     { label: 'Keynote address', value: 'Keynote address' },
+//     { label: 'Chaired a session', value: 'Chair a session' },
+//     { label: 'Served on a panel', value: 'Served on a panel' }
+// ];
 let researchTotalHoursPerActivity = async activityId => {
   let activity = await researchActivity(activityId);
-  let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
+  let totalHours = 0;
+  if (activity.output === 'Conference Proceedings') {
+    if (
+      activity.conferenceDetails.find(detail => detail === 'Presented Paper')
+    ) {
+      totalHours = 60;
+    } else if (
+      activity.conferenceDetails.find(detail => detail === 'Keynote address')
+    ) {
+      totalHours = 120;
+    }
+  } else if (activity.output === 'Journal') {
+    totalHours === 120;
+  } else {
+    totalHours = 60;
+  }
 
-  return serviceHours / 10;
+  return totalHours;
 };
 let researchTotalHoursPerUser = async userId => {
   let globalTarrif = await researchGlobalTarrif();

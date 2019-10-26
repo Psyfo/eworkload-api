@@ -1,12 +1,4 @@
 import SupervisionActivity from './../../models/activity/supervision-activity';
-import * as AAWorkloadMethods from './../workload/academic-administration';
-import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
-import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
-import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
-import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
-import * as PSWorkloadMethods from '../../controllers/workload/public-service';
-import * as RWorkloadMethods from '../../controllers/workload/research';
-import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
@@ -31,40 +23,9 @@ let supervisionActivitiesByUser = async userId => {
     .populate('student');
 };
 let addSupervisionActivity = async activity => {
-  const newSupervisionActivity = new SupervisionActivity(activity);
+  const newActivity = new SupervisionActivity(activity);
 
-  await newSupervisionActivity.save();
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      newSupervisionActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      newSupervisionActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      newSupervisionActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      newSupervisionActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      newSupervisionActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(
-      newSupervisionActivity.userId
-    );
-    await RWorkloadMethods.addResearchWorkload(newSupervisionActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(
-      newSupervisionActivity.userId
-    );
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return await supervisionActivity(newSupervisionActivity.activityId);
+  return await newActivity.save();
 };
 let editSupervisionActivity = async activity => {
   return await SupervisionActivity.findOneAndUpdate(
@@ -76,34 +37,7 @@ let editSupervisionActivity = async activity => {
   );
 };
 let deleteSupervisionActivity = async activity => {
-  const deletedActivity = await SupervisionActivity.findOneAndRemove(activity);
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      deletedActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      deletedActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      deletedActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      deletedActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      deletedActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
-    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return deletedActivity;
+  return await SupervisionActivity.findOneAndRemove(activity);
 };
 
 // WORKLOAD METHODS

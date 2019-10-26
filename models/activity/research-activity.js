@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Activity from './activity';
+import * as WorkloadMethods from './../../controllers/workload';
 
 const researchActivitySchema = new mongoose.Schema({
   output: {
@@ -37,6 +38,22 @@ const researchActivitySchema = new mongoose.Schema({
     type: String
   }
 });
+
+// HOOKS
+researchActivitySchema.post('save', async function() {
+  const activity = this;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+researchActivitySchema.post('findOneAndUpdate', async function(doc) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+researchActivitySchema.post('findOneAndRemove', async function(doc) {
+  const activity = doc;
+  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+});
+
+// VIRTUALS
 
 const ResearchActivity = Activity.discriminator(
   'ResearchActivity',

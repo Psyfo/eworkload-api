@@ -1,12 +1,4 @@
 import AcademicAdministrationActivity from '../../models/activity/academic-administration-activity';
-import * as AAWorkloadMethods from './../workload/academic-administration';
-import * as CIWorkloadMethods from '../../controllers/workload/community-instruction';
-import * as EMWorkloadMethods from '../../controllers/workload/executive-management';
-import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction';
-import * as PDWorkloadMethods from '../../controllers/workload/personnel-development';
-import * as PSWorkloadMethods from '../../controllers/workload/public-service';
-import * as RWorkloadMethods from '../../controllers/workload/research';
-import * as SWorkloadMethods from '../../controllers/workload/supervision';
 import * as WorkFocusMethods from './../work-focus';
 import * as WorkloadMethods from './../workload';
 import parameters from './../../config/parameters';
@@ -57,46 +49,9 @@ let academicAdministrationActivitiesByUser = async userId => {
     .populate('qualification');
 };
 let addAcademicAdministrationActivity = async activity => {
-  const newAcademicAdministrationActivity = await new AcademicAdministrationActivity(
-    activity
-  );
+  const newActivity = await new AcademicAdministrationActivity(activity);
 
-  await newAcademicAdministrationActivity.save();
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await RWorkloadMethods.addResearchWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-    await SWorkloadMethods.addSupervisionWorkload(
-      newAcademicAdministrationActivity.userId
-    );
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return await academicAdministrationActivity(
-    newAcademicAdministrationActivity.activityId
-  );
+  return await newActivity.save();
 };
 let editAcademicAdministrationActivity = async activity => {
   return await AcademicAdministrationActivity.findOneAndUpdate(
@@ -108,36 +63,7 @@ let editAcademicAdministrationActivity = async activity => {
   );
 };
 let deleteAcademicAdministrationActivity = async activity => {
-  const deletedActivity = await AcademicAdministrationActivity.findOneAndRemove(
-    activity
-  );
-
-  // Write workload data
-  try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(
-      deletedActivity.userId
-    );
-    await CIWorkloadMethods.addCommunityInstructionWorkload(
-      deletedActivity.userId
-    );
-    await EMWorkloadMethods.addExecutiveManagementWorkload(
-      deletedActivity.userId
-    );
-    await FIWorkloadMethods.addFormalInstructionWorkload(
-      deletedActivity.userId
-    );
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(
-      deletedActivity.userId
-    );
-    await PSWorkloadMethods.addPublicServiceWorkload(deletedActivity.userId);
-    await RWorkloadMethods.addResearchWorkload(deletedActivity.userId);
-    await SWorkloadMethods.addSupervisionWorkload(deletedActivity.userId);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return activity
-  return deletedActivity;
+  return await AcademicAdministrationActivity.findOneAndRemove(activity);
 };
 
 // WORKLOAD METHODS

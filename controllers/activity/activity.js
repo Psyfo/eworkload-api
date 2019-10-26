@@ -27,8 +27,6 @@ let deleteActivity = async activity => {
   return await Activity.findOneAndRemove(activity);
 };
 
-// WORKLOAD METHODS
-
 export {
   activity,
   activities,
