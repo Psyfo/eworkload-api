@@ -50,7 +50,7 @@ const personnelDevelopmentWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 personnelDevelopmentWorkloadSchema.virtual('personnel-development-activity', {
   ref: 'PersonnelDevelopmentActivity',
   localField: 'activityId',

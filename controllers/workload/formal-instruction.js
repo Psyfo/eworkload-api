@@ -17,7 +17,7 @@ let formalInstructionWorkload = async userId => {
   return await FormalInstructionWorkload.findOne({ userId: userId });
 };
 
-let addFormalInstructionWorkload = async userId => {
+let calculateFormalInstructionWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deleteFormalInstructionWorkload(userId);
@@ -146,9 +146,10 @@ let addFormalInstructionWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  await formalInstructionWorkload.save();
+  // await formalInstructionWorkload.save();
 
-  console.log('Formal Instruction Workload saved');
+  console.log('Formal Instruction Workload created');
+  return formalInstructionWorkload;
 };
 
 let deleteFormalInstructionWorkload = async userId => {
@@ -160,6 +161,6 @@ let deleteFormalInstructionWorkload = async userId => {
 export {
   initializeFIWorkload,
   formalInstructionWorkload,
-  addFormalInstructionWorkload,
+  calculateFormalInstructionWorkload,
   deleteFormalInstructionWorkload
 };

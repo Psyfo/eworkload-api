@@ -46,7 +46,10 @@ const workloadSchema = new mongoose.Schema(
   }
 );
 
+// INDEX
 workloadSchema.index({ userId: 1, year: 1 }, { unique: true });
+
+// VIRTUALS
 workloadSchema.virtual('user', {
   ref: 'User',
   localField: 'userId',

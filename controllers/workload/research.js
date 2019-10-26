@@ -12,7 +12,7 @@ let initializeRWorkload = async userId => {
 let researchWorkload = async userId => {
   return await ResearchWorkload.findOne({ userId: userId });
 };
-let addResearchWorkload = async userId => {
+let calculateResearchWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deleteResearchWorkload(userId);
@@ -62,8 +62,8 @@ let addResearchWorkload = async userId => {
     userId
   );
 
-  let researchWorkload = new ResearchWorkload();
-  researchWorkload = new ResearchWorkload({
+  let researchWorkload = await new ResearchWorkload();
+  researchWorkload = await new ResearchWorkload({
     userId: userId,
     researchWorkloads: researchWorkloads,
     globalTarrif: globalTarrif,
@@ -73,9 +73,10 @@ let addResearchWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  researchWorkload.save();
+  //await researchWorkload.save();
 
-  console.log('Research Workload saved');
+  console.log('Research Workload created');
+  return researchWorkload;
 };
 let deleteResearchWorkload = async userId => {
   return await ResearchWorkload.findOneAndRemove({
@@ -86,6 +87,6 @@ let deleteResearchWorkload = async userId => {
 export {
   initializeRWorkload,
   researchWorkload,
-  addResearchWorkload,
+  calculateResearchWorkload,
   deleteResearchWorkload
 };

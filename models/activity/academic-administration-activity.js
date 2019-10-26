@@ -30,7 +30,6 @@ academicAdministrationActivitySchema.post('findOneAndUpdate', async function(
 ) {
   const activity = doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
-  console.log('Academic administration update complete: ', activity);
 });
 academicAdministrationActivitySchema.post('findOneAndRemove', async function(
   doc

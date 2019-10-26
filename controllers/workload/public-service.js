@@ -12,7 +12,7 @@ let initializePSWorkload = async userId => {
 let publicServiceWorkload = async userId => {
   return await PublicServiceWorkload.findOne({ userId: userId });
 };
-let addPublicServiceWorkload = async userId => {
+let calculatePublicServiceWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deletePublicServiceWorkload(userId);
@@ -64,8 +64,8 @@ let addPublicServiceWorkload = async userId => {
     userId
   );
 
-  let publicServiceWorkload = new PublicServiceWorkload();
-  publicServiceWorkload = new PublicServiceWorkload({
+  let publicServiceWorkload = await new PublicServiceWorkload();
+  publicServiceWorkload = await new PublicServiceWorkload({
     userId: userId,
     publicServiceWorkloads: publicServiceWorkloads,
     globalTarrif: globalTarrif,
@@ -75,9 +75,10 @@ let addPublicServiceWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  publicServiceWorkload.save();
+  // await publicServiceWorkload.save();
 
-  console.log('Public Service Workload saved');
+  console.log('Public Service Workload created');
+  return publicServiceWorkload;
 };
 let deletePublicServiceWorkload = async userId => {
   return await PublicServiceWorkload.findOneAndRemove({
@@ -88,6 +89,6 @@ let deletePublicServiceWorkload = async userId => {
 export {
   initializePSWorkload,
   publicServiceWorkload,
-  addPublicServiceWorkload,
+  calculatePublicServiceWorkload,
   deletePublicServiceWorkload
 };

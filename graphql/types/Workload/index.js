@@ -143,6 +143,17 @@ export default gql`
     percentageOfTotalHoursPerUser: Float
   }
 
+  type TotalWorkload {
+    academicAdministrationWorkload: AcademicAdministrationWorkload
+    communityInstructionWorkload: CommunityInstructionWorkload
+    executiveManagementWorkload: ExecutiveManagementWorkload
+    formalInstructionWorkload: FormalInstructionWorkload
+    personnelDevelopmentWorkload: PersonnelDevelopmentWorkload
+    publicServiceWorkload: PublicServiceWorkload
+    researchWorkload: ResearchWorkload
+    supervisionWorkload: SupervisionWorkload
+  }
+
   type WorkloadSummary {
     user: User
     teachingHours: Float
@@ -179,10 +190,10 @@ export default gql`
     publicServiceWorkload(userId: String): PublicServiceWorkload
     researchWorkload(userId: String): ResearchWorkload
     supervisionWorkload(userId: String): SupervisionWorkload
-
-    initializeWorkloads(userId: String!): String
+    totalWorkload(userId: String!): TotalWorkload
   }
-  #   type Mutation {
-
-  #   }
+  type Mutation {
+    initializeWorkloads(userId: String!): TotalWorkload
+    updateWorkloads(userId: String!): TotalWorkload
+  }
 `;

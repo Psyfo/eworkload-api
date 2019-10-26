@@ -12,7 +12,7 @@ let initializePDWorkload = async userId => {
 let personnelDevelopmentWorkload = async userId => {
   return await PersonnelDevelopmentWorkload.findOne({ userId: userId });
 };
-let addPersonnelDevelopmentWorkload = async userId => {
+let calculatePersonnelDevelopmentWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deletePersonnelDevelopmentWorkload(userId);
@@ -64,8 +64,8 @@ let addPersonnelDevelopmentWorkload = async userId => {
     userId
   );
 
-  let personnelDevelopmentWorkload = new PersonnelDevelopmentWorkload();
-  personnelDevelopmentWorkload = new PersonnelDevelopmentWorkload({
+  let personnelDevelopmentWorkload = await new PersonnelDevelopmentWorkload();
+  personnelDevelopmentWorkload = await new PersonnelDevelopmentWorkload({
     userId: userId,
     personnelDevelopmentWorkloads: personnelDevelopmentWorkloads,
     globalTarrif: globalTarrif,
@@ -75,9 +75,10 @@ let addPersonnelDevelopmentWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  personnelDevelopmentWorkload.save();
+  // await personnelDevelopmentWorkload.save();
 
-  console.log('Personnel Development Workload saved');
+  console.log('Personnel Development Workload created');
+  return personnelDevelopmentWorkload;
 };
 let deletePersonnelDevelopmentWorkload = async userId => {
   return await PersonnelDevelopmentWorkload.findOneAndRemove({
@@ -88,6 +89,6 @@ let deletePersonnelDevelopmentWorkload = async userId => {
 export {
   initializePDWorkload,
   personnelDevelopmentWorkload,
-  addPersonnelDevelopmentWorkload,
+  calculatePersonnelDevelopmentWorkload,
   deletePersonnelDevelopmentWorkload
 };

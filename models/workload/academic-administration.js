@@ -50,7 +50,7 @@ const academicAdministrationWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 academicAdministrationWorkloadSchema.virtual(
   'academic-administration-activity',
   {

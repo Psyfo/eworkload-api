@@ -46,7 +46,7 @@ const supervisionWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 supervisionWorkloadSchema.virtual('supervision-activity', {
   ref: 'SupervisionActivity',
   localField: 'activityId',

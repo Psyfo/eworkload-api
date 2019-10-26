@@ -50,7 +50,7 @@ const executiveManagementWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 executiveManagementWorkloadSchema.virtual('executive-management-activity', {
   ref: 'ExecutiveManagementActivity',
   localField: 'activityId',

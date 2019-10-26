@@ -106,7 +106,7 @@ const formalInstructionWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 formalInstructionWorkloadSchema.virtual('formal-instruction-activity', {
   ref: 'FormalInstructionActivity',
   localField: 'activityId',

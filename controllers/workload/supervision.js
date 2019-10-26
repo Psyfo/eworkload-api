@@ -12,7 +12,7 @@ let initializeSWorkload = async userId => {
 let supervisionWorkload = async userId => {
   return await SupervisionWorkload.findOne({ userId: userId });
 };
-let addSupervisionWorkload = async userId => {
+let calculateSupervisionWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deleteSupervisionWorkload(userId);
@@ -63,8 +63,8 @@ let addSupervisionWorkload = async userId => {
     userId
   );
 
-  let supervisionWorkload = new SupervisionWorkload();
-  supervisionWorkload = new SupervisionWorkload({
+  let supervisionWorkload = await new SupervisionWorkload();
+  supervisionWorkload = await new SupervisionWorkload({
     userId: userId,
     supervisionWorkloads: supervisionWorkloads,
     totalHoursPerUser: totalHoursPerUser,
@@ -73,9 +73,10 @@ let addSupervisionWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  supervisionWorkload.save();
+  // await supervisionWorkload.save();
 
-  console.log('Supervision Workload saved');
+  console.log('Supervision Workload created');
+  return supervisionWorkload;
 };
 let deleteSupervisionWorkload = async userId => {
   return await SupervisionWorkload.findOneAndRemove({
@@ -86,6 +87,6 @@ let deleteSupervisionWorkload = async userId => {
 export {
   initializeSWorkload,
   supervisionWorkload,
-  addSupervisionWorkload,
+  calculateSupervisionWorkload,
   deleteSupervisionWorkload
 };

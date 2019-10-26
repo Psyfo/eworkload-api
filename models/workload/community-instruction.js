@@ -50,7 +50,7 @@ const communityInstructionWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 communityInstructionWorkloadSchema.virtual('community-instruction-activity', {
   ref: 'CommunityInstructionActivity',
   localField: 'activityId',

@@ -39,10 +39,25 @@ let totalHoursPerUser = async userId => {
   const rHours = await ResearchMethods.researchTotalHoursPerUser(userId);
   const sHours = await SupervisionMethods.supervisionTotalHoursPerUser(userId);
 
-  const total =
-    aaHours + ciHours + emHours + fiHours + pdHours + psHours + rHours + sHours;
+  try {
+    const total =
+      aaHours +
+      ciHours +
+      emHours +
+      fiHours +
+      pdHours +
+      psHours +
+      rHours +
+      sHours;
 
-  return total;
+    if (isNaN(total)) {
+      throw new Error('Not a number');
+    }
+
+    return total;
+  } catch (error) {
+    console.log(error);
+  }
 };
 let teachingHoursPerUser = async userId => {
   const fiHours = await FormalInstructionMethods.formalInstructionTotalHoursPerUser(
@@ -90,20 +105,63 @@ let initializeWorkloads = async userId => {
   await SWorkloadMethods.initializeSWorkload(userId);
 };
 let calculateTotalWorkload = async userId => {
-  // Write workload for all activities
   try {
-    await AAWorkloadMethods.addAcademicAdministrationWorkload(userId);
-    await CIWorkloadMethods.addCommunityInstructionWorkload(userId);
-    await EMWorkloadMethods.addExecutiveManagementWorkload(userId);
-    await FIWorkloadMethods.addFormalInstructionWorkload(userId);
-    await PDWorkloadMethods.addPersonnelDevelopmentWorkload(userId);
-    await PSWorkloadMethods.addPublicServiceWorkload(userId);
-    await RWorkloadMethods.addResearchWorkload(userId);
-    await SWorkloadMethods.addSupervisionWorkload(userId);
+    // Get calculated workloads
+    let aa = await AAWorkloadMethods.calculateAcademicAdministrationWorkload(
+      userId
+    );
+    let ci = await CIWorkloadMethods.calculateCommunityInstructionWorkload(
+      userId
+    );
+    let em = await EMWorkloadMethods.calculateExecutiveManagementWorkload(
+      userId
+    );
+    let fi = await FIWorkloadMethods.calculateFormalInstructionWorkload(userId);
+    let pd = await PDWorkloadMethods.calculatePersonnelDevelopmentWorkload(
+      userId
+    );
+    let ps = await PSWorkloadMethods.calculatePublicServiceWorkload(userId);
+    let r = await RWorkloadMethods.calculateResearchWorkload(userId);
+    let s = await SWorkloadMethods.calculateSupervisionWorkload(userId);
+
+    // Write workloads
+    await aa.save();
+    await ci.save();
+    await em.save();
+    await fi.save();
+    await pd.save();
+    await ps.save();
+    await r.save();
+    await s.save();
   } catch (error) {
     console.log(error);
   }
-  console.log('Done! Workloads calculated!');
+  console.log('Workloads calculated!');
+
+  // Return totalWorkload only afterwards;
+  return await totalWorkload(userId);
+};
+
+let totalWorkload = async userId => {
+  const aa = await AAWorkloadMethods.academicAdministrationWorkload(userId);
+  const ci = await CIWorkloadMethods.communityInstructionWorkload(userId);
+  const em = await EMWorkloadMethods.executiveManagementWorkload(userId);
+  const fi = await FIWorkloadMethods.formalInstructionWorkload(userId);
+  const pd = await PDWorkloadMethods.personnelDevelopmentWorkload(userId);
+  const ps = await PSWorkloadMethods.publicServiceWorkload(userId);
+  const r = await RWorkloadMethods.researchWorkload(userId);
+  const s = await SWorkloadMethods.supervisionWorkload(userId);
+
+  return {
+    academicAdministrationWorkload: aa,
+    communityInstructionWorkload: ci,
+    executiveManagementWorkload: em,
+    formalInstructionWorkload: fi,
+    personnelDevelopmentWorkload: pd,
+    publicServiceWorkload: ps,
+    researchWorkload: r,
+    supervisionWorkload: s
+  };
 };
 
 let workloadSummaries = async () => {
@@ -144,5 +202,6 @@ export {
   serviceHoursPerUser,
   initializeWorkloads,
   calculateTotalWorkload,
+  totalWorkload,
   workloadSummaries
 };

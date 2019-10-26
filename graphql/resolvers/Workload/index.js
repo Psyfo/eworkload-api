@@ -65,10 +65,17 @@ export default {
     supervisionWorkload: async (root, { userId }) => {
       return await SWorkloadMethods.supervisionWorkload(userId);
     },
-    initializeWorkloads: async (root, { userId }) => {
-      return await WorkloadMethods.initializeWorkloads(userId);
+    totalWorkload: async (root, { userId }) => {
+      return await WorkloadMethods.totalWorkload(userId);
     }
   },
 
-  Mutation: {}
+  Mutation: {
+    initializeWorkloads: async (root, { userId }) => {
+      return await WorkloadMethods.initializeWorkloads(userId);
+    },
+    updateWorkloads: async (root, { userId }) => {
+      return await WorkloadMethods.calculateTotalWorkload(userId);
+    }
+  }
 };

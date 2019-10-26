@@ -50,7 +50,7 @@ const researchWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 researchWorkloadSchema.virtual('research-activity', {
   ref: 'ResearchActivity',
   localField: 'activityId',

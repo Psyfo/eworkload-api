@@ -12,7 +12,7 @@ let initializeEMWorkload = async userId => {
 let executiveManagementWorkload = async userId => {
   return await ExecutiveManagementWorkload.findOne({ userId: userId });
 };
-let addExecutiveManagementWorkload = async userId => {
+let calculateExecutiveManagementWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deleteExecutiveManagementWorkload(userId);
@@ -64,8 +64,8 @@ let addExecutiveManagementWorkload = async userId => {
     userId
   );
 
-  let executiveManagementWorkload = new ExecutiveManagementWorkload();
-  executiveManagementWorkload = new ExecutiveManagementWorkload({
+  let executiveManagementWorkload = await new ExecutiveManagementWorkload();
+  executiveManagementWorkload = await new ExecutiveManagementWorkload({
     userId: userId,
     executiveManagementWorkloads: executiveManagementWorkloads,
     globalTarrif: globalTarrif,
@@ -75,9 +75,10 @@ let addExecutiveManagementWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  executiveManagementWorkload.save();
+  // await executiveManagementWorkload.save();
 
-  console.log('Executive Management Workload saved');
+  console.log('Executive Management Workload created');
+  return executiveManagementWorkload;
 };
 let deleteExecutiveManagementWorkload = async userId => {
   return await ExecutiveManagementWorkload.findOneAndRemove({
@@ -88,6 +89,6 @@ let deleteExecutiveManagementWorkload = async userId => {
 export {
   initializeEMWorkload,
   executiveManagementWorkload,
-  addExecutiveManagementWorkload,
+  calculateExecutiveManagementWorkload,
   deleteExecutiveManagementWorkload
 };

@@ -50,7 +50,7 @@ const publicServiceWorkloadSchema = new mongoose.Schema({
   }
 });
 
-// Virtuals
+// VIRTUALS
 publicServiceWorkloadSchema.virtual('public-service-activity', {
   ref: 'PublicServiceActivity',
   localField: 'activityId',

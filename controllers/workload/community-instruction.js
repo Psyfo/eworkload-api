@@ -12,7 +12,7 @@ let initializeCIWorkload = async userId => {
 let communityInstructionWorkload = async userId => {
   return await CommunityInstructionWorkload.findOne({ userId: userId });
 };
-let addCommunityInstructionWorkload = async userId => {
+let calculateCommunityInstructionWorkload = async userId => {
   // Only one workload record so delete first if it exists
   try {
     await deleteCommunityInstructionWorkload(userId);
@@ -64,8 +64,8 @@ let addCommunityInstructionWorkload = async userId => {
     userId
   );
 
-  let communityInstructionWorkload = new CommunityInstructionWorkload();
-  communityInstructionWorkload = new CommunityInstructionWorkload({
+  let communityInstructionWorkload = await new CommunityInstructionWorkload();
+  communityInstructionWorkload = await new CommunityInstructionWorkload({
     userId: userId,
     communityInstructionWorkloads: communityInstructionWorkloads,
     globalTarrif: globalTarrif,
@@ -75,9 +75,10 @@ let addCommunityInstructionWorkload = async userId => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  communityInstructionWorkload.save();
+  // await communityInstructionWorkload.save();
 
-  console.log('Community Instruction Workload saved');
+  console.log('Community Instruction Workload created');
+  return communityInstructionWorkload;
 };
 let deleteCommunityInstructionWorkload = async userId => {
   return await CommunityInstructionWorkload.findOneAndRemove({
@@ -88,6 +89,6 @@ let deleteCommunityInstructionWorkload = async userId => {
 export {
   initializeCIWorkload,
   communityInstructionWorkload,
-  addCommunityInstructionWorkload,
+  calculateCommunityInstructionWorkload,
   deleteCommunityInstructionWorkload
 };
