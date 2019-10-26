@@ -2,25 +2,25 @@ import * as PSMethods from './../../../../controllers/activity/public-service';
 
 export default {
   Query: {
-    publicServiceActivity: (root, { activityId }) => {
-      return PSMethods.publicServiceActivity(activityId);
+    publicServiceActivity: async (root, { activityId }) => {
+      return await PSMethods.publicServiceActivity(activityId);
     },
-    publicServiceActivities: () => {
-      return PSMethods.publicServiceActivities();
+    publicServiceActivities: async () => {
+      return await PSMethods.publicServiceActivities();
     },
-    publicServiceActivitiesByUser: (root, { userId }) => {
-      return PSMethods.publicServiceActivitiesByUser(userId);
+    publicServiceActivitiesByUser: async (root, { userId }) => {
+      return await PSMethods.publicServiceActivitiesByUser(userId);
     }
   },
   Mutation: {
-    addPublicServiceActivity: (root, { activity }) => {
-      PSMethods.addPublicServiceActivity(activity);
+    addPublicServiceActivity: async (root, { activity }) => {
+      return await PSMethods.addPublicServiceActivity(activity);
     },
-    editPublicServiceActivity: (root, { activity }) => {
-      PSMethods.editPublicServiceActivity(activity);
+    editPublicServiceActivity: async (root, { activity }) => {
+      return await PSMethods.editPublicServiceActivity(activity);
     },
-    deletePublicServiceActivity: (root, { activity }) => {
-      PSMethods.deletePublicServiceActivity(activity);
+    deletePublicServiceActivity: async (root, { activity }) => {
+      return await PSMethods.deletePublicServiceActivity(activity);
     }
   }
 };

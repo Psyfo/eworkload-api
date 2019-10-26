@@ -2,26 +2,26 @@ import * as AAMethods from './../../../../controllers/activity/academic-administ
 
 export default {
   Query: {
-    academicAdministrationActivity: (root, { activityId }) => {
-      return AAMethods.academicAdministrationActivity(activityId);
+    academicAdministrationActivity: async (root, { activityId }) => {
+      return await AAMethods.academicAdministrationActivity(activityId);
     },
-    academicAdministrationActivities: () => {
-      return AAMethods.academicAdministrationActivities();
+    academicAdministrationActivities: async () => {
+      return await AAMethods.academicAdministrationActivities();
     },
-    academicAdministrationActivitiesByUser: (root, { userId }) => {
-      return AAMethods.academicAdministrationActivitiesByUser(userId);
+    academicAdministrationActivitiesByUser: async (root, { userId }) => {
+      return await AAMethods.academicAdministrationActivitiesByUser(userId);
     }
   },
   Mutation: {
     // AcademicAdministration
-    addAcademicAdministrationActivity: (root, { activity }) => {
-      AAMethods.addAcademicAdministrationActivity(activity);
+    addAcademicAdministrationActivity: async (root, { activity }) => {
+      return await AAMethods.addAcademicAdministrationActivity(activity);
     },
-    editAcademicAdministrationActivity: (root, { activity }) => {
-      AAMethods.editAcademicAdministrationActivity(activity);
+    editAcademicAdministrationActivity: async (root, { activity }) => {
+      return await AAMethods.editAcademicAdministrationActivity(activity);
     },
-    deleteAcademicAdministrationActivity: (root, { activity }) => {
-      AAMethods.deleteAcademicAdministrationActivity(activity);
+    deleteAcademicAdministrationActivity: async (root, { activity }) => {
+      return await AAMethods.deleteAcademicAdministrationActivity(activity);
     }
   }
 };

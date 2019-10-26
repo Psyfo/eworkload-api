@@ -2,60 +2,65 @@ import * as ModuleMethods from '../../../controllers/module';
 
 export default {
   Query: {
-    module: (root, { moduleId, blockId, offeringTypeId, qualificationId }) => {
-      return ModuleMethods.module(
+    module: async (
+      root,
+      { moduleId, blockId, offeringTypeId, qualificationId }
+    ) => {
+      return await ModuleMethods.module(
         moduleId,
         blockId,
         offeringTypeId,
         qualificationId
       );
     },
-    modules: () => {
-      return ModuleMethods.modules();
+    modules: async () => {
+      return await ModuleMethods.modules();
     },
-    modulesByDiscipline: (root, { disciplineIds }) => {
-      return ModuleMethods.modulesByDiscipline(disciplineIds);
+    modulesByDiscipline: async (root, { disciplineIds }) => {
+      return await ModuleMethods.modulesByDiscipline(disciplineIds);
     },
-    modulesByUnassigned: () => {
-      return ModuleMethods.modulesByUnassigned();
+    modulesByUnassigned: async () => {
+      return await ModuleMethods.modulesByUnassigned();
     },
-    modulesByAssigned: () => {
-      return ModuleMethods.modulesByAssigned();
+    modulesByAssigned: async () => {
+      return await ModuleMethods.modulesByAssigned();
     },
-    modulesByUnassignedAndDiscipline: (root, { disciplineIds }) => {
-      return ModuleMethods.modulesByUnassignedAndDiscipline(disciplineIds);
+    modulesByUnassignedAndDiscipline: async (root, { disciplineIds }) => {
+      return await ModuleMethods.modulesByUnassignedAndDiscipline(
+        disciplineIds
+      );
     },
-    modulesByUser: (root, { userId }) => {
-      return ModuleMethods.modulesByUser(userId);
+    modulesByUser: async (root, { userId }) => {
+      return await ModuleMethods.modulesByUser(userId);
     },
-    modulesByModerator: (root, { moderatorId }) => {
-      return ModuleMethods.modulesByModerator(moderatorId);
+    modulesByModerator: async (root, { moderatorId }) => {
+      return await ModuleMethods.modulesByModerator(moderatorId);
     },
-    modulesByCoordinator: (root, { coordinatorId }) => {
-      return ModuleMethods.modulesByCoordinator(coordinatorId);
+    modulesByCoordinator: async (root, { coordinatorId }) => {
+      return await ModuleMethods.modulesByCoordinator(coordinatorId);
     },
-    modulesByStack: (root, { stackId }) => {
-      return ModuleMethods.modulesByStack(stackId);
+    modulesByStack: async (root, { stackId }) => {
+      return await ModuleMethods.modulesByStack(stackId);
     }
   },
   Mutation: {
-    addModule: (root, { module }) => {
-      return ModuleMethods.addModule(module);
+    addModule: async (root, { module }) => {
+      return await ModuleMethods.addModule(module);
     },
-    addModules: (root, { modules }) => {
-      return ModuleMethods.addModules(modules);
+    addModules: async (root, { modules }) => {
+      return await ModuleMethods.addModules(modules);
     },
-    editModule: (root, { module }) => {
-      return ModuleMethods.editModule(module);
+    editModule: async (root, { module }) => {
+      return await ModuleMethods.editModule(module);
     },
-    deleteModule: (root, { module }) => {
-      return ModuleMethods.deleteModule(module);
+    deleteModule: async (root, { module }) => {
+      return await ModuleMethods.deleteModule(module);
     },
-    assignUserToModule: (
+    assignUserToModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }
     ) => {
-      return ModuleMethods.assignUserToModule(
+      return await ModuleMethods.assignUserToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -63,22 +68,22 @@ export default {
         userId
       );
     },
-    unassignUserFromModule: (
+    unassignUserFromModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId }
     ) => {
-      return ModuleMethods.unassignUserFromModule(
+      return await ModuleMethods.unassignUserFromModule(
         moduleId,
         blockId,
         offeringTypeId,
         qualificationId
       );
     },
-    assignCoordinatorToModule: (
+    assignCoordinatorToModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }
     ) => {
-      return ModuleMethods.assignCoordinatorToModule(
+      return await ModuleMethods.assignCoordinatorToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -86,22 +91,22 @@ export default {
         userId
       );
     },
-    unassignCoordinatorFromModule: (
+    unassignCoordinatorFromModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId }
     ) => {
-      return ModuleMethods.unassignCoordinatorFromModule(
+      return await ModuleMethods.unassignCoordinatorFromModule(
         moduleId,
         blockId,
         offeringTypeId,
         qualificationId
       );
     },
-    assignModeratorToModule: (
+    assignModeratorToModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }
     ) => {
-      return ModuleMethods.assignModeratorToModule(
+      return await ModuleMethods.assignModeratorToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -109,19 +114,19 @@ export default {
         userId
       );
     },
-    unassignModeratorFromModule: (
+    unassignModeratorFromModule: async (
       root,
       { moduleId, blockId, offeringTypeId, qualificationId }
     ) => {
-      return ModuleMethods.unassignModeratorFromModule(
+      return await ModuleMethods.unassignModeratorFromModule(
         moduleId,
         blockId,
         offeringTypeId,
         qualificationId
       );
     },
-    unassignAllModules: () => {
-      return ModuleMethods.unassignAllModules();
+    unassignAllModules: async () => {
+      return await ModuleMethods.unassignAllModules();
     }
   }
 };

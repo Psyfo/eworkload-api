@@ -2,22 +2,22 @@ import * as DepartmentMethods from '../../../controllers/department';
 
 export default {
   Query: {
-    department: (root, args) => {
-      return DepartmentMethods.department(args.departmentId);
+    department: async (root, args) => {
+      return await DepartmentMethods.department(args.departmentId);
     },
-    departments: () => {
-      return DepartmentMethods.departments();
+    departments: async () => {
+      return await DepartmentMethods.departments();
     }
   },
   Mutation: {
-    addDepartment: (root, args) => {
-      return DepartmentMethods.addDepartment(args.department);
+    addDepartment: async (root, args) => {
+      return await DepartmentMethods.addDepartment(args.department);
     },
-    editDepartment: (root, args) => {
-      return DepartmentMethods.editDepartment(args.department);
+    editDepartment: async (root, args) => {
+      return await DepartmentMethods.editDepartment(args.department);
     },
-    deleteDepartment: (root, args) => {
-      return DepartmentMethods.deleteDepartment(args.department);
+    deleteDepartment: async (root, args) => {
+      return await DepartmentMethods.deleteDepartment(args.department);
     }
   }
 };

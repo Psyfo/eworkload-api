@@ -25,9 +25,28 @@ import FormalInstructionActivity from './activity/formal-instruction-activity';
 import PersonnelDevelopmentActivity from './activity/personnel-development-activity';
 import PublicServiceActivity from './activity/public-service-activity';
 import ResearchActivity from './activity/research-activity';
-import Upload from './upload';
 import File from './upload';
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 
+const resolverMap = {
+  Date: new GraphQLScalarType({
+    name: 'Date',
+    description: 'Date custom scalar type',
+    parseValue(value) {
+      return new Date(value); // value from the client
+    },
+    serialize(value) {
+      return value.getTime(); // value sent to the client
+    },
+    parseLiteral(ast) {
+      if (ast.kind === Kind.INT) {
+        return parseInt(ast.value, 10); // ast value is always in string format
+      }
+      return null;
+    }
+  })
+};
 const resolvers = [
   Activity,
   Block,
@@ -54,7 +73,8 @@ const resolvers = [
   PersonnelDevelopmentActivity,
   PublicServiceActivity,
   ResearchActivity,
-  File
+  File,
+  resolverMap
 ];
 
 export default mergeResolvers(resolvers);

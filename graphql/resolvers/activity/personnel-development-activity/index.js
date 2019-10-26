@@ -2,25 +2,25 @@ import * as PDMethods from './../../../../controllers/activity/personnel-develop
 
 export default {
   Query: {
-    personnelDevelopmentActivity: (root, activityId) => {
-      return PDMethods.personnelDevelopmentActivity(activityId);
+    personnelDevelopmentActivity: async (root, activityId) => {
+      return await PDMethods.personnelDevelopmentActivity(activityId);
     },
-    personnelDevelopmentActivities: () => {
-      return PDMethods.personnelDevelopmentActivities();
+    personnelDevelopmentActivities: async () => {
+      return await PDMethods.personnelDevelopmentActivities();
     },
-    personnelDevelopmentActivitiesByUser: (root, { userId }) => {
-      return PDMethods.personnelDevelopmentActivitiesByUser(userId);
+    personnelDevelopmentActivitiesByUser: async (root, { userId }) => {
+      return await PDMethods.personnelDevelopmentActivitiesByUser(userId);
     }
   },
   Mutation: {
-    addPersonnelDevelopmentActivity: (root, { activity }) => {
-      PDMethods.addPersonnelDevelopmentActivity(activity);
+    addPersonnelDevelopmentActivity: async (root, { activity }) => {
+      return await PDMethods.addPersonnelDevelopmentActivity(activity);
     },
-    editPersonnelDevelopmentActivity: (root, { activity }) => {
-      PDMethods.editPersonnelDevelopmentActivity(activity);
+    editPersonnelDevelopmentActivity: async (root, { activity }) => {
+      return await PDMethods.editPersonnelDevelopmentActivity(activity);
     },
-    deletePersonnelDevelopmentActivity: (root, { activity }) => {
-      PDMethods.deletePersonnelDevelopmentActivity(activity);
+    deletePersonnelDevelopmentActivity: async (root, { activity }) => {
+      return await PDMethods.deletePersonnelDevelopmentActivity(activity);
     }
   }
 };

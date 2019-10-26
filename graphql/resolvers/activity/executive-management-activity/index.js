@@ -2,26 +2,26 @@ import * as EMMethods from './../../../../controllers/activity/executive-managem
 
 export default {
   Query: {
-    executiveManagementActivity: (root, { activityId }) => {
-      return EMMethods.executiveManagementActivity(activityId);
+    executiveManagementActivity: async (root, { activityId }) => {
+      return await EMMethods.executiveManagementActivity(activityId);
     },
-    executiveManagementActivities: () => {
-      return EMMethods.executiveManagementActivities();
+    executiveManagementActivities: async () => {
+      return await EMMethods.executiveManagementActivities();
     },
-    executiveManagementActivitiesByUser: (root, { userId }) => {
-      return EMMethods.executiveManagementActivitiesByUser(userId);
+    executiveManagementActivitiesByUser: async (root, { userId }) => {
+      return await EMMethods.executiveManagementActivitiesByUser(userId);
     }
   },
   Mutation: {
     // ExecutiveManagement
-    addExecutiveManagementActivity: (root, { activity }) => {
-      EMMethods.addExecutiveManagementActivity(activity);
+    addExecutiveManagementActivity: async (root, { activity }) => {
+      return await EMMethods.addExecutiveManagementActivity(activity);
     },
-    editExecutiveManagementActivity: (root, { activity }) => {
-      EMMethods.editExecutiveManagementActivity(activity);
+    editExecutiveManagementActivity: async (root, { activity }) => {
+      return await EMMethods.editExecutiveManagementActivity(activity);
     },
-    deleteExecutiveManagementActivity: (root, { activity }) => {
-      EMMethods.deleteExecutiveManagementActivity(activity);
+    deleteExecutiveManagementActivity: async (root, { activity }) => {
+      return await EMMethods.deleteExecutiveManagementActivity(activity);
     }
   }
 };

@@ -29,8 +29,8 @@ export default {
     }
   },
   Query: {
-    activity: (root, args) => {
-      return Activity.findOne({
+    activity: async (root, args) => {
+      return await Activity.findOne({
         activityId: args.activityId
       })
         .populate('duty')
@@ -42,8 +42,8 @@ export default {
           throw err;
         });
     },
-    activities: () => {
-      return Activity.find({})
+    activities: async () => {
+      return await Activity.find({})
         .sort({
           userId: 'asc'
         })
@@ -56,8 +56,8 @@ export default {
           throw err;
         });
     },
-    activitiesByDuty: (root, args) => {
-      return Activity.find({
+    activitiesByDuty: async (root, args) => {
+      return await Activity.find({
         dutyId: args.dutyId
       })
         .sort({
@@ -73,8 +73,8 @@ export default {
           throw err;
         });
     },
-    activitiesByUser: (root, args) => {
-      return Activity.find({
+    activitiesByUser: async (root, args) => {
+      return await Activity.find({
         userId: args.userId
       })
         .sort({
@@ -90,8 +90,8 @@ export default {
           throw err;
         });
     },
-    activitiesByUnapproved: () => {
-      return Activity.find({
+    activitiesByUnapproved: async () => {
+      return await Activity.find({
         approvalStatus: false
       })
         .sort({
@@ -107,8 +107,8 @@ export default {
           throw err;
         });
     },
-    activitiesByApproved: () => {
-      return Activity.find({
+    activitiesByApproved: async () => {
+      return await Activity.find({
         approvalStatus: true
       })
         .sort({

@@ -11,7 +11,7 @@ import * as WorkloadMethods from './../../../controllers/workload';
 
 export default {
   Query: {
-    // General data
+    // GENERAL DATA
     teachingHours: async (root, { userId }) => {
       return await WorkFocusMethods.teachingHours(userId);
     },
@@ -24,6 +24,7 @@ export default {
     annualHours: async () => {
       return await WorkFocusMethods.annualHours();
     },
+    // USER DATA
     totalHoursPerUser: async (root, { userId }) => {
       return await WorkloadMethods.totalHoursPerUser(userId);
     },
@@ -39,7 +40,7 @@ export default {
     workloadSummaries: async () => {
       return await WorkloadMethods.workloadSummaries();
     },
-    // Workloads
+    // USER WORKLOADS
     academicAdministrationWorkload: async (root, { userId }) => {
       return await AAWorkloadMethods.academicAdministrationWorkload(userId);
     },
@@ -64,29 +65,8 @@ export default {
     supervisionWorkload: async (root, { userId }) => {
       return await SWorkloadMethods.supervisionWorkload(userId);
     },
-    initializeAAWorkload: async (root, { userId }) => {
-      return await AAWorkloadMethods.initializeAAWorkload(userId);
-    },
-    initializeCIWorkload: async (root, { userId }) => {
-      return await CIWorkloadMethods.initializeCIWorkload(userId);
-    },
-    initializeEMWorkload: async (root, { userId }) => {
-      return await EMWorkloadMethods.initializeEMWorkload(userId);
-    },
-    initializeFIWorkload: async (root, { userId }) => {
-      return await FIWorkloadMethods.initializeFIWorkload(userId);
-    },
-    initializePDWorkload: async (root, { userId }) => {
-      return await PDWorkloadMethods.initializePDWorkload(userId);
-    },
-    initializePSWorkload: async (root, { userId }) => {
-      return await PSWorkloadMethods.initializePSWorkload(userId);
-    },
-    initializeRWorkload: async (root, { userId }) => {
-      return await RWorkloadMethods.initializeRWorkload(userId);
-    },
-    initializeSWorkload: async (root, { userId }) => {
-      return await SWorkloadMethods.initializeSWorkload(userId);
+    initializeWorkloads: async (root, { userId }) => {
+      return await WorkloadMethods.initializeWorkloads(userId);
     }
   },
 

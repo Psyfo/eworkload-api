@@ -1,23 +1,23 @@
-import * as VenueMethods from '../../../controllers/venue';
+import * as VenueMethods from './../../../controllers/venue';
 
 export default {
   Query: {
-    venue: (root, args) => {
-      return VenueMethods.venue(args.venueId);
+    venue: async (root, args) => {
+      return await VenueMethods.venue(args.venueId);
     },
-    venues: () => {
-      return VenueMethods.venues();
+    venues: async () => {
+      return await VenueMethods.venues();
     }
   },
   Mutation: {
-    addVenue: (root, args) => {
-      return VenueMethods.addVenue(args.venue);
+    addVenue: async (root, args) => {
+      return await VenueMethods.addVenue(args.venue);
     },
-    editVenue: (root, args) => {
-      return VenueMethods.editVenue(args.venue);
+    editVenue: async (root, args) => {
+      return await VenueMethods.editVenue(args.venue);
     },
-    deleteVenue: (root, args) => {
-      return VenueMethods.deleteVenue(args.venue);
+    deleteVenue: async (root, args) => {
+      return await VenueMethods.deleteVenue(args.venue);
     }
   }
 };

@@ -1,53 +1,43 @@
-import * as UserMethods from '../../../controllers/user';
+import * as UserMethods from './../../../controllers/user';
 
 export default {
   Query: {
-    user: (root, args) => {
-      return UserMethods.user(args.userId);
+    user: async (root, args) => {
+      return await UserMethods.user(args.userId);
     },
-    users: () => {
-      return UserMethods.users();
+    users: async () => {
+      return await UserMethods.users();
     },
-    login: (root, args) => {
-      return UserMethods.login(args.userId, args.password);
+    usersByPosition: async () => {
+      return await UserMethods.usersByPosition();
     },
-    userExists: (root, args) => {
-      return UserMethods.exists(args.userId);
+    login: async (root, args) => {
+      return await UserMethods.login(args.userId, args.password);
+    },
+    userExists: async (root, args) => {
+      return await UserMethods.exists(args.userId);
     }
     // profilePicture: () => {}
   },
   Mutation: {
-    addUser: (root, args) => {
-      return UserMethods.addUser(args.user);
+    addUser: async (root, args) => {
+      return await UserMethods.addUser(args.user);
     },
-    editUser: (root, args) => {
-      return UserMethods.editUser(args.user);
+    editUser: async (root, args) => {
+      return await UserMethods.editUser(args.user);
     },
-    deleteUser: (root, args) => {
-      return UserMethods.deleteUser(args.user);
+    deleteUser: async (root, args) => {
+      return await UserMethods.deleteUser(args.user);
     },
     changePassword: async (root, args) => {
-      return UserMethods.changePassword(
+      return await UserMethods.changePassword(
         args.userId,
         args.oldPassword,
         args.newPassword
       );
     },
-    assignProfilePicture: (root, { userId, photoUrl }) => {
-      return UserMethods.assignProfilePicture(userId, photoUrl);
+    assignProfilePicture: async (root, { userId, photoUrl }) => {
+      return await UserMethods.assignProfilePicture(userId, photoUrl);
     }
-    // async profilePictureUpload(parent, { file }) {
-    //   const { stream, filename, mimetype, encoding } = await file;
-
-    //   // 1. Validate file metadata.
-
-    //   // 2. Stream file contents into cloud storage:
-    //   // https://nodejs.org/api/stream.html
-
-    //   // 3. Record the file upload in your DB.
-    //   // const id = await recordFile( … )
-
-    //   return { filename, mimetype, encoding };
-    // }
   }
 };

@@ -2,28 +2,28 @@ import * as QualificationMethods from '../../../controllers/qualification';
 
 export default {
   Query: {
-    qualification: (root, args) => {
-      return QualificationMethods.qualification(args.qualificationId);
+    qualification: async (root, args) => {
+      return await QualificationMethods.qualification(args.qualificationId);
     },
-    qualifications: () => {
-      return QualificationMethods.qualifications();
+    qualifications: async () => {
+      return await QualificationMethods.qualifications();
     },
-    qualificationsPostgraduate: () => {
-      return QualificationMethods.qualificationsPostgraduate();
+    qualificationsPostgraduate: async () => {
+      return await QualificationMethods.qualificationsPostgraduate();
     },
     qualificationsNoEnrollment: async () => {
-      return QualificationMethods.qualificationsNoEnrollment();
+      return await QualificationMethods.qualificationsNoEnrollment();
     }
   },
   Mutation: {
-    addQualification: (root, args) => {
-      return QualificationMethods.addQualification(args.qualification);
+    addQualification: async (root, args) => {
+      return await QualificationMethods.addQualification(args.qualification);
     },
-    editQualification: (root, args) => {
-      return QualificationMethods.editQualification(args.qualification);
+    editQualification: async (root, args) => {
+      return await QualificationMethods.editQualification(args.qualification);
     },
-    deleteQualification: (root, args) => {
-      return QualificationMethods.deleteQualification(args.qualification);
+    deleteQualification: async (root, args) => {
+      return await QualificationMethods.deleteQualification(args.qualification);
     }
   }
 };

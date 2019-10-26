@@ -2,22 +2,22 @@ import * as DisciplineMethods from '../../../controllers/discipline';
 
 export default {
   Query: {
-    discipline: (root, args) => {
-      return DisciplineMethods.discipline(args.disciplineId);
+    discipline: async (root, args) => {
+      return await DisciplineMethods.discipline(args.disciplineId);
     },
-    disciplines: () => {
-      return DisciplineMethods.disciplines();
+    disciplines: async () => {
+      return await DisciplineMethods.disciplines();
     }
   },
   Mutation: {
-    addDiscipline: (root, args) => {
-      return DisciplineMethods.addDiscipline(args.discipline);
+    addDiscipline: async (root, args) => {
+      return await DisciplineMethods.addDiscipline(args.discipline);
     },
-    editDiscipline: (root, args) => {
-      return DisciplineMethods.editDiscipline(args.discipline);
+    editDiscipline: async (root, args) => {
+      return await DisciplineMethods.editDiscipline(args.discipline);
     },
-    deleteDiscipline: (root, args) => {
-      return DisciplineMethods.deleteDiscipline(args.discipline);
+    deleteDiscipline: async (root, args) => {
+      return await DisciplineMethods.deleteDiscipline(args.discipline);
     }
   }
 };

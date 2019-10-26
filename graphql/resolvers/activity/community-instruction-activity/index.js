@@ -2,26 +2,26 @@ import * as CIMethods from './../../../../controllers/activity/community-instruc
 
 export default {
   Query: {
-    communityInstructionActivity: (root, { activityId }) => {
-      return CIMethods.communityInstructionActivity(activityId);
+    communityInstructionActivity: async (root, { activityId }) => {
+      return await CIMethods.communityInstructionActivity(activityId);
     },
-    communityInstructionActivities: () => {
-      return CIMethods.communityInstructionActivities();
+    communityInstructionActivities: async () => {
+      return await CIMethods.communityInstructionActivities();
     },
-    communityInstructionActivitiesByUser: (root, { userId }) => {
-      return CIMethods.communityInstructionActivitiesByUser(userId);
+    communityInstructionActivitiesByUser: async (root, { userId }) => {
+      return await CIMethods.communityInstructionActivitiesByUser(userId);
     }
   },
   Mutation: {
     // Comm-Insruction
-    addCommunityInstructionActivity: (root, { activity }) => {
-      return CIMethods.addCommunityInstructionActivity(activity);
+    addCommunityInstructionActivity: async (root, { activity }) => {
+      return await CIMethods.addCommunityInstructionActivity(activity);
     },
-    editCommunityInstructionActivity: (root, { activity }) => {
-      return CIMethods.editCommunityInstructionActivity(activity);
+    editCommunityInstructionActivity: async (root, { activity }) => {
+      return await CIMethods.editCommunityInstructionActivity(activity);
     },
-    deleteCommunityInstructionActivity: (root, { activity }) => {
-      return CIMethods.deleteCommunityInstructionActivity(activity);
+    deleteCommunityInstructionActivity: async (root, { activity }) => {
+      return await CIMethods.deleteCommunityInstructionActivity(activity);
     }
   }
 };

@@ -2,22 +2,22 @@ import * as FacultyMethods from '../../../controllers/faculty';
 
 export default {
   Query: {
-    faculty: (root, args) => {
-      return FacultyMethods.faculty(args.facultyId);
+    faculty: async (root, args) => {
+      return await FacultyMethods.faculty(args.facultyId);
     },
-    faculties: () => {
-      return FacultyMethods.faculties();
+    faculties: async () => {
+      return await FacultyMethods.faculties();
     }
   },
   Mutation: {
-    addFaculty: (root, args) => {
-      return FacultyMethods.addFaculty(args.faculty);
+    addFaculty: async (root, args) => {
+      return await FacultyMethods.addFaculty(args.faculty);
     },
-    editFaculty: (root, args) => {
-      return FacultyMethods.editFaculty(args.faculty);
+    editFaculty: async (root, args) => {
+      return await FacultyMethods.editFaculty(args.faculty);
     },
-    deleteFaculty: (root, args) => {
-      return FacultyMethods.deleteFaculty(args.faculty);
+    deleteFaculty: async (root, args) => {
+      return await FacultyMethods.deleteFaculty(args.faculty);
     }
   }
 };

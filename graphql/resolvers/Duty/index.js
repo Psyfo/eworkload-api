@@ -2,22 +2,22 @@ import * as DutyMethods from '../../../controllers/duty';
 
 export default {
   Query: {
-    duty: (root, args) => {
-      return DutyMethods.duty(args.dutyId);
+    duty: async (root, args) => {
+      return await DutyMethods.duty(args.dutyId);
     },
-    duties: () => {
-      return DutyMethods.duties();
+    duties: async () => {
+      return await DutyMethods.duties();
     }
   },
   Mutation: {
-    addDuty: (root, args) => {
-      return DutyMethods.addDuty(args.duty);
+    addDuty: async (root, args) => {
+      return await DutyMethods.addDuty(args.duty);
     },
-    editDuty: (root, args) => {
-      return DutyMethods.editDuty(args.duty);
+    editDuty: async (root, args) => {
+      return await DutyMethods.editDuty(args.duty);
     },
-    deleteDuty: (root, args) => {
-      return DutyMethods.deleteDuty(args.duty);
+    deleteDuty: async (root, args) => {
+      return await DutyMethods.deleteDuty(args.duty);
     }
   }
 };

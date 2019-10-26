@@ -2,25 +2,25 @@ import * as StudentMethods from '../../../controllers/student';
 
 export default {
   Query: {
-    student: (root, args) => {
-      return StudentMethods.student(args.studentId);
+    student: async (root, args) => {
+      return await StudentMethods.student(args.studentId);
     },
-    students: () => {
-      return StudentMethods.students();
+    students: async () => {
+      return await StudentMethods.students();
     },
-    studentsUnassigned: (root, { userId }) => {
-      return StudentMethods.studentsUnassigned(userId);
+    studentsUnassigned: async (root, { userId }) => {
+      return await StudentMethods.studentsUnassigned(userId);
     }
   },
   Mutation: {
-    addStudent: (root, args) => {
-      return StudentMethods.addStudent(args.student);
+    addStudent: async (root, args) => {
+      return await StudentMethods.addStudent(args.student);
     },
-    editStudent: (root, args) => {
-      return StudentMethods.editStudent(args.student);
+    editStudent: async (root, args) => {
+      return await StudentMethods.editStudent(args.student);
     },
-    deleteStudent: (root, args) => {
-      return StudentMethods.deleteStudent(args.student);
+    deleteStudent: async (root, args) => {
+      return await StudentMethods.deleteStudent(args.student);
     }
   }
 };

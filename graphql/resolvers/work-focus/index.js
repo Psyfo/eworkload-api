@@ -1,23 +1,23 @@
-import * as WorkFocusMethods from '../../../controllers/work-focus';
+import * as WorkFocusMethods from './../../../controllers/work-focus';
 
 export default {
   Query: {
-    workFocus: (root, { name }) => {
-      return WorkFocusMethods.workFocus(name);
+    workFocus: async (root, { name }) => {
+      return await WorkFocusMethods.workFocus(name);
     },
-    workFocuses: () => {
-      return WorkFocusMethods.workFocuses();
+    workFocuses: async () => {
+      return await WorkFocusMethods.workFocuses();
     }
   },
   Mutation: {
-    addWorkFocus: (root, { workFocus }) => {
-      return WorkFocusMethods.addWorkFocus(workFocus);
+    addWorkFocus: async (root, { workFocus }) => {
+      return await WorkFocusMethods.addWorkFocus(workFocus);
     },
-    editWorkFocus: (root, { workFocus }) => {
-      return WorkFocusMethods.editWorkFocus(workFocus);
+    editWorkFocus: async (root, { workFocus }) => {
+      return await WorkFocusMethods.editWorkFocus(workFocus);
     },
-    deleteWorkFocus: (root, { workFocus }) => {
-      return WorkFocusMethods.deleteWorkFocus(workFocus);
+    deleteWorkFocus: async (root, { workFocus }) => {
+      return await WorkFocusMethods.deleteWorkFocus(workFocus);
     }
   }
 };
