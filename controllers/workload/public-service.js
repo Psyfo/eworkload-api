@@ -4,6 +4,13 @@ import PublicServiceActivity from './../../models/activity/public-service-activi
 import PublicServiceWorkload from './../../models/workload/public-service';
 
 let initializePSWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deletePublicServiceWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let psWorkload = new PublicServiceWorkload({
     userId: userId
   });

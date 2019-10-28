@@ -2,7 +2,7 @@ import * as PDMethods from './../../../../controllers/activity/personnel-develop
 
 export default {
   Query: {
-    personnelDevelopmentActivity: async (root, activityId) => {
+    personnelDevelopmentActivity: async (root, { activityId }) => {
       return await PDMethods.personnelDevelopmentActivity(activityId);
     },
     personnelDevelopmentActivities: async () => {

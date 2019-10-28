@@ -4,6 +4,13 @@ import ExecutiveManagementActivity from './../../models/activity/executive-manag
 import ExecutiveManagementWorkload from './../../models/workload/executive-management';
 
 let initializeEMWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteExecutiveManagementWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let emWorkload = new ExecutiveManagementWorkload({
     userId: userId
   });

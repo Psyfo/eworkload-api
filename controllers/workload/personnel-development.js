@@ -4,6 +4,13 @@ import PersonnelDevelopmentActivity from './../../models/activity/personnel-deve
 import PersonnelDevelopmentWorkload from './../../models/workload/personnel-development';
 
 let initializePDWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deletePersonnelDevelopmentWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let pdWorkload = new PersonnelDevelopmentWorkload({
     userId: userId
   });

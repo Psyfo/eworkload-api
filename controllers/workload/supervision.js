@@ -4,6 +4,13 @@ import SupervisionActivity from './../../models/activity/supervision-activity';
 import SupervisionWorkload from './../../models/workload/supervision';
 
 let initializeSWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteSupervisionWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let sWorkload = new SupervisionWorkload({
     userId: userId
   });

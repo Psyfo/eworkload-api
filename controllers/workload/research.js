@@ -4,6 +4,13 @@ import ResearchActivity from './../../models/activity/research-activity';
 import ResearchWorkload from './../../models/workload/research';
 
 let initializeRWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteResearchWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let rWorkload = new ResearchWorkload({
     userId: userId
   });

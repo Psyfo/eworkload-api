@@ -47,9 +47,9 @@ let supervisionGlobalTarrif = async () => {
 let supervisionTotalHoursPerActivity = async activityId => {
   const activity = await supervisionActivity(activityId);
 
-  let total = 40;
+  let total = 100;
   if (activity.split !== 100) {
-    total = 40 * (activity.split / 100);
+    total *= activity.split / 100;
   }
   return total;
 };

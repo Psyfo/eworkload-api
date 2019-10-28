@@ -4,6 +4,13 @@ import CommunityInstructionActivity from './../../models/activity/community-inst
 import CommunityInstructionWorkload from './../../models/workload/community-instruction';
 
 let initializeCIWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteCommunityInstructionWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let ciWorkload = new CommunityInstructionWorkload({
     userId: userId
   });

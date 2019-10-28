@@ -83,17 +83,18 @@ let researchGlobalTarrif = async () => {
 // ];
 let researchTotalHoursPerActivity = async activityId => {
   let activity = await researchActivity(activityId);
+
   let totalHours = 60;
   if (
     activity.output === 'Conference Proceedings' &&
-    activity.conferenceDetails.length
+    activity.conferenceActivities.length
   ) {
     if (
-      activity.conferenceDetails.find(detail => detail === 'Presented Paper')
+      activity.conferenceActivities.find(detail => detail === 'Presented Paper')
     ) {
       totalHours = 60;
     } else if (
-      activity.conferenceDetails.find(detail => detail === 'Keynote address')
+      activity.conferenceActivities.find(detail => detail === 'Keynote address')
     ) {
       totalHours = 120;
     }

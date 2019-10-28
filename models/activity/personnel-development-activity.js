@@ -10,7 +10,7 @@ const personnelDevelopmentActivitySchema = new mongoose.Schema({
   },
   date: [
     {
-      type: String
+      type: Date
     }
   ],
   duration: {

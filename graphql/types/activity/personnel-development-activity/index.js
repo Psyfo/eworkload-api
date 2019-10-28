@@ -11,7 +11,7 @@ export default gql`
     createdAt: String
     updatedAt: String
     title: String
-    date: [String]
+    date: [Date]
     duration: String
     evidence: String
   }
@@ -21,7 +21,7 @@ export default gql`
     userId: String
     dutyId: String
     title: String
-    date: [String]
+    date: [Date]
     duration: String
   }
 

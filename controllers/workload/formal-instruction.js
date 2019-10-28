@@ -7,6 +7,13 @@ import * as QualificationMethods from './../qualification';
 import FormalInstructionWorkload from './../../models/workload/formal-instruction';
 
 let initializeFIWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteFormalInstructionWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let fiWorkload = new FormalInstructionWorkload({
     userId: userId
   });

@@ -168,7 +168,7 @@ let formalInstructionCoordinationHours = async activityId => {
   let students = await formalInstructionStudentsEnrolled(activityId);
 
   let coordination = 0;
-  if (activity.userId === module.coordinatorId) {
+  if (activity.isCoordinator) {
     coordination = ((students - 100) / 40) * (module.credits / 10);
   }
 

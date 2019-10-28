@@ -3,6 +3,13 @@ import * as AcademicAdministrationMethods from './../activity/academic-administr
 import AcademicAdministrationWorkload from './../../models/workload/academic-administration';
 
 let initializeAAWorkload = async userId => {
+  // Only one workload record so delete first if it exists
+  try {
+    await deleteAcademicAdministrationWorkload(userId);
+  } catch (error) {
+    console.log(error);
+    console.log('No record found');
+  }
   let aaWorkload = new AcademicAdministrationWorkload({
     userId: userId
   });
