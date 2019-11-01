@@ -17,13 +17,13 @@ cloudinary.config({
 
 // AWS CONFIG
 AWS.config.update({
-  accessKeyId: 'AKIAI7XLMUA3NG3KULBQ',
-  secretAccessKey: ' 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'
+  accessKeyId: 'AKIAJS6HEGWGJTMTSNGQ',
+  secretAccessKey: '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'
 });
-AWS.config.region = 'us-east-2'; // Region
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: 'us-east-2:58fe6e31-acd9-40f5-a9c1-34584e333dbc'
-});
+// AWS.config.region = 'us-east-2'; // Region
+// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+//   IdentityPoolId: 'us-east-2:58fe6e31-acd9-40f5-a9c1-34584e333dbc'
+// });
 
 // AWS Upload Evidence
 const uploadEvidenceAWS = async (file, userId, activityId) => {
@@ -39,8 +39,8 @@ const uploadEvidenceAWS = async (file, userId, activityId) => {
     ContentType: mimetype
   };
   const s3 = new AWS.S3({
-    accessKeyId: 'AKIAI7XLMUA3NG3KULBQ',
-    secretAccessKey: '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',
+    accessKeyId: 'AKIAJS6HEGWGJTMTSNGQ',
+    secretAccessKey: '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',
     region: 'us-east-2'
   });
 
@@ -77,10 +77,10 @@ const uploadAcademicAdministrationEvidenceAWS = async (
     ACL: 'public-read',
     ContentType: mimetype
   };
-  const s3 = new AWS.S3({
-    accessKeyId: 'AKIAI7XLMUA3NG3KULBQ',
-    secretAccessKey: '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',
-    region: 'us-east-2'
+  const s3 = await new AWS.S3({
+    accessKeyId: 'AKIAJS6HEGWGJTMTSNGQ',
+    secretAccessKey: '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',
+    region: 'eu-west-2'
   });
 
   // Upload files to the bucket
@@ -112,33 +112,39 @@ const uploadResearchEvidenceAWS = async (file, userId, activityId) => {
     ACL: 'public-read',
     ContentType: mimetype
   };
-  const s3 = new AWS.S3({
-    accessKeyId: 'AKIAI7XLMUA3NG3KULBQ',
-    secretAccessKey: '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',
-    region: 'us-east-2'
+  const s3 = await new AWS.S3({
+    accessKeyId: 'AKIAJS6HEGWGJTMTSNGQ',
+    secretAccessKey: '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',
+    region: 'eu-west-2'
   });
 
   // Upload files to the bucket
-  return await s3.upload(params, async function(err, data) {
-    if (err) {
-      throw err;
-    }
-    console.log(`File uploaded successfully. ${data.Location}`);
-    await ResearchActivity.findOneAndUpdate(
-      { activityId: activityId },
-      { $set: { evidence: data.Location } },
-      { upsert: true }
-    );
-    console.log('Research evidence updated');
+  return new Promise((resolve, reject) => {
+    return s3.upload(params, async (err, data) => {
+      if (err) {
+        console.log(err);
+        return reject(err);
+      }
+      if (data) {
+        console.log(`File uploaded successfully. ${data.Location}`);
 
-    return { location: data.Location };
+        // Update evidence url on activity
+        await ResearchActivity.findOneAndUpdate(
+          { activityId: activityId },
+          { $set: { evidence: data.Location } },
+          { upsert: true }
+        );
+        console.log('Research evidence updated');
+        return resolve(data.Location);
+      }
+    });
   });
 };
 
 // AWS Upload Profile Pic
 const uploadProfilePictureAWS = async (file, userId) => {
   const { createReadStream, filename, mimetype } = await file;
-  const stream = createReadStream();
+  const stream = await createReadStream();
 
   // Configure S3
   const params = {
@@ -148,26 +154,50 @@ const uploadProfilePictureAWS = async (file, userId) => {
     ACL: 'public-read',
     ContentType: mimetype
   };
-  const s3 = new AWS.S3({
-    accessKeyId: 'AKIAI7XLMUA3NG3KULBQ',
-    secretAccessKey: '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',
-    region: 'us-east-2'
+  const s3 = await new AWS.S3({
+    accessKeyId: 'AKIAJS6HEGWGJTMTSNGQ',
+    secretAccessKey: '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',
+    region: 'eu-west-2'
   });
 
   // Upload files to the bucket
-  return await s3.upload(params, async (err, data) => {
-    if (err) {
-      throw err;
-    }
-    console.log(`File uploaded successfully. ${data.Location}`);
-    // Update user photourl
-    const update = await UserMethods.assignProfilePicture(
-      userId,
-      data.Location
-    );
-    console.log('User photoUrl updated: ', update);
-    return { location: data.Location };
+  return new Promise((resolve, reject) => {
+    return s3.upload(params, async (err, data) => {
+      if (err) {
+        console.log(err);
+        return reject(err);
+      }
+      if (data) {
+        console.log(`File uploaded successfully. ${data.Location}`);
+
+        // Update user photourl
+        const update = await UserMethods.assignProfilePicture(
+          userId,
+          data.Location
+        );
+
+        console.log('User photoUrl updated: ', update);
+        return resolve(data.Location);
+      }
+    });
   });
+
+  // return await s3.upload(params, async (err, data) => {
+  //   if (err) {
+  //     // throw err;
+  //     console.log(await err);
+  //   }
+  //   console.log(`File uploaded successfully. ${await data.Location}`);
+  //   // Update user photourl
+  //   const update = await UserMethods.assignProfilePicture(
+  //     userId,
+  //     data.Location
+  //   ).catch(err => {
+  //     console.log(err);
+  //   });
+  //   console.log('User photoUrl updated: ', await update);
+  //   return await { location: data.Location };
+  // });
 };
 
 //const uploadDir = path.resolve(__dirname, '../uploads');
