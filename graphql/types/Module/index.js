@@ -1,6 +1,21 @@
 import { gql } from 'apollo-server-core';
 
 export default gql`
+  type ModuleGroup {
+    groupCode: String
+    enrolled: Int
+    lecturerIds: [String]
+    lecturers: [User]
+    repeat: Int
+  }
+
+  input ModuleGroupInput {
+    groupCode: String
+    enrolled: Int
+    lecturerIds: [String]
+    repeat: Int
+  }
+
   type Module {
     moduleId: String
     name: String
@@ -18,15 +33,9 @@ export default gql`
     venue: Venue
     blockId: String
     block: Block
-    userId: String
-    user: User
-    coordinatorId: String
-    coordinator: User
-    moderatorId: String
-    moderator: User
     stackId: String
     studyPeriod: String
-    groupSize: Int
+    groups: [ModuleGroup]
     lecturedBy: String
     enrolled: Int
     moderation: String
@@ -44,12 +53,11 @@ export default gql`
     disciplineId: String
     venueId: String
     blockId: String
-    userId: String
     coordinatorId: String
     moderatorId: String
     stackId: String
     studyPeriod: String
-    groupSize: Int
+    groups: [ModuleGroupInput]
     lecturedBy: String
     moderation: String
   }
@@ -117,5 +125,6 @@ export default gql`
       qualificationId: String
     ): Module
     unassignAllModules: String
+    stackModules(modules: ModuleInput): [Module]
   }
 `;

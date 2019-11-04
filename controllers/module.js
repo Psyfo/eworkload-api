@@ -1,4 +1,5 @@
 import Module from './../models/module.js';
+import uuidv5 from 'uuid/v5';
 
 let module = async (moduleId, blockId, offeringTypeId, qualificationId) => {
   return await Module.findOne({
@@ -26,7 +27,8 @@ let module = async (moduleId, blockId, offeringTypeId, qualificationId) => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modules = async () => {
   return await Module.find({})
@@ -49,7 +51,8 @@ let modules = async () => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByDiscipline = async disciplineIds => {
   return await Module.find({ disciplineId: { $in: disciplineIds } })
@@ -72,7 +75,8 @@ let modulesByDiscipline = async disciplineIds => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByUnassigned = async () => {
   return await Module.find({ userId: null })
@@ -95,7 +99,8 @@ let modulesByUnassigned = async () => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByAssigned = async () => {
   return await Module.find({ userId: { $nin: [null, ''] } })
@@ -118,7 +123,8 @@ let modulesByAssigned = async () => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByUser = async userId => {
   return await Module.find({ userId: userId })
@@ -141,7 +147,8 @@ let modulesByUser = async userId => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByModerator = async moderatorId => {
   return await Module.find({ moderatorId: moderatorId })
@@ -164,7 +171,8 @@ let modulesByModerator = async moderatorId => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByCoordinator = async coordinatorId => {
   return await Module.find({ coordinatorId: coordinatorId })
@@ -187,7 +195,8 @@ let modulesByCoordinator = async coordinatorId => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByStack = async stackId => {
   return await Module.find({ stackId: stackId })
@@ -210,7 +219,8 @@ let modulesByStack = async stackId => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 let modulesByUnassignedAndDiscipline = async (userId, disciplineIds) => {
   return await Module.find({
@@ -235,7 +245,8 @@ let modulesByUnassignedAndDiscipline = async (userId, disciplineIds) => {
     .populate('coordinator')
     .populate('moderator')
     .populate('coordinator')
-    .populate('venue');
+    .populate('venue')
+    .populate('lecturers');
 };
 
 let addModule = async module => {
@@ -662,6 +673,18 @@ let unassignAllModules = async () => {
   );
   return 'All modules unassigned';
 };
+let stackModules = async modules => {
+  let stackId = uuidv5();
+
+  let updatedModules = await Module.updateMany(
+    { $in: { modules } },
+    { $set: { stackId: stackId } }
+  );
+
+  console.log(updatedModules);
+
+  return updatedModules;
+};
 
 export {
   module,
@@ -685,5 +708,6 @@ export {
   assignModeratorToModule,
   unassignModeratorFromModule,
   unassignAllFromModule,
-  unassignAllModules
+  unassignAllModules,
+  stackModules
 };

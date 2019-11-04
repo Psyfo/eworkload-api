@@ -48,18 +48,6 @@ const moduleSchema = new mongoose.Schema(
       unique: false,
       ref: 'Block'
     },
-    userId: {
-      type: String,
-      ref: 'User'
-    },
-    coordinatorId: {
-      type: String,
-      ref: 'User'
-    },
-    moderatorId: {
-      type: String,
-      ref: 'User'
-    },
     credits: {
       type: Number
     },
@@ -69,9 +57,26 @@ const moduleSchema = new mongoose.Schema(
     studyPeriod: {
       type: String
     },
-    groupSize: {
-      type: Number
-    },
+    groups: [
+      {
+        groupCode: {
+          type: String
+        },
+        enrolled: {
+          type: Number
+        },
+        lecturerIds: [
+          {
+            type: String,
+            ref: 'User'
+          }
+        ],
+        repeat: {
+          type: Number,
+          default: 1
+        }
+      }
+    ],
     lecturedBy: {
       type: String
     },
@@ -81,9 +86,7 @@ const moduleSchema = new mongoose.Schema(
     moderation: {
       type: String
     },
-    isModular: {
-      type: Boolean
-    },
+
     createdAt: {
       type: Date
     },
@@ -156,6 +159,12 @@ moduleSchema.virtual('moderator', {
   localField: 'moderatorId',
   foreignField: 'userId',
   justOne: true
+});
+moduleSchema.virtual('lecturers', {
+  ref: 'User',
+  localField: 'lecturerIds',
+  foreignField: 'userId',
+  justOne: false
 });
 
 const Module = mongoose.model('Module', moduleSchema);

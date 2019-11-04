@@ -127,6 +127,9 @@ export default {
     },
     unassignAllModules: async () => {
       return await ModuleMethods.unassignAllModules();
+    },
+    stackModules: async (root, { modules }) => {
+      return await ModuleMethods.stackModules(modules);
     }
   }
 };
