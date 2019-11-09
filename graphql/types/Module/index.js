@@ -53,12 +53,11 @@ export default gql`
     disciplineId: String
     venueId: String
     blockId: String
-    coordinatorId: String
-    moderatorId: String
     stackId: String
     studyPeriod: String
     groups: [ModuleGroupInput]
     lecturedBy: String
+    enrolled: Int
     moderation: String
   }
 
