@@ -1,4 +1,5 @@
 import IPublicServiceActivity from 'interfaces/activity/public-service-activity.interface';
+import { Document } from 'mongoose';
 
 interface IPublicServiceWorkloadPerActivity {
   activity: IPublicServiceActivity;
@@ -8,7 +9,7 @@ interface IPublicServiceWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IPublicServiceWorkload {
+export default interface IPublicServiceWorkload extends Document {
   userId: string;
   publicServiceWorkloads: IPublicServiceWorkloadPerActivity[];
   globalTarrif: number;

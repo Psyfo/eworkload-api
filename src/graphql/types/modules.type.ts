@@ -1,3 +1,4 @@
+import { ModuleInput } from './../../../../eworkload-client/src/app/shared/generated/output';
 import { gql } from 'apollo-server-express';
 
 export default gql`
@@ -125,5 +126,7 @@ export default gql`
     ): Module
     unassignAllModules: String
     stackModules(modules: ModuleInput): [Module]
+    addModuleToStack(module: ModuleInput, stackId: String): Module
+    resetStacks: [Module]
   }
 `;

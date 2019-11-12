@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 import * as WorkloadMethods from '../../controllers/workload.controller';
 import Activity from './activity.model';
+import IFormalInstructionActivity from 'interfaces/activity/formal-instruction-activity.interface';
 
 const formalInstructionActivitySchema = new mongoose.Schema(
   {
@@ -54,12 +55,20 @@ formalInstructionActivitySchema.post('save', async function() {
   const activity: any = this;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-formalInstructionActivitySchema.post('findOneAndUpdate', async function(doc) {
-  const activity: any = doc;
+formalInstructionActivitySchema.post('findOneAndUpdate', async function(
+  doc: IFormalInstructionActivity
+) {
+  const activity: IFormalInstructionActivity = doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-formalInstructionActivitySchema.post('findOneAndRemove', async function(doc) {
-  const activity: any = doc;
+formalInstructionActivitySchema.post('findOneAndRemove', async function(
+  doc: IFormalInstructionActivity
+) {
+  console.log('Doc', doc);
+
+  const activity: IFormalInstructionActivity = doc;
+  console.log('Activity', activity);
+
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
 

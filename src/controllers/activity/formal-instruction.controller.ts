@@ -3,6 +3,7 @@ import FormalInstructionActivity from '../../models/activity/formal-instruction-
 import * as EnrollmentMethods from '../enrollment.controller';
 import * as WorkFocusMethods from '../work-focus.controller';
 import * as WorkloadMethods from '../workload.controller';
+import IModule from 'interfaces/module.interface';
 
 let year = new Date().getFullYear().toString();
 
@@ -153,15 +154,20 @@ let formalInstructionStudentsEnrolled = async (activityId: string) => {
 let formalInstructionBaseContactHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  })
+    .populate({ path: 'module', model: 'Module' })
+    .orFail();
 
-  let module = activity.module;
+  let module: IModule = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
 
   let repeats = Math.round(students / parameters.max_venue_size);
-
-  return ((module.credits / 4) * lectureWeeks * repeats) / module.groupSize;
+  let groupSize = module.groups.length;
+  if (!groupSize) {
+    groupSize = 1;
+  }
+  return ((module.credits / 4) * lectureWeeks * repeats) / groupSize;
 };
 let formalInstructionCoordinationHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
@@ -296,16 +302,20 @@ let formalInstructionTotalHoursPerUser = async (userId: string) => {
   let activities: any[] = await FormalInstructionActivity.find({
     userId: userId
   });
+  let activityHours = 0;
 
-  let sum = 0;
-  for (let activity of activities) {
-    const activityHours = await formalInstructionTotalHoursPerActivity(
-      activity.activityId
-    );
-    sum += activityHours;
+  // Cancel if no activities
+  if (!activities) {
+    return activityHours;
   }
 
-  return sum;
+  for (let activity of activities) {
+    activityHours += await formalInstructionTotalHoursPerActivity(
+      activity.activityId
+    );
+  }
+
+  return activityHours;
 };
 let formalInstructionPercentageOfWorkFocusPerActivity = async (
   activityId: string

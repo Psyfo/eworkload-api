@@ -1,4 +1,5 @@
 import ISupervisionActivity from 'interfaces/activity/supervision-activity.interface';
+import { Document } from 'mongoose';
 
 interface ISupervisionWorkloadPerActivity {
   activity: ISupervisionActivity;
@@ -8,7 +9,7 @@ interface ISupervisionWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface ISupervisionWorkload {
+export default interface ISupervisionWorkload extends Document {
   userId: string;
   supervisionWorkloads: ISupervisionWorkloadPerActivity[];
   globalTarrif: number;

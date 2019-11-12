@@ -134,6 +134,12 @@ export default {
     },
     stackModules: async (root: any, { modules }: any) => {
       return await ModuleMethods.stackModules(modules);
+    },
+    addModuleToStack: async (root: any, { module, stackId }: any) => {
+      return await ModuleMethods.addModuleToStack(module, stackId);
+    },
+    resetStacks: async () => {
+      return await ModuleMethods.resetStacks();
     }
   }
 };

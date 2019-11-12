@@ -2,6 +2,8 @@ import parameters from '../../config/parameters';
 import AcademicAdministrationActivity from '../../models/activity/academic-administration-activity.model';
 import * as WorkFocusMethods from '../work-focus.controller';
 import * as WorkloadMethods from '../workload.controller';
+import IAcademicAdministrationActivity from 'interfaces/activity/academic-administration-activity.interface';
+import { activity } from './activity.controller';
 
 // AA METHODS
 let academicAdministrationActivity = async (activityId: string) => {
@@ -18,7 +20,8 @@ let academicAdministrationActivity = async (activityId: string) => {
       ]
     })
     .populate('duty')
-    .populate('qualification');
+    .populate('qualification')
+    .orFail();
 };
 let academicAdministrationActivities = async () => {
   return await AcademicAdministrationActivity.find({})
@@ -32,7 +35,8 @@ let academicAdministrationActivities = async () => {
       ]
     })
     .populate('duty')
-    .populate('qualification');
+    .populate('qualification')
+    .orFail();
 };
 let academicAdministrationActivitiesByUser = async (userId: string) => {
   return await AcademicAdministrationActivity.find({ userId: userId })
@@ -46,7 +50,8 @@ let academicAdministrationActivitiesByUser = async (userId: string) => {
       ]
     })
     .populate('duty')
-    .populate('qualification');
+    .populate('qualification')
+    .orFail();
 };
 let addAcademicAdministrationActivity = async (activity: any) => {
   const newActivity = await new AcademicAdministrationActivity(activity);
@@ -60,10 +65,12 @@ let editAcademicAdministrationActivity = async (activity: any) => {
       $set: activity
     },
     { upsert: true }
-  );
+  ).orFail();
 };
 let deleteAcademicAdministrationActivity = async (activity: any) => {
-  return await AcademicAdministrationActivity.findOneAndRemove(activity);
+  return await AcademicAdministrationActivity.findOneAndRemove(
+    activity
+  ).orFail();
 };
 
 // WORKLOAD METHODS
@@ -79,7 +86,10 @@ let academicAdministrationBase = async (activityId: string) => {
 let academicAdministrationTotalHoursPerActivity = async (
   activityId: string
 ) => {
-  let activity: any = await academicAdministrationActivity(activityId);
+  const activity: any = await academicAdministrationActivity(activityId);
+  if (!activity) {
+    throw new Error('AA Activity is not defined');
+  }
   let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
 
   return serviceHours / 10;

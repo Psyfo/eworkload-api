@@ -1,4 +1,5 @@
 import IExecutiveManagementActivity from 'interfaces/activity/executive-management-activity.interface';
+import { Document } from 'mongoose';
 
 interface IExecutiveManagementWorkloadPerActivity {
   activity: IExecutiveManagementActivity;
@@ -8,7 +9,7 @@ interface IExecutiveManagementWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IExecutiveManagementWorkload {
+export default interface IExecutiveManagementWorkload extends Document {
   userId: string;
   executiveManagementWorkloads: IExecutiveManagementWorkloadPerActivity[];
   globalTarrif: number;

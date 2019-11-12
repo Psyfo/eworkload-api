@@ -1,6 +1,8 @@
 import * as AcademicAdministrationMethods from '../activity/academic-administration.controller';
 
 import AcademicAdministrationWorkload from '../../models/workload/academic-administration.model';
+import IAcademicAdministrationActivity from 'interfaces/activity/academic-administration-activity.interface';
+import IAcademicAdministrationWorkload from 'interfaces/workload/academic-administration-workload.interface';
 
 let initializeAAWorkload = async (userId: string) => {
   // Only one workload record so delete first if it exists
@@ -28,25 +30,25 @@ let calculateAcademicAdministrationWorkload = async (userId: string) => {
   }
 
   let academicAdministrationWorkloads = [];
-  let activities: any = await AcademicAdministrationMethods.academicAdministrationActivitiesByUser(
+  let activities: any[] = await AcademicAdministrationMethods.academicAdministrationActivitiesByUser(
     userId
   );
-  console.log(activities);
 
   // Iterate through activities to calculate per-activity workloads
   for (let activity of activities) {
-    let academicAdministrationTotalHoursPerActivity = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerActivity(
+    let academicAdministrationTotalHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerActivity(
       activity.activityId
     );
-    let percentageOfWorkFocusPerActivity = await AcademicAdministrationMethods.academicAdministrationPercentageOfWorkFocusPerActivity(
+    let percentageOfWorkFocusPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfWorkFocusPerActivity(
       activity.activityId
     );
-    let percentageOfAnnualHoursPerActivity = await AcademicAdministrationMethods.academicAdministrationPercentageOfAnnualHoursPerActivity(
+    let percentageOfAnnualHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfAnnualHoursPerActivity(
       activity.activityId
     );
-    let percentageOfTotalHoursPerActivity = await AcademicAdministrationMethods.academicAdministrationPercentageOfTotalHoursPerActivity(
+    let percentageOfTotalHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfTotalHoursPerActivity(
       activity.activityId
     );
+
     await academicAdministrationWorkloads.push({
       activity: activity,
       totalHoursPerActivity: academicAdministrationTotalHoursPerActivity,

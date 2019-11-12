@@ -1,4 +1,5 @@
 import ICommunityInstructionActivity from 'interfaces/activity/community-instruction-activity.interface';
+import { Document } from 'mongoose';
 
 interface ICommunityInstructionWorkloadPerActivity {
   activity: ICommunityInstructionActivity;
@@ -8,7 +9,7 @@ interface ICommunityInstructionWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface ICommunityInstructionWorkload {
+export default interface ICommunityInstructionWorkload extends Document {
   userId: string;
   communityInstructionWorkloads: ICommunityInstructionWorkloadPerActivity[];
   globalTarrif: number;

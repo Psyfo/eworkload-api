@@ -1,7 +1,11 @@
-import IActivity from './activity.interface';
 import IQualification from 'interfaces/qualification.interface';
+import { Document } from 'mongoose';
 
-export default interface IAcademicAdministrationActivity extends IActivity {
+import IActivity from './activity.interface';
+
+export default interface IAcademicAdministrationActivity
+  extends IActivity,
+    Document {
   title: string;
   qualificationId: string;
   qualification?: IQualification;

@@ -1,4 +1,6 @@
-export default interface IStudent {
+import { Document } from 'mongoose';
+
+export default interface IStudent extends Document {
   studentId: string;
   firstName: string;
   lastName: string;

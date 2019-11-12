@@ -16,6 +16,8 @@ import * as PDWorkloadMethods from './workload/personnel-development-workload.co
 import * as PSWorkloadMethods from './workload/public-service-workload.controller';
 import * as RWorkloadMethods from './workload/research-workload.controller';
 import * as SWorkloadMethods from './workload/supervision-workload.controller';
+import IUser from 'interfaces/user.interface';
+import IAcademicAdministrationWorkload from 'interfaces/workload/academic-administration-workload.interface';
 
 let totalHoursPerUser = async (userId: any) => {
   const aaHours = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerUser(
@@ -40,7 +42,6 @@ let totalHoursPerUser = async (userId: any) => {
   const sHours = await SupervisionMethods.supervisionTotalHoursPerUser(userId);
   let total = 0;
   try {
-    total = 0;
     total =
       aaHours +
       ciHours +
@@ -53,6 +54,7 @@ let totalHoursPerUser = async (userId: any) => {
   } catch (error) {
     console.log(error);
   }
+
   return total;
 };
 let teachingHoursPerUser = async (userId: string) => {
@@ -89,7 +91,6 @@ let serviceHoursPerUser = async (userId: string) => {
 
   return total;
 };
-
 let initializeWorkloads = async (userId: string) => {
   await AAWorkloadMethods.initializeAAWorkload(userId);
   await CIWorkloadMethods.initializeCIWorkload(userId);
@@ -137,7 +138,6 @@ let calculateTotalWorkload = async (userId: string) => {
   // Return totalWorkload only afterwards;
   return await totalWorkload(userId);
 };
-
 let totalWorkload = async (userId: string) => {
   const aa = await AAWorkloadMethods.academicAdministrationWorkload(userId);
   const ci = await CIWorkloadMethods.communityInstructionWorkload(userId);
@@ -159,10 +159,9 @@ let totalWorkload = async (userId: string) => {
     supervisionWorkload: s
   };
 };
-
 let workloadSummaries = async () => {
   let workloadSummary = [];
-  const users: any = await UserMethods.users();
+  const users: any[] = await UserMethods.users();
   for (let user of users) {
     const tHours = await WorkFocusMethods.teachingHours(user.userId);
     const rHours = await WorkFocusMethods.researchHours(user.userId);

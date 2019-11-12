@@ -1,4 +1,5 @@
 import IPersonnelDevelopmentActivity from 'interfaces/activity/personnel-development-activity.interface';
+import { Document } from 'mongoose';
 
 interface IPersonnelDevelopmentWorkloadPerActivity {
   activity: IPersonnelDevelopmentActivity;
@@ -8,7 +9,7 @@ interface IPersonnelDevelopmentWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IPersonnelDevelopmentWorkload {
+export default interface IPersonnelDevelopmentWorkload extends Document {
   userId: string;
   personnelDevelopmentWorkloads: IPersonnelDevelopmentWorkloadPerActivity[];
   globalTarrif: number;

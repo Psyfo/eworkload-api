@@ -3,13 +3,14 @@ import IModule from 'interfaces/module.interface';
 import IBlock from 'interfaces/block.interface';
 import IOfferingType from 'interfaces/offering-type.interface';
 import IQualification from 'interfaces/qualification.interface';
+import { Document } from 'mongoose';
 
 interface IFormalInstructionWorkloadPerActivity {
   activity: IFormalInstructionActivity;
-  module: IModule;
-  block: IBlock;
-  offeringType: IOfferingType;
-  qualification: IQualification;
+  module?: IModule;
+  block?: IBlock;
+  offeringType?: IOfferingType;
+  qualification?: IQualification;
   studentsEnrolled: number;
   baseContactHours: number;
   coordinationHours: number;
@@ -28,7 +29,7 @@ interface IFormalInstructionWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IFormalInstructionWorkload {
+export default interface IFormalInstructionWorkload extends Document {
   userId: string;
   formalInstructionWorkloads: IFormalInstructionWorkloadPerActivity[];
   totalHoursPerUser: number;

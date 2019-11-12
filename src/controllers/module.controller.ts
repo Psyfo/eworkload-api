@@ -1,6 +1,7 @@
 import uuidv4 from 'uuid/v4';
 
 import Module from '../models/module.model';
+import IModule from 'interfaces/module.interface';
 
 let _module = async (
   moduleId: string,
@@ -636,17 +637,68 @@ let unassignAllModules = async () => {
   );
   return 'All modules unassigned';
 };
-let stackModules = async (modules: any[]) => {
-  let stackId: string = uuidv4();
+let stackModules = async (modules: IModule[]) => {
+  const stackId: string = uuidv4();
 
-  let updatedModules = await Module.updateMany(
-    { $in: { modules } },
-    { $set: { stackId: stackId } }
-  );
+  const updatedModules = modules.map(async module => {
+    return await Module.findOneAndUpdate(
+      {
+        moduleId: module.moduleId,
+        blockId: module.blockId,
+        offeringTypeId: module.offeringTypeId,
+        qualificationId: module.qualificationId
+      },
+      {
+        $set: {
+          stackId: stackId
+        }
+      },
+      { upsert: true }
+    );
+  });
 
-  console.log(updatedModules);
-
+  if (updatedModules === null) {
+    throw new Error('No updated modules returned');
+  }
   return updatedModules;
+};
+let addModuleToStack = async (module: IModule, stackId: string) => {
+  return await Module.findOneAndUpdate(
+    {
+      moduleId: module.moduleId,
+      blockId: module.blockId,
+      offeringTypeId: module.offeringTypeId,
+      qualificationId: module.qualificationId
+    },
+    {
+      $set: {
+        stackId: stackId
+      }
+    },
+    { upsert: true }
+  );
+};
+let resetStacks = async () => {
+  const modules: any[] = await Module.find().orFail();
+
+  const stackedModules: any[] = await modules.map(async module => {
+    await Module.findOneAndUpdate(
+      {
+        moduleId: module.moduleId,
+        blockId: module.blockId,
+        offeringTypeId: module.offeringTypeId,
+        qualificationId: module.qualificationId
+      },
+      {
+        $set: {
+          stackId: uuidv4()
+        }
+      },
+      { upsert: true }
+    );
+  });
+  console.log('All module stacks reset');
+  return stackedModules;
 };
 
 export {
@@ -672,5 +724,7 @@ export {
   unassignModeratorFromModule,
   unassignAllFromModule,
   unassignAllModules,
-  stackModules
+  stackModules,
+  resetStacks,
+  addModuleToStack
 };

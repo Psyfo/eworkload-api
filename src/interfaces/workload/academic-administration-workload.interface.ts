@@ -1,4 +1,5 @@
 import IAcademicAdministrationActivity from 'interfaces/activity/academic-administration-activity.interface';
+import { Document } from 'mongoose';
 
 interface IAcademicAdministrationWorkloadPerActivity {
   activity: IAcademicAdministrationActivity;
@@ -8,7 +9,7 @@ interface IAcademicAdministrationWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IAcademicAdministrationWorkload {
+export default interface IAcademicAdministrationWorkload extends Document {
   userId: string;
   academicAdministrationWorkloads: IAcademicAdministrationWorkloadPerActivity[];
   globalTarrif: number;

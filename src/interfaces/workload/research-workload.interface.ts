@@ -1,4 +1,5 @@
 import IResearchActivity from 'interfaces/activity/research-activity.interface';
+import { Document } from 'mongoose';
 
 interface IResearchWorkloadPerActivity {
   activity: IResearchActivity;
@@ -8,7 +9,7 @@ interface IResearchWorkloadPerActivity {
   percentageOfTotalHoursPerActivity: number;
 }
 
-export default interface IResearchWorkload {
+export default interface IResearchWorkload extends Document {
   userId: string;
   researchWorkloads: IResearchWorkloadPerActivity[];
   globalTarrif: number;

@@ -1,4 +1,6 @@
-export default interface IWorkload {
+import { Document } from 'mongoose';
+
+export default interface IWorkload extends Document {
   userId: string;
   year: string;
   workFocusName: string;

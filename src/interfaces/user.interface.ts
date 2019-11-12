@@ -2,8 +2,9 @@ import IDepartment from './department.interface';
 import IDiscipline from './discipline.interface';
 import IPosition from './position.interface';
 import IWorkFocus from './work-focus.interface';
+import { Document } from 'mongoose';
 
-export default interface IUser {
+export default interface IUser extends Document {
   userId: string;
   password: string;
   email: string;
