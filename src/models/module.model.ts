@@ -95,7 +95,6 @@ const moduleSchema = new mongoose.Schema(
     }
   },
   {
-    collection: 'modules',
     timestamps: true,
     toJSON: {
       virtuals: true

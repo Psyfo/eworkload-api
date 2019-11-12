@@ -26,9 +26,6 @@ const activitySchema = new mongoose.Schema(
     },
     updatedAt: {
       type: Date
-    },
-    evidence: {
-      type: String
     }
   },
   {
