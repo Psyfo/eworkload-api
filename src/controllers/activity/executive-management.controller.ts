@@ -1,47 +1,47 @@
-import ExecutiveManagementActivity from '../../models/activity/executive-management-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
-import parameters from '../../config/parameters';
+import ExecutiveManagementActivity from "../../models/activity/executive-management-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
+import parameters from "../../config/parameters.config";
 
 // EM METHODS
 let executiveManagementActivity = async (activityId: string) => {
   return await ExecutiveManagementActivity.findOne({ activityId: activityId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let executiveManagementActivities = async () => {
   return await ExecutiveManagementActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let executiveManagementActivitiesByUser = async (userId: string) => {
   return await ExecutiveManagementActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let addExecutiveManagementActivity = async (activity: any) => {
   const newActivity = await new ExecutiveManagementActivity(activity);
@@ -123,7 +123,7 @@ let executiveManagementPercentageOfTotalHoursPerActivity = async (
   );
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -141,7 +141,7 @@ let executiveManagementPercentageOfTotalHoursPerUser = async (
   let activityHours = await executiveManagementTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };

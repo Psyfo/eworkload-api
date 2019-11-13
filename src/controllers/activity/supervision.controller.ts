@@ -1,26 +1,26 @@
-import parameters from '../../config/parameters';
-import SupervisionActivity from '../../models/activity/supervision-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
+import parameters from "../../config/parameters.config";
+import SupervisionActivity from "../../models/activity/supervision-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
 
 // PS METHODS
 let supervisionActivity = async (activityId: string) => {
   return await SupervisionActivity.findOne({ activityId: activityId })
-    .populate('user')
-    .populate('duty')
-    .populate('student');
+    .populate("user")
+    .populate("duty")
+    .populate("student");
 };
 let supervisionActivities = async () => {
   return await SupervisionActivity.find({})
-    .populate('user')
-    .populate('duty')
-    .populate('student');
+    .populate("user")
+    .populate("duty")
+    .populate("student");
 };
 let supervisionActivitiesByUser = async (userId: string) => {
   return await SupervisionActivity.find({ userId: userId })
-    .populate('user')
-    .populate('duty')
-    .populate('student');
+    .populate("user")
+    .populate("duty")
+    .populate("student");
 };
 let addSupervisionActivity = async (activity: any) => {
   const newActivity = new SupervisionActivity(activity);
@@ -97,7 +97,7 @@ let supervisionPercentageOfTotalHoursPerActivity = async (
   activityHours = await supervisionTotalHoursPerActivity(activityId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -105,7 +105,7 @@ let supervisionPercentageOfTotalHoursPerUser = async (userId: string) => {
   let activityHours = await supervisionTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const executiveManagementWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -50,16 +50,24 @@ const executiveManagementWorkloadSchema = new mongoose.Schema({
   }
 });
 
+// HOOKS
+executiveManagementWorkloadSchema.post("save", async function(doc: any) {
+  console.log("Executive Management Workload created");
+});
+
+// INDEX
+executiveManagementWorkloadSchema.index({ userId: 1 }, { unique: true });
+
 // VIRTUALS
-executiveManagementWorkloadSchema.virtual('executive-management-activity', {
-  ref: 'ExecutiveManagementActivity',
-  localField: 'activityId',
-  foreignField: 'activityId',
+executiveManagementWorkloadSchema.virtual("executive-management-activity", {
+  ref: "ExecutiveManagementActivity",
+  localField: "activityId",
+  foreignField: "activityId",
   justOne: true
 });
 
 const ExecutiveManagementWorkload = mongoose.model(
-  'ExecutiveManagementWorkload',
+  "ExecutiveManagementWorkload",
   executiveManagementWorkloadSchema
 );
 export default ExecutiveManagementWorkload;

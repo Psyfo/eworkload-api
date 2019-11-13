@@ -1,23 +1,23 @@
-import * as AcademicAdministrationMethods from './activity/academic-administration.controller';
-import * as CommunityInstructionMethods from './activity/community-instruction.controller';
-import * as ExecutiveManagementMethods from './activity/executive-management.controller';
-import * as FormalInstructionMethods from './activity/formal-instruction.controller';
-import * as PersonnelDevelopmentMethods from './activity/personnel-development.controller';
-import * as PublicServiceMethods from './activity/public-service.controller';
-import * as ResearchMethods from './activity/research.controller';
-import * as SupervisionMethods from './activity/supervision.controller';
-import * as UserMethods from './user.controller';
-import * as WorkFocusMethods from './work-focus.controller';
-import * as AAWorkloadMethods from './workload/academic-administration-workload.controller';
-import * as CIWorkloadMethods from './workload/community-instruction-workload.controller';
-import * as EMWorkloadMethods from './workload/executive-management-workload.controller';
-import * as FIWorkloadMethods from './workload/formal-instruction-workload.controller';
-import * as PDWorkloadMethods from './workload/personnel-development-workload.controller';
-import * as PSWorkloadMethods from './workload/public-service-workload.controller';
-import * as RWorkloadMethods from './workload/research-workload.controller';
-import * as SWorkloadMethods from './workload/supervision-workload.controller';
-import IUser from 'interfaces/user.interface';
-import IAcademicAdministrationWorkload from 'interfaces/workload/academic-administration-workload.interface';
+import * as AcademicAdministrationMethods from "./activity/academic-administration.controller";
+import * as CommunityInstructionMethods from "./activity/community-instruction.controller";
+import * as ExecutiveManagementMethods from "./activity/executive-management.controller";
+import * as FormalInstructionMethods from "./activity/formal-instruction.controller";
+import * as PersonnelDevelopmentMethods from "./activity/personnel-development.controller";
+import * as PublicServiceMethods from "./activity/public-service.controller";
+import * as ResearchMethods from "./activity/research.controller";
+import * as SupervisionMethods from "./activity/supervision.controller";
+import * as UserMethods from "./user.controller";
+import * as WorkFocusMethods from "./work-focus.controller";
+import * as AAWorkloadMethods from "./workload/academic-administration-workload.controller";
+import * as CIWorkloadMethods from "./workload/community-instruction-workload.controller";
+import * as EMWorkloadMethods from "./workload/executive-management-workload.controller";
+import * as FIWorkloadMethods from "./workload/formal-instruction-workload.controller";
+import * as PDWorkloadMethods from "./workload/personnel-development-workload.controller";
+import * as PSWorkloadMethods from "./workload/public-service-workload.controller";
+import * as RWorkloadMethods from "./workload/research-workload.controller";
+import * as SWorkloadMethods from "./workload/supervision-workload.controller";
+import IUser from "interfaces/user.interface";
+import IAcademicAdministrationWorkload from "interfaces/workload/academic-administration-workload.interface";
 
 let totalHoursPerUser = async (userId: any) => {
   const aaHours = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerUser(
@@ -92,6 +92,7 @@ let serviceHoursPerUser = async (userId: string) => {
   return total;
 };
 let initializeWorkloads = async (userId: string) => {
+  await deleteWorkloads(userId);
   await AAWorkloadMethods.initializeAAWorkload(userId);
   await CIWorkloadMethods.initializeCIWorkload(userId);
   await EMWorkloadMethods.initializeEMWorkload(userId);
@@ -100,40 +101,35 @@ let initializeWorkloads = async (userId: string) => {
   await PSWorkloadMethods.initializePSWorkload(userId);
   await RWorkloadMethods.initializeRWorkload(userId);
   await SWorkloadMethods.initializeSWorkload(userId);
+  console.log(`Workloads initialized for User: ${userId}`);
+  return {};
+};
+let deleteWorkloads = async (userId: string) => {
+  await AAWorkloadMethods.deleteAcademicAdministrationWorkload(userId);
+  await CIWorkloadMethods.deleteCommunityInstructionWorkload(userId);
+  await EMWorkloadMethods.deleteExecutiveManagementWorkload(userId);
+  await FIWorkloadMethods.deleteFormalInstructionWorkload(userId);
+  await PDWorkloadMethods.deletePersonnelDevelopmentWorkload(userId);
+  await PSWorkloadMethods.deletePublicServiceWorkload(userId);
+  await RWorkloadMethods.deleteResearchWorkload(userId);
+  await SWorkloadMethods.deleteSupervisionWorkload(userId);
+  console.log(`Workloads deleted for User: ${userId}`);
 };
 let calculateTotalWorkload = async (userId: string) => {
-  try {
-    // Get calculated workloads
-    let aa = await AAWorkloadMethods.calculateAcademicAdministrationWorkload(
-      userId
-    );
-    let ci = await CIWorkloadMethods.calculateCommunityInstructionWorkload(
-      userId
-    );
-    let em = await EMWorkloadMethods.calculateExecutiveManagementWorkload(
-      userId
-    );
-    let fi = await FIWorkloadMethods.calculateFormalInstructionWorkload(userId);
-    let pd = await PDWorkloadMethods.calculatePersonnelDevelopmentWorkload(
-      userId
-    );
-    let ps = await PSWorkloadMethods.calculatePublicServiceWorkload(userId);
-    let r = await RWorkloadMethods.calculateResearchWorkload(userId);
-    let s = await SWorkloadMethods.calculateSupervisionWorkload(userId);
+  // Delete current workloads for user
+  await deleteWorkloads(userId);
 
-    // Write workloads
-    await aa.save();
-    await ci.save();
-    await em.save();
-    await fi.save();
-    await pd.save();
-    await ps.save();
-    await r.save();
-    await s.save();
-  } catch (error) {
-    console.log(error);
-  }
-  console.log('Workloads calculated!');
+  // Calculate and save workloads
+  await AAWorkloadMethods.calculateAcademicAdministrationWorkload(userId);
+  await CIWorkloadMethods.calculateCommunityInstructionWorkload(userId);
+  await EMWorkloadMethods.calculateExecutiveManagementWorkload(userId);
+  await FIWorkloadMethods.calculateFormalInstructionWorkload(userId);
+  await PDWorkloadMethods.calculatePersonnelDevelopmentWorkload(userId);
+  await PSWorkloadMethods.calculatePublicServiceWorkload(userId);
+  await RWorkloadMethods.calculateResearchWorkload(userId);
+  await SWorkloadMethods.calculateSupervisionWorkload(userId);
+
+  console.log("Workloads calculated!");
 
   // Return totalWorkload only afterwards;
   return await totalWorkload(userId);
@@ -196,6 +192,7 @@ export {
   researchHoursPerUser,
   serviceHoursPerUser,
   initializeWorkloads,
+  deleteWorkloads,
   calculateTotalWorkload,
   totalWorkload,
   workloadSummaries

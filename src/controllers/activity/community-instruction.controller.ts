@@ -1,52 +1,52 @@
-import parameters from '../../config/parameters';
-import CommunityInstructionActivity from '../../models/activity/community-instruction-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
+import parameters from "../../config/parameters.config";
+import CommunityInstructionActivity from "../../models/activity/community-instruction-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
 
 // CI METHODS
 let communityInstructionActivity = async (activityId: string) => {
   return await CommunityInstructionActivity.findOne({ activityId: activityId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let communityInstructionActivities = async () => {
   return await CommunityInstructionActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let communityInstructionActivitiesByUser = async (userId: string) => {
   return await CommunityInstructionActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let addCommunityInstructionActivity = async (activity: any) => {
   const newActivity = await new CommunityInstructionActivity(activity)
-    .populate('user')
-    .populate('duty');
+    .populate("user")
+    .populate("duty");
 
   return await newActivity.save();
 };
@@ -124,7 +124,7 @@ let communityInstructionPercentageOfTotalHoursPerActivity = async (
   );
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -142,7 +142,7 @@ let communityInstructionPercentageOfTotalHoursPerUser = async (
   let activityHours = await communityInstructionTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };

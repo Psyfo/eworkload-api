@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const publicServiceWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -50,16 +50,24 @@ const publicServiceWorkloadSchema = new mongoose.Schema({
   }
 });
 
+// HOOKS
+publicServiceWorkloadSchema.post("save", async function(doc: any) {
+  console.log("Public Service Workload created");
+});
+
+// INDEX
+publicServiceWorkloadSchema.index({ userId: 1 }, { unique: true });
+
 // VIRTUALS
-publicServiceWorkloadSchema.virtual('public-service-activity', {
-  ref: 'PublicServiceActivity',
-  localField: 'activityId',
-  foreignField: 'activityId',
+publicServiceWorkloadSchema.virtual("public-service-activity", {
+  ref: "PublicServiceActivity",
+  localField: "activityId",
+  foreignField: "activityId",
   justOne: true
 });
 
 const PublicServiceWorkload = mongoose.model(
-  'PublicServiceWorkload',
+  "PublicServiceWorkload",
   publicServiceWorkloadSchema
 );
 export default PublicServiceWorkload;

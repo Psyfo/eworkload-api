@@ -1,52 +1,34 @@
-import SupervisionActivity from '../../models/activity/supervision-activity.model';
-import SupervisionWorkload from '../../models/workload/supervision.model';
-import * as SupervisionMethods from '../activity/supervision.controller';
+import SupervisionActivity from "../../models/activity/supervision-activity.model";
+import SupervisionWorkload from "../../models/workload/supervision.model";
+import * as SupervisionMethods from "../activity/supervision.controller";
 
 let initializeSWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteSupervisionWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
   let sWorkload = new SupervisionWorkload({
     userId: userId
   });
   return await sWorkload.save();
 };
 let supervisionWorkload = async (userId: string) => {
-  return await SupervisionWorkload.findOne({ userId: userId });
+  return await SupervisionWorkload.findOne({ userId: userId }).orFail();
 };
 let calculateSupervisionWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteSupervisionWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
-
   let supervisionWorkloads = [];
-  let supervisionActivities: any[] = await SupervisionActivity.find({
+  let activities: any[] = await SupervisionActivity.find({
     userId: userId
   });
 
-  for (let supervisionActivity of supervisionActivities) {
-    let activity: any = await SupervisionMethods.supervisionActivity(
-      supervisionActivity.activityId
-    );
+  for (let activity of activities) {
     let supervisionTotalHoursPerActivity = await SupervisionMethods.supervisionTotalHoursPerActivity(
-      supervisionActivity.activityId
+      activity.activityId
     );
     let percentageOfWorkFocusPerActivity = await SupervisionMethods.supervisionPercentageOfWorkFocusPerActivity(
-      supervisionActivity.activityId
+      activity.activityId
     );
     let percentageOfAnnualHoursPerActivity = await SupervisionMethods.supervisionPercentageOfAnnualHoursPerActivity(
-      supervisionActivity.activityId
+      activity.activityId
     );
     let percentageOfTotalHoursPerActivity = await SupervisionMethods.supervisionPercentageOfTotalHoursPerActivity(
-      supervisionActivity.activityId
+      activity.activityId
     );
     supervisionWorkloads.push({
       activity: activity,
@@ -79,10 +61,7 @@ let calculateSupervisionWorkload = async (userId: string) => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  // await supervisionWorkload.save();
-
-  console.log('Supervision Workload created');
-  return supervisionWorkload;
+  return await supervisionWorkload.save();
 };
 let deleteSupervisionWorkload = async (userId: string) => {
   return await SupervisionWorkload.findOneAndRemove({

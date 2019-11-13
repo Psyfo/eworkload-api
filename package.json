@@ -69,6 +69,7 @@
         "promises-all": "^1.0.0",
         "shortid": "^2.2.14",
         "uuid": "^3.3.2",
-        "validator": "^10.11.0"
+        "validator": "^10.11.0",
+        "winston": "^3.2.1"
     }
 }

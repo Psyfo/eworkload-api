@@ -1,13 +1,13 @@
-import * as AAWorkloadMethods from '../../controllers/workload/academic-administration-workload.controller';
-import * as CIWorkloadMethods from '../../controllers/workload/community-instruction-workload.controller';
-import * as EMWorkloadMethods from '../../controllers/workload/executive-management-workload.controller';
-import * as FIWorkloadMethods from '../../controllers/workload/formal-instruction-workload.controller';
-import * as PDWorkloadMethods from '../../controllers/workload/personnel-development-workload.controller';
-import * as PSWorkloadMethods from '../../controllers/workload/public-service-workload.controller';
-import * as RWorkloadMethods from '../../controllers/workload/research-workload.controller';
-import * as SWorkloadMethods from '../../controllers/workload/supervision-workload.controller';
-import * as WorkFocusMethods from '../../controllers/work-focus.controller';
-import * as WorkloadMethods from '../../controllers/workload.controller';
+import * as AAWorkloadMethods from "../../controllers/workload/academic-administration-workload.controller";
+import * as CIWorkloadMethods from "../../controllers/workload/community-instruction-workload.controller";
+import * as EMWorkloadMethods from "../../controllers/workload/executive-management-workload.controller";
+import * as FIWorkloadMethods from "../../controllers/workload/formal-instruction-workload.controller";
+import * as PDWorkloadMethods from "../../controllers/workload/personnel-development-workload.controller";
+import * as PSWorkloadMethods from "../../controllers/workload/public-service-workload.controller";
+import * as RWorkloadMethods from "../../controllers/workload/research-workload.controller";
+import * as SWorkloadMethods from "../../controllers/workload/supervision-workload.controller";
+import * as WorkFocusMethods from "../../controllers/work-focus.controller";
+import * as WorkloadMethods from "../../controllers/workload.controller";
 
 export default {
   Query: {
@@ -71,10 +71,16 @@ export default {
   },
   Mutation: {
     initializeWorkloads: async (root: any, { userId }: any) => {
-      return await WorkloadMethods.initializeWorkloads(userId);
+      await WorkloadMethods.initializeWorkloads(userId);
+      return "Workload initialized";
     },
     updateWorkloads: async (root: any, { userId }: any) => {
-      return await WorkloadMethods.calculateTotalWorkload(userId);
+      await WorkloadMethods.calculateTotalWorkload(userId);
+      return `Workloads updated for User: ${userId}`;
+    },
+    deleteWorkloads: async (root: any, { userId }: any) => {
+      await WorkloadMethods.deleteWorkloads(userId);
+      return `Workloads deleted for User: ${userId}`;
     }
   }
 };

@@ -1,27 +1,27 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-import * as WorkloadMethods from '../../controllers/workload.controller';
-import Activity from './activity.model';
-import IFormalInstructionActivity from 'interfaces/activity/formal-instruction-activity.interface';
+import * as WorkloadMethods from "../../controllers/workload.controller";
+import Activity from "./activity.model";
+import IFormalInstructionActivity from "interfaces/activity/formal-instruction-activity.interface";
 
 const formalInstructionActivitySchema = new mongoose.Schema(
   {
     moduleId: {
       type: String,
       required: true,
-      ref: 'Module'
+      ref: "Module"
     },
     blockId: {
       type: String,
-      ref: 'Block'
+      ref: "Block"
     },
     offeringTypeId: {
       type: String,
-      ref: 'OfferingType'
+      ref: "OfferingType"
     },
     qualificationId: {
       type: String,
-      ref: 'Qualification'
+      ref: "Qualification"
     },
     isCoordinator: {
       type: Boolean
@@ -51,55 +51,47 @@ formalInstructionActivitySchema.index(
 );
 
 // HOOKS
-formalInstructionActivitySchema.post('save', async function() {
-  const activity: any = this;
+formalInstructionActivitySchema.post("save", async function() {
+  const activity: any = await this;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-formalInstructionActivitySchema.post('findOneAndUpdate', async function(
-  doc: IFormalInstructionActivity
-) {
-  const activity: IFormalInstructionActivity = doc;
+formalInstructionActivitySchema.post("findOneAndUpdate", async function(doc) {
+  const activity: any = doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-formalInstructionActivitySchema.post('findOneAndRemove', async function(
-  doc: IFormalInstructionActivity
-) {
-  console.log('Doc', doc);
-
-  const activity: IFormalInstructionActivity = doc;
-  console.log('Activity', activity);
-
+formalInstructionActivitySchema.post("findOneAndRemove", async function(doc) {
+  const activity: any = doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
 
 // VIRTUALS
-formalInstructionActivitySchema.virtual('module', {
-  ref: 'Module',
-  localField: 'moduleId',
-  foreignField: 'moduleId',
+formalInstructionActivitySchema.virtual("module", {
+  ref: "Module",
+  localField: "moduleId",
+  foreignField: "moduleId",
   justOne: true
 });
-formalInstructionActivitySchema.virtual('offeringType', {
-  ref: 'OfferingType',
-  localField: 'offeringTypeId',
-  foreignField: 'offeringTypeId',
+formalInstructionActivitySchema.virtual("offeringType", {
+  ref: "OfferingType",
+  localField: "offeringTypeId",
+  foreignField: "offeringTypeId",
   justOne: true
 });
-formalInstructionActivitySchema.virtual('qualification', {
-  ref: 'Qualification',
-  localField: 'qualificationId',
-  foreignField: 'qualificationId',
+formalInstructionActivitySchema.virtual("qualification", {
+  ref: "Qualification",
+  localField: "qualificationId",
+  foreignField: "qualificationId",
   justOne: true
 });
-formalInstructionActivitySchema.virtual('block', {
-  ref: 'Block',
-  localField: 'blockId',
-  foreignField: 'blockId',
+formalInstructionActivitySchema.virtual("block", {
+  ref: "Block",
+  localField: "blockId",
+  foreignField: "blockId",
   justOne: true
 });
 
 const FormalInstructionActivity = Activity.discriminator(
-  'FormalInstructionActivity',
+  "FormalInstructionActivity",
   formalInstructionActivitySchema
 );
 export default FormalInstructionActivity;

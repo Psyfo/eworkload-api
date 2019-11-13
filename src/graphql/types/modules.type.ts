@@ -125,8 +125,9 @@ export default gql`
       qualificationId: String
     ): Module
     unassignAllModules: String
-    stackModules(modules: ModuleInput): [Module]
+    stackModules(modules: [ModuleInput]): [Module]
     addModuleToStack(module: ModuleInput, stackId: String): Module
-    resetStacks: [Module]
+    resetStacks: String
+    resetEnrollments: String
   }
 `;

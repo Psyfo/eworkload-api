@@ -1,20 +1,15 @@
-console.time('app started');
+import compression from "compression";
+import cors from "cors";
+import express from "express";
+import { createServer } from "http";
+import mongoose from "mongoose";
+import path from "path";
 
-import 'graphql-import-node';
+import { default as dbConfig } from "./config/keys.config";
+import SERVER from "./graphql/schema";
 
-import compression from 'compression';
-import cors from 'cors';
-import express from 'express';
-import mongoose from 'mongoose';
-import morgan from 'morgan';
-import path from 'path';
-import { createServer } from 'http';
-
-import { default as dbConfig } from './config/keys';
-import SERVER from './graphql/schema';
-
+// CONFIG VARIABLES
 const app = express();
-
 const db = dbConfig.MongoURI;
 
 // MONGOOSE CONFIG
@@ -26,31 +21,26 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => {
-    console.log('MongoDB connected...');
+    console.log("MongoDB connected...");
   })
   .catch(err => {
     console.log(err);
   });
-// mongoose.set('debug', true);
-mongoose.connection.on('error', error => console.log(error));
-// mongoose.Promise = global.Promise;
+mongoose.set("debug", true);
+mongoose.connection.on("error", error => console.log(error));
 
-// STATIC FILES
-app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-
-// STANDARD MIDDLEWARE
-app.use(express.json({ limit: '50mb' }));
+// MIDDLEWARE (BE AWARE THAT ORDER MAY BE RELEVANT)
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json({ limit: "50mb" }));
 app.use(
   express.urlencoded({
     extended: false
   })
 );
 app.use(cors());
-// app.use(compression);
-// app.use(morgan('combined'));
+app.use(compression);
 
-// GRAPHQL
+// GRAPHQL SERVER
 SERVER.applyMiddleware({
   app: app
 });

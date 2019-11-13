@@ -140,6 +140,9 @@ export default {
     },
     resetStacks: async () => {
       return await ModuleMethods.resetStacks();
+    },
+    resetEnrollments: async () => {
+      return await ModuleMethods.resetEnrollments();
     }
   }
 };

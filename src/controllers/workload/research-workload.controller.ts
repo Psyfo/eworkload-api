@@ -1,52 +1,34 @@
-import ResearchActivity from '../../models/activity/research-activity.model';
-import ResearchWorkload from '../../models/workload/research.model';
-import * as ResearchMethods from '../activity/research.controller';
+import ResearchActivity from "../../models/activity/research-activity.model";
+import ResearchWorkload from "../../models/workload/research.model";
+import * as ResearchMethods from "../activity/research.controller";
 
 let initializeRWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteResearchWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
   let rWorkload = new ResearchWorkload({
     userId: userId
   });
   return await rWorkload.save();
 };
 let researchWorkload = async (userId: string) => {
-  return await ResearchWorkload.findOne({ userId: userId });
+  return await ResearchWorkload.findOne({ userId: userId }).orFail();
 };
 let calculateResearchWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteResearchWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
-
   let researchWorkloads = [];
-  let researchActivities: any[] = await ResearchActivity.find({
+  let activities: any[] = await ResearchActivity.find({
     userId: userId
   });
 
-  for (let researchActivity of researchActivities) {
-    let activity: any = await ResearchMethods.researchActivity(
-      researchActivity.activityId
-    );
+  for (let activity of activities) {
     let researchTotalHoursPerActivity = await ResearchMethods.researchTotalHoursPerActivity(
-      researchActivity.activityId
+      activity.activityId
     );
     let percentageOfWorkFocusPerActivity = await ResearchMethods.researchPercentageOfWorkFocusPerActivity(
-      researchActivity.activityId
+      activity.activityId
     );
     let percentageOfAnnualHoursPerActivity = await ResearchMethods.researchPercentageOfAnnualHoursPerActivity(
-      researchActivity.activityId
+      activity.activityId
     );
     let percentageOfTotalHoursPerActivity = await ResearchMethods.researchPercentageOfTotalHoursPerActivity(
-      researchActivity.activityId
+      activity.activityId
     );
     researchWorkloads.push({
       activity: activity,
@@ -81,10 +63,7 @@ let calculateResearchWorkload = async (userId: string) => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  //await researchWorkload.save();
-
-  console.log('Research Workload created');
-  return researchWorkload;
+  return await researchWorkload.save();
 };
 let deleteResearchWorkload = async (userId: string) => {
   return await ResearchWorkload.findOneAndRemove({

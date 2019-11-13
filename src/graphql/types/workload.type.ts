@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from "apollo-server-express";
 
 export default gql`
   type AcademicAdministrationWorkloadPerActivity {
@@ -193,7 +193,8 @@ export default gql`
     totalWorkload(userId: String!): TotalWorkload
   }
   type Mutation {
-    initializeWorkloads(userId: String!): TotalWorkload
-    updateWorkloads(userId: String!): TotalWorkload
+    initializeWorkloads(userId: String!): String
+    updateWorkloads(userId: String!): String
+    deleteWorkloads(userId: String!): String
   }
 `;

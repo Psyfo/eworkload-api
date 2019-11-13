@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import Activity from './activity.model';
-import * as WorkloadMethods from '../../controllers/workload.controller';
+import mongoose from "mongoose";
+import Activity from "./activity.model";
+import * as WorkloadMethods from "../../controllers/workload.controller";
 
 const academicAdministrationActivitySchema = new mongoose.Schema({
   title: {
@@ -21,33 +21,33 @@ const academicAdministrationActivitySchema = new mongoose.Schema({
 });
 
 // HOOKS
-academicAdministrationActivitySchema.post('save', async function() {
-  const activity: any = this;
+academicAdministrationActivitySchema.post("save", async function() {
+  const activity: any = await this;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-academicAdministrationActivitySchema.post('findOneAndUpdate', async function(
+academicAdministrationActivitySchema.post("findOneAndUpdate", async function(
   doc
 ) {
-  const activity: any = doc;
+  const activity: any = await doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
-academicAdministrationActivitySchema.post('findOneAndRemove', async function(
+academicAdministrationActivitySchema.post("findOneAndRemove", async function(
   doc
 ) {
-  const activity: any = doc;
+  const activity: any = await doc;
   await WorkloadMethods.calculateTotalWorkload(activity.userId);
 });
 
 // VIRTUALS
-academicAdministrationActivitySchema.virtual('qualification', {
-  ref: 'Qualification',
-  localField: 'qualificationId',
-  foreignField: 'qualificationId',
+academicAdministrationActivitySchema.virtual("qualification", {
+  ref: "Qualification",
+  localField: "qualificationId",
+  foreignField: "qualificationId",
   justOne: true
 });
 
 const AcademicAdministrationActivity = Activity.discriminator(
-  'AcademicAdministrationActivity',
+  "AcademicAdministrationActivity",
   academicAdministrationActivitySchema
 );
 export default AcademicAdministrationActivity;

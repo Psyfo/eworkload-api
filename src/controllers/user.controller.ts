@@ -1,55 +1,53 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-import Evidence from '../models/evidence.model';
-import User from '../models/user.model';
+import Evidence from "../models/evidence.model";
+import User from "../models/user.model";
 
 let user = async (userId: string) => {
   return await User.findOne({ userId: userId })
-    .populate('disciplines')
+    .populate("disciplines")
     .populate({
-      path: 'department',
-      model: 'Department',
+      path: "department",
+      model: "Department",
       populate: {
-        path: 'faculty',
-        model: 'Faculty'
+        path: "faculty",
+        model: "Faculty"
       }
     })
-    .populate('position')
-    .populate('workFocus');
+    .populate("position")
+    .populate("workFocus");
 };
 let users = async () => {
   return await User.find({})
-    .populate('disciplines')
+    .populate("disciplines")
     .populate({
-      path: 'department',
-      model: 'Department',
+      path: "department",
+      model: "Department",
       populate: {
-        path: 'faculty',
-        model: 'Faculty'
+        path: "faculty",
+        model: "Faculty"
       }
     })
-    .populate('position')
-    .populate('workFocus');
+    .populate("position")
+    .populate("workFocus");
 };
 let usersByPosition = async () => {
-  return await User.find({ positionId: 'HOD' })
-    .populate('disciplines')
+  return await User.find({ positionId: "HOD" })
+    .populate("disciplines")
     .populate({
-      path: 'department',
-      model: 'Department',
+      path: "department",
+      model: "Department",
       populate: {
-        path: 'faculty',
-        model: 'Faculty'
+        path: "faculty",
+        model: "Faculty"
       }
     })
-    .populate('position')
-    .populate('workFocus');
+    .populate("position")
+    .populate("workFocus");
 };
 let addUser = async (user: any) => {
-  console.log('User from client:', user);
-  const newUser = await new User(user);
-  console.log('New user:', newUser);
+  const newUser = new User(user);
 
   return await newUser.save();
 };
@@ -79,23 +77,23 @@ let exists = async (userId: string) => {
 let login = async (userId: string, password: string) => {
   // CHECK USER EXISTS
   const user: any = await User.findOne({ userId: userId })
-    .populate('disciplines')
+    .populate("disciplines")
     .populate({
-      path: 'department',
-      model: 'Department',
+      path: "department",
+      model: "Department",
       populate: {
-        path: 'faculty',
-        model: 'Faculty'
+        path: "faculty",
+        model: "Faculty"
       }
     })
-    .populate('position')
-    .populate('workFocus');
+    .populate("position")
+    .populate("workFocus");
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (isMatch) {
-    const token = jwt.sign({ userId: user.userId }, 'secret', {
-      expiresIn: '1h'
+    const token = jwt.sign({ userId: user.userId }, "secret", {
+      expiresIn: "1h"
     });
 
     const payload = {
@@ -106,7 +104,7 @@ let login = async (userId: string, password: string) => {
     console.log(payload);
     return payload;
   } else {
-    throw new Error('Passwords do not match');
+    throw new Error("Passwords do not match");
   }
 };
 let changePassword = async (
@@ -117,7 +115,7 @@ let changePassword = async (
   let user: any = await User.findOne({ userId: userId });
   let comparison = await bcrypt.compare(oldPassword, user.password);
   if (comparison !== true) {
-    throw new Error('Password incorrect');
+    throw new Error("Password incorrect");
   }
   user.password = newPassword;
   user.save();

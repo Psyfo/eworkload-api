@@ -1,55 +1,35 @@
-import * as ExecutiveManagementMethods from '../activity/executive-management.controller';
+import * as ExecutiveManagementMethods from "../activity/executive-management.controller";
 
-import ExecutiveManagementActivity from '../../models/activity/executive-management-activity.model';
-import ExecutiveManagementWorkload from '../../models/workload/executive-management.model';
+import ExecutiveManagementActivity from "../../models/activity/executive-management-activity.model";
+import ExecutiveManagementWorkload from "../../models/workload/executive-management.model";
 
 let initializeEMWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteExecutiveManagementWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
   let emWorkload = new ExecutiveManagementWorkload({
     userId: userId
   });
   return await emWorkload.save();
 };
 let executiveManagementWorkload = async (userId: string) => {
-  return await ExecutiveManagementWorkload.findOne({ userId: userId });
+  return await ExecutiveManagementWorkload.findOne({ userId: userId }).orFail();
 };
 let calculateExecutiveManagementWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteExecutiveManagementWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
-
   let executiveManagementWorkloads = [];
-  let executiveManagementActivities: any[] = await ExecutiveManagementActivity.find(
-    {
-      userId: userId
-    }
-  );
+  let activities: any[] = await ExecutiveManagementActivity.find({
+    userId: userId
+  });
 
-  for (let executiveManagementActivity of executiveManagementActivities) {
-    let activity: any = await ExecutiveManagementMethods.executiveManagementActivity(
-      executiveManagementActivity.activityId
-    );
+  for (let activity of activities) {
     let executiveManagementTotalHoursPerActivity = await ExecutiveManagementMethods.executiveManagementTotalHoursPerActivity(
-      executiveManagementActivity.activityId
+      activity.activityId
     );
     let percentageOfWorkFocusPerActivity = await ExecutiveManagementMethods.executiveManagementPercentageOfWorkFocusPerActivity(
-      executiveManagementActivity.activityId
+      activity.activityId
     );
     let percentageOfAnnualHoursPerActivity = await ExecutiveManagementMethods.executiveManagementPercentageOfAnnualHoursPerActivity(
-      executiveManagementActivity.activityId
+      activity.activityId
     );
     let percentageOfTotalHoursPerActivity = await ExecutiveManagementMethods.executiveManagementPercentageOfTotalHoursPerActivity(
-      executiveManagementActivity.activityId
+      activity.activityId
     );
     executiveManagementWorkloads.push({
       activity: activity,
@@ -84,10 +64,7 @@ let calculateExecutiveManagementWorkload = async (userId: string) => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  // await executiveManagementWorkload.save();
-
-  console.log('Executive Management Workload created');
-  return executiveManagementWorkload;
+  return await executiveManagementWorkload.save();
 };
 let deleteExecutiveManagementWorkload = async (userId: string) => {
   return await ExecutiveManagementWorkload.findOneAndRemove({

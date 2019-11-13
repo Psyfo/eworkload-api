@@ -1,19 +1,12 @@
-import * as FormalInstructionMethods from '../activity/formal-instruction.controller';
-import * as ModuleMethods from '../module.controller';
-import * as BlockMethods from '../block.controller';
-import * as OfferingTypeMethods from '../offering-type.controller';
-import * as QualificationMethods from '../qualification.controller';
+import * as FormalInstructionMethods from "../activity/formal-instruction.controller";
+import * as ModuleMethods from "../module.controller";
+import * as BlockMethods from "../block.controller";
+import * as OfferingTypeMethods from "../offering-type.controller";
+import * as QualificationMethods from "../qualification.controller";
 
-import FormalInstructionWorkload from '../../models/workload/formal-instruction.model';
+import FormalInstructionWorkload from "../../models/workload/formal-instruction.model";
 
 let initializeFIWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteFormalInstructionWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
   let fiWorkload = new FormalInstructionWorkload({
     userId: userId
   });
@@ -21,17 +14,9 @@ let initializeFIWorkload = async (userId: string) => {
   return await fiWorkload.save();
 };
 let formalInstructionWorkload = async (userId: string) => {
-  return await FormalInstructionWorkload.findOne({ userId: userId });
+  return await FormalInstructionWorkload.findOne({ userId: userId }).orFail();
 };
 let calculateFormalInstructionWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deleteFormalInstructionWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
-
   let formalInstructionWorkloads = [];
 
   let activities: any[] = await FormalInstructionMethods.formalInstructionActivitiesByUser(
@@ -152,15 +137,10 @@ let calculateFormalInstructionWorkload = async (userId: string) => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  // await formalInstructionWorkload.save();
-
-  console.log('Formal Instruction Workload created');
-  return formalInstructionWorkload;
+  return await formalInstructionWorkload.save();
 };
 let deleteFormalInstructionWorkload = async (userId: string) => {
-  return await FormalInstructionWorkload.findOneAndRemove({
-    userId: userId
-  });
+  return await FormalInstructionWorkload.findOneAndRemove({ userId: userId });
 };
 
 export {

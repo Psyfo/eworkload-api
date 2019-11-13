@@ -1,9 +1,9 @@
-import parameters from '../../config/parameters';
-import FormalInstructionActivity from '../../models/activity/formal-instruction-activity.model';
-import * as EnrollmentMethods from '../enrollment.controller';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
-import IModule from 'interfaces/module.interface';
+import parameters from "../../config/parameters.config";
+import FormalInstructionActivity from "../../models/activity/formal-instruction-activity.model";
+import * as EnrollmentMethods from "../enrollment.controller";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
+import IModule from "interfaces/module.interface";
 
 let year = new Date().getFullYear().toString();
 
@@ -11,92 +11,92 @@ let year = new Date().getFullYear().toString();
 let formalInstructionActivity = async (activityId: string) => {
   return await FormalInstructionActivity.findOne({ activityId: activityId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
+    .populate("duty")
     .populate({
-      path: 'module',
-      model: 'Module',
+      path: "module",
+      model: "Module",
       populate: [
-        { path: 'block', model: 'Block' },
-        { path: 'offeringType', model: 'OfferingType' },
-        { path: 'qualification', model: 'Qualification' },
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'venue', model: 'Venue' },
-        { path: 'user', model: 'User' },
-        { path: 'coordinator', model: 'User' },
-        { path: 'moderator', model: 'User' }
+        { path: "block", model: "Block" },
+        { path: "offeringType", model: "OfferingType" },
+        { path: "qualification", model: "Qualification" },
+        { path: "disciplines", model: "Discipline" },
+        { path: "venue", model: "Venue" },
+        { path: "user", model: "User" },
+        { path: "coordinator", model: "User" },
+        { path: "moderator", model: "User" }
       ]
     })
-    .populate({ path: 'block', model: 'Block' })
-    .populate({ path: 'offeringType', model: 'OfferingType' })
-    .populate({ path: 'qualification', model: 'Qualification' });
+    .populate({ path: "block", model: "Block" })
+    .populate({ path: "offeringType", model: "OfferingType" })
+    .populate({ path: "qualification", model: "Qualification" });
 };
 let formalInstructionActivities = async () => {
   return await FormalInstructionActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
+    .populate("duty")
     .populate({
-      path: 'module',
-      model: 'Module',
+      path: "module",
+      model: "Module",
       populate: [
-        { path: 'block', model: 'Block' },
-        { path: 'offeringType', model: 'OfferingType' },
-        { path: 'qualification', model: 'Qualification' },
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'venue', model: 'Venue' },
-        { path: 'user', model: 'User' },
-        { path: 'coordinator', model: 'User' },
-        { path: 'moderator', model: 'User' }
+        { path: "block", model: "Block" },
+        { path: "offeringType", model: "OfferingType" },
+        { path: "qualification", model: "Qualification" },
+        { path: "disciplines", model: "Discipline" },
+        { path: "venue", model: "Venue" },
+        { path: "user", model: "User" },
+        { path: "coordinator", model: "User" },
+        { path: "moderator", model: "User" }
       ]
     })
-    .populate({ path: 'block', model: 'Block' })
-    .populate({ path: 'offeringType', model: 'OfferingType' })
-    .populate({ path: 'qualification', model: 'Qualification' });
+    .populate({ path: "block", model: "Block" })
+    .populate({ path: "offeringType", model: "OfferingType" })
+    .populate({ path: "qualification", model: "Qualification" });
 };
 let formalInstructionActivitiesByUser = async (userId: string) => {
   return await FormalInstructionActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
+    .populate("duty")
     .populate({
-      path: 'module',
-      model: 'Module',
+      path: "module",
+      model: "Module",
       populate: [
-        { path: 'block', model: 'Block' },
-        { path: 'offeringType', model: 'OfferingType' },
-        { path: 'qualification', model: 'Qualification' },
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'venue', model: 'Venue' },
-        { path: 'user', model: 'User' },
-        { path: 'coordinator', model: 'User' },
-        { path: 'moderator', model: 'User' }
+        { path: "block", model: "Block" },
+        { path: "offeringType", model: "OfferingType" },
+        { path: "qualification", model: "Qualification" },
+        { path: "disciplines", model: "Discipline" },
+        { path: "venue", model: "Venue" },
+        { path: "user", model: "User" },
+        { path: "coordinator", model: "User" },
+        { path: "moderator", model: "User" }
       ]
     })
-    .populate({ path: 'block', model: 'Block' })
-    .populate({ path: 'offeringType', model: 'OfferingType' })
-    .populate({ path: 'qualification', model: 'Qualification' });
+    .populate({ path: "block", model: "Block" })
+    .populate({ path: "offeringType", model: "OfferingType" })
+    .populate({ path: "qualification", model: "Qualification" });
 };
 let addFormalInstructionActivity = async (activity: any) => {
   // Create new activity
@@ -138,11 +138,11 @@ let formalInstructionStudentsEnrolled = async (activityId: string) => {
     activity.qualificationId
   );
   if (enrollment === null) {
-    throw new Error('Enrollment is null');
+    throw new Error("Enrollment is null");
   }
 
   let students = 0;
-  if (module.studyPeriod === '1') {
+  if (module.studyPeriod === "1") {
     students = enrollment.firstYearEstimated;
   } else {
     students = enrollment.secondYearEstimated + enrollment.thirdYearEstimated;
@@ -155,7 +155,7 @@ let formalInstructionBaseContactHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
   })
-    .populate({ path: 'module', model: 'Module' })
+    .populate({ path: "module", model: "Module" })
     .orFail();
 
   let module: IModule = activity.module;
@@ -172,7 +172,7 @@ let formalInstructionBaseContactHours = async (activityId: string) => {
 let formalInstructionCoordinationHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
 
@@ -186,7 +186,7 @@ let formalInstructionCoordinationHours = async (activityId: string) => {
 let formalInstructionStudentSupportHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -196,7 +196,7 @@ let formalInstructionStudentSupportHours = async (activityId: string) => {
 let formalInstructionPreparationTimeHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let repeats = Math.round(students / parameters.max_venue_size);
@@ -206,7 +206,7 @@ let formalInstructionPreparationTimeHours = async (activityId: string) => {
 let formalInstructionAssessmentSettingHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
 
@@ -217,7 +217,7 @@ let formalInstructionAssessmentSettingHours = async (activityId: string) => {
 let formalInstructionExamMarkingHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -230,7 +230,7 @@ let formalInstructionExamMarkingHours = async (activityId: string) => {
 let formalInstructionCourseworkMarkingHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -240,7 +240,7 @@ let formalInstructionCourseworkMarkingHours = async (activityId: string) => {
 let formalInstructionFeedbackHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -250,7 +250,7 @@ let formalInstructionFeedbackHours = async (activityId: string) => {
 let formalInstructionFormativeAssessmentHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -260,7 +260,7 @@ let formalInstructionFormativeAssessmentHours = async (activityId: string) => {
 let formalInstructionModerationHours = async (activityId: string) => {
   let activity: any = await FormalInstructionActivity.findOne({
     activityId: activityId
-  }).populate({ path: 'module', model: 'Module' });
+  }).populate({ path: "module", model: "Module" });
   let module = activity.module;
   let students = await formalInstructionStudentsEnrolled(activityId);
   let lectureWeeks = await formalInstructionLectureWeeks(activityId);
@@ -345,7 +345,7 @@ let formalInstructionPercentageOfTotalHoursPerActivity = async (
   let activityHours = await formalInstructionTotalHoursPerActivity(activityId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -377,7 +377,7 @@ let formalInstructionPercentageOfTotalHoursPerUser = async (userId: string) => {
   let activityHours = await formalInstructionTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };

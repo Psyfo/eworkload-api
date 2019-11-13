@@ -1,9 +1,9 @@
-import parameters from '../../config/parameters';
-import AcademicAdministrationActivity from '../../models/activity/academic-administration-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
-import IAcademicAdministrationActivity from 'interfaces/activity/academic-administration-activity.interface';
-import { activity } from './activity.controller';
+import parameters from "../../config/parameters.config";
+import AcademicAdministrationActivity from "../../models/activity/academic-administration-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
+import IAcademicAdministrationActivity from "interfaces/activity/academic-administration-activity.interface";
+import { activity } from "./activity.controller";
 
 // AA METHODS
 let academicAdministrationActivity = async (activityId: string) => {
@@ -11,47 +11,45 @@ let academicAdministrationActivity = async (activityId: string) => {
     activityId: activityId
   })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
-    .populate('qualification')
+    .populate("duty")
+    .populate("qualification")
     .orFail();
 };
 let academicAdministrationActivities = async () => {
   return await AcademicAdministrationActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
-    .populate('qualification')
-    .orFail();
+    .populate("duty")
+    .populate("qualification");
 };
 let academicAdministrationActivitiesByUser = async (userId: string) => {
   return await AcademicAdministrationActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty')
-    .populate('qualification')
-    .orFail();
+    .populate("duty")
+    .populate("qualification");
 };
 let addAcademicAdministrationActivity = async (activity: any) => {
   const newActivity = await new AcademicAdministrationActivity(activity);
@@ -88,7 +86,7 @@ let academicAdministrationTotalHoursPerActivity = async (
 ) => {
   const activity: any = await academicAdministrationActivity(activityId);
   if (!activity) {
-    throw new Error('AA Activity is not defined');
+    throw new Error("AA Activity is not defined");
   }
   let serviceHours = await WorkFocusMethods.serviceHours(activity.userId);
 
@@ -155,7 +153,7 @@ let academicAdministrationPercentageOfTotalHoursPerActivity = async (
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
 
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -165,7 +163,7 @@ let academicAdministrationPercentageOfTotalHoursPerUser = async (
   let activityHours = await academicAdministrationTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours did not come through');
+    throw new Error("Total hours did not come through");
   }
   return (activityHours / totalHours) * 100;
 };

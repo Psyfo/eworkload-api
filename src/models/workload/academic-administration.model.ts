@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const academicAdministrationWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -50,19 +50,27 @@ const academicAdministrationWorkloadSchema = new mongoose.Schema({
   }
 });
 
+// HOOKS
+academicAdministrationWorkloadSchema.post("save", async function(doc: any) {
+  console.log("Academic Administration Workload created");
+});
+
+// INDEX
+academicAdministrationWorkloadSchema.index({ userId: 1 }, { unique: true });
+
 // VIRTUALS
 academicAdministrationWorkloadSchema.virtual(
-  'academic-administration-activity',
+  "academic-administration-activity",
   {
-    ref: 'AcademicAdministrationActivity',
-    localField: 'activityId',
-    foreignField: 'activityId',
+    ref: "AcademicAdministrationActivity",
+    localField: "activityId",
+    foreignField: "activityId",
     justOne: true
   }
 );
 
 const AcademicAdministrationWorkload = mongoose.model(
-  'AcademicAdministrationWorkload',
+  "AcademicAdministrationWorkload",
   academicAdministrationWorkloadSchema
 );
 export default AcademicAdministrationWorkload;

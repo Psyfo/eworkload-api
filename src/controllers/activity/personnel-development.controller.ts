@@ -1,47 +1,47 @@
-import parameters from '../../config/parameters';
-import PersonnelDevelopmentActivity from '../../models/activity/personnel-development-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
+import parameters from "../../config/parameters.config";
+import PersonnelDevelopmentActivity from "../../models/activity/personnel-development-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
 
 // PD METHODS
 let personnelDevelopmentActivity = async (activityId: string) => {
   return await PersonnelDevelopmentActivity.findOne({ activityId: activityId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let personnelDevelopmentActivities = async () => {
   return await PersonnelDevelopmentActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let personnelDevelopmentActivitiesByUser = async (userId: string) => {
   return await PersonnelDevelopmentActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let addPersonnelDevelopmentActivity = async (activity: any) => {
   const newActivity = await new PersonnelDevelopmentActivity(activity);
@@ -130,7 +130,7 @@ let personnelDevelopmentPercentageOfTotalHoursPerActivity = async (
   );
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -140,7 +140,7 @@ let personnelDevelopmentPercentageOfTotalHoursPerUser = async (
   let activityHours = await personnelDevelopmentTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };

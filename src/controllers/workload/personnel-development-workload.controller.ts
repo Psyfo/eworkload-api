@@ -1,54 +1,36 @@
-import PersonnelDevelopmentActivity from '../../models/activity/personnel-development-activity.model';
-import PersonnelDevelopmentWorkload from '../../models/workload/personnel-development.model';
-import * as PersonnelDevelopmentMethods from '../activity/personnel-development.controller';
+import PersonnelDevelopmentActivity from "../../models/activity/personnel-development-activity.model";
+import PersonnelDevelopmentWorkload from "../../models/workload/personnel-development.model";
+import * as PersonnelDevelopmentMethods from "../activity/personnel-development.controller";
 
 let initializePDWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deletePersonnelDevelopmentWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
   let pdWorkload = new PersonnelDevelopmentWorkload({
     userId: userId
   });
   return await pdWorkload.save();
 };
 let personnelDevelopmentWorkload = async (userId: string) => {
-  return await PersonnelDevelopmentWorkload.findOne({ userId: userId });
+  return await PersonnelDevelopmentWorkload.findOne({
+    userId: userId
+  }).orFail();
 };
 let calculatePersonnelDevelopmentWorkload = async (userId: string) => {
-  // Only one workload record so delete first if it exists
-  try {
-    await deletePersonnelDevelopmentWorkload(userId);
-  } catch (error) {
-    console.log(error);
-    console.log('No record found');
-  }
-
   let personnelDevelopmentWorkloads = [];
-  let personnelDevelopmentActivities: any[] = await PersonnelDevelopmentActivity.find(
-    {
-      userId: userId
-    }
-  );
+  let activities: any[] = await PersonnelDevelopmentActivity.find({
+    userId: userId
+  });
 
-  for (let personnelDevelopmentActivity of personnelDevelopmentActivities) {
-    let activity: any = await PersonnelDevelopmentMethods.personnelDevelopmentActivity(
-      personnelDevelopmentActivity.activityId
-    );
+  for (let activity of activities) {
     let personnelDevelopmentTotalHoursPerActivity = await PersonnelDevelopmentMethods.personnelDevelopmentTotalHoursPerActivity(
-      personnelDevelopmentActivity.activityId
+      activity.activityId
     );
     let percentageOfWorkFocusPerActivity = await PersonnelDevelopmentMethods.personnelDevelopmentPercentageOfWorkFocusPerActivity(
-      personnelDevelopmentActivity.activityId
+      activity.activityId
     );
     let percentageOfAnnualHoursPerActivity = await PersonnelDevelopmentMethods.personnelDevelopmentPercentageOfAnnualHoursPerActivity(
-      personnelDevelopmentActivity.activityId
+      activity.activityId
     );
     let percentageOfTotalHoursPerActivity = await PersonnelDevelopmentMethods.personnelDevelopmentPercentageOfTotalHoursPerActivity(
-      personnelDevelopmentActivity.activityId
+      activity.activityId
     );
     personnelDevelopmentWorkloads.push({
       activity: activity,
@@ -83,10 +65,7 @@ let calculatePersonnelDevelopmentWorkload = async (userId: string) => {
     percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
   });
 
-  // await personnelDevelopmentWorkload.save();
-
-  console.log('Personnel Development Workload created');
-  return personnelDevelopmentWorkload;
+  return await personnelDevelopmentWorkload.save();
 };
 let deletePersonnelDevelopmentWorkload = async (userId: string) => {
   return await PersonnelDevelopmentWorkload.findOneAndRemove({

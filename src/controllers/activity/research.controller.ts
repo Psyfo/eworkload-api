@@ -1,47 +1,47 @@
-import parameters from '../../config/parameters';
-import ResearchActivity from '../../models/activity/research-activity.model';
-import * as WorkFocusMethods from '../work-focus.controller';
-import * as WorkloadMethods from '../workload.controller';
+import parameters from "../../config/parameters.config";
+import ResearchActivity from "../../models/activity/research-activity.model";
+import * as WorkFocusMethods from "../work-focus.controller";
+import * as WorkloadMethods from "../workload.controller";
 
 // RESEARCH METHODS
 let researchActivity = async (activityId: string) => {
   return await ResearchActivity.findOne({ activityId: activityId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let researchActivities = async () => {
   return await ResearchActivity.find({})
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let researchActivitiesByUser = async (userId: string) => {
   return await ResearchActivity.find({ userId: userId })
     .populate({
-      path: 'user',
-      model: 'User',
+      path: "user",
+      model: "User",
       populate: [
-        { path: 'disciplines', model: 'Discipline' },
-        { path: 'position', model: 'Position' },
-        { path: 'workFocus', model: 'WorkFocus' }
+        { path: "disciplines", model: "Discipline" },
+        { path: "position", model: "Position" },
+        { path: "workFocus", model: "WorkFocus" }
       ]
     })
-    .populate('duty');
+    .populate("duty");
 };
 let addResearchActivity = async (activity: any) => {
   const newResearchActivity = await new ResearchActivity(activity);
@@ -70,23 +70,23 @@ let researchTotalHoursPerActivity = async (activityId: string) => {
 
   let totalHours = 60;
   if (
-    activity.output === 'Conference Proceedings' &&
+    activity.output === "Conference Proceedings" &&
     activity.conferenceActivities.length
   ) {
     if (
       activity.conferenceActivities.find(
-        (detail: string) => detail === 'Presented Paper'
+        (detail: string) => detail === "Presented Paper"
       )
     ) {
       totalHours = 60;
     } else if (
       activity.conferenceActivities.find(
-        (detail: string) => detail === 'Keynote address'
+        (detail: string) => detail === "Keynote address"
       )
     ) {
       totalHours = 120;
     }
-  } else if (activity.output === 'Journal') {
+  } else if (activity.output === "Journal") {
     totalHours === 120;
   } else {
     totalHours = 60;
@@ -134,7 +134,7 @@ let researchPercentageOfTotalHoursPerActivity = async (activityId: string) => {
   let activityHours = await researchTotalHoursPerActivity(activityId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(activity.userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };
@@ -142,7 +142,7 @@ let researchPercentageOfTotalHoursPerUser = async (userId: string) => {
   let activityHours = await researchTotalHoursPerUser(userId);
   let totalHours = await WorkloadMethods.totalHoursPerUser(userId);
   if (totalHours === undefined) {
-    throw new Error('Total hours is undefined');
+    throw new Error("Total hours is undefined");
   }
   return (activityHours / totalHours) * 100;
 };

@@ -698,7 +698,30 @@ let resetStacks = async () => {
     );
   });
   console.log('All module stacks reset');
-  return stackedModules;
+  return 'All module stacks reset';
+};
+let resetEnrollments = async () => {
+  const modules: any[] = await Module.find().orFail();
+
+  const enrolledModules: any[] = await modules.map(async module => {
+    const enrolled = Math.floor(Math.random() * (400 - 100 + 1) + 100);
+    await Module.findOneAndUpdate(
+      {
+        moduleId: module.moduleId,
+        blockId: module.blockId,
+        offeringTypeId: module.offeringTypeId,
+        qualificationId: module.qualificationId
+      },
+      {
+        $set: {
+          enrolled: enrolled
+        }
+      },
+      { upsert: true }
+    );
+  });
+  console.log('All module have been given enrollments');
+  return 'All module have been given enrollments';
 };
 
 export {
@@ -726,5 +749,6 @@ export {
   unassignAllModules,
   stackModules,
   resetStacks,
-  addModuleToStack
+  addModuleToStack,
+  resetEnrollments
 };
