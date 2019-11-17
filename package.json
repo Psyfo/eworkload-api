@@ -31,8 +31,10 @@
         "@types/passport": "^1.0.1",
         "@types/passport-jwt": "^3.0.3",
         "@types/passport-local": "^1.0.33",
+        "@types/prettier": "^1.18.3",
         "@types/uuid": "^3.4.6",
         "@types/validator": "^10.11.3",
+        "apollo-engine": "^1.1.2",
         "apollo-server-express": "^2.8.1",
         "aws-sdk": "^2.503.0",
         "bcrypt-nodejs": "0.0.3",
@@ -71,5 +73,8 @@
         "uuid": "^3.3.2",
         "validator": "^10.11.0",
         "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "prettier": "^1.19.1"
     }
 }
