@@ -1,23 +1,23 @@
-import * as BlockMethods from '../../controllers/block.controller';
+import BlockController from "../../controllers/block.controller";
 
 export default {
   Query: {
     block: async (root: any, { blockId }: any) => {
-      return await BlockMethods.block(blockId);
+      return BlockController.block(blockId);
     },
     blocks: async () => {
-      return await BlockMethods.blocks();
+      return BlockController.blocks();
     }
   },
   Mutation: {
     addBlock: async (root: any, { block }: any) => {
-      return await BlockMethods.addBlock(block);
+      return BlockController.createBlock(block);
     },
     editBlock: async (root: any, { block }: any) => {
-      return await BlockMethods.editBlock(block);
+      return BlockController.updateBlock(block);
     },
     deleteBlock: async (root: any, { block }: any) => {
-      return await BlockMethods.deleteBlock(block);
+      return BlockController.deleteBlock(block);
     }
   }
 };

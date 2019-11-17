@@ -1,29 +1,31 @@
-import { default as BlockModel } from '../models/block.model';
+import IBlock from 'interfaces/block.interface';
+import { Document } from 'mongoose';
 
-let block = async (blockId: string) => {
-  return await BlockModel.findOne({ blockId: blockId });
-};
-let blocks = async () => {
-  return await BlockModel.find({});
-};
-let addBlock = async (block: any) => {
-  const newBlock = await new BlockModel(block);
+import Block from '../models/block.model';
 
-  return await newBlock.save();
-};
-let editBlock = async (block: any) => {
-  return await BlockModel.findOneAndUpdate(
-    { blockId: block.blockId },
-    {
-      $set: block
-    },
-    { upsert: true }
-  );
-};
-let deleteBlock = async (block: any) => {
-  return await BlockModel.findOneAndRemove(block);
-};
+export default class BlockController {
+  constructor() {}
 
-export { block, blocks, addBlock, editBlock, deleteBlock };
-
-class Block {}
+  static async block(blockId: string): Promise<Document | null> {
+    return await Block.findOne({ blockId: blockId });
+  }
+  static async blocks(): Promise<Document[] | null> {
+    return await Block.find({});
+  }
+  static async createBlock(block: IBlock): Promise<Document | null> {
+    const newBlock = await new Block(block);
+    return block.save();
+  }
+  static async updateBlock(block: IBlock): Promise<Document | null> {
+    return await Block.findOneAndUpdate(
+      { blockId: block.blockId },
+      {
+        $set: block
+      },
+      { upsert: true }
+    );
+  }
+  static async deleteBlock(block: IBlock): Promise<Document | null> {
+    return await Block.findOneAndRemove(block);
+  }
+}

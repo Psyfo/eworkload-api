@@ -5,3 +5,5 @@ export default interface IBlock extends Document {
   name: string;
   description?: string;
 }
+
+export interface BlockModel extends IBlock, Document {}

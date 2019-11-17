@@ -1,10 +1,10 @@
-import * as FormalInstructionMethods from "../activity/formal-instruction.controller";
-import * as ModuleMethods from "../module.controller";
-import * as BlockMethods from "../block.controller";
-import * as OfferingTypeMethods from "../offering-type.controller";
-import * as QualificationMethods from "../qualification.controller";
+import BlockController from './../block.controller';
 
-import FormalInstructionWorkload from "../../models/workload/formal-instruction.model";
+import FormalInstructionWorkload from '../../models/workload/formal-instruction.model';
+import * as FormalInstructionMethods from '../activity/formal-instruction.controller';
+import * as ModuleMethods from '../module.controller';
+import * as OfferingTypeMethods from '../offering-type.controller';
+import * as QualificationMethods from '../qualification.controller';
 
 let initializeFIWorkload = async (userId: string) => {
   let fiWorkload = new FormalInstructionWorkload({
@@ -78,7 +78,7 @@ let calculateFormalInstructionWorkload = async (userId: string) => {
       activity.offeringTypeId,
       activity.qualificationId
     );
-    let block = await BlockMethods.block(activity.blockId);
+    let block = await BlockController.block(activity.blockId);
     let offeringType = await OfferingTypeMethods.offeringType(
       activity.offeringTypeId
     );
