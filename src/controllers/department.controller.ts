@@ -1,41 +1,35 @@
-import { default as DepartmentModel } from '../models/department.model';
+import IDepartment from 'interfaces/department.interface';
 
-let department = async (departmentId: String) => {
-  return await DepartmentModel.findOne({ departmentId: departmentId })
-    .populate('faculty')
-    .populate('hod');
-};
-let departments = async () => {
-  return await DepartmentModel.find({})
-    .populate('faculty')
-    .populate('hod');
-};
-let addDepartment = async (department: any) => {
-  const newDepartment = await new DepartmentModel(department);
+import Department, {
+  default as DepartmentModel
+} from '../models/department.model';
 
-  return await newDepartment.save();
-};
-let editDepartment = async (department: any) => {
-  return await DepartmentModel.findOneAndUpdate(
-    { departmentId: department.departmentId },
-    {
-      $set: department
-    },
-    { upsert: true }
-  )
-    .populate('faculty')
-    .populate('hod');
-};
-let deleteDepartment = async (department: any) => {
-  return await DepartmentModel.findOneAndRemove(department)
-    .populate('faculty')
-    .populate('hod');
-};
+export default class DepartmentController {
+  constructor() {}
 
-export {
-  department,
-  departments,
-  addDepartment,
-  editDepartment,
-  deleteDepartment
-};
+  static async department(departmentId: string) {
+    return await DepartmentModel.findOne({ departmentId: departmentId })
+      .populate('faculty')
+      .populate('hod');
+  }
+  static async departments() {
+    return await Department.find({}).populate('faculty');
+  }
+  static async createDepartment(department: IDepartment) {
+    return await new Department(department).save();
+  }
+  static async updateDepartment(department: IDepartment) {
+    return await DepartmentModel.findOneAndUpdate(
+      { departmentId: department.departmentId },
+      {
+        $set: department
+      },
+      { upsert: true }
+    ).populate('faculty');
+  }
+  static async deleteDepartment(department: IDepartment) {
+    return await DepartmentModel.findOneAndRemove(department).populate(
+      'faculty'
+    );
+  }
+}

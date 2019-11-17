@@ -1,23 +1,23 @@
-import * as DepartmentMethods from '../../controllers/department.controller';
+import DepartmentController from '../../controllers/department.controller';
 
 export default {
   Query: {
     department: async (root: any, { departmentId }: any) => {
-      return await DepartmentMethods.department(departmentId);
+      return await DepartmentController.department(departmentId);
     },
     departments: async () => {
-      return await DepartmentMethods.departments();
+      return await DepartmentController.departments();
     }
   },
   Mutation: {
     addDepartment: async (root: any, { department }: any) => {
-      return await DepartmentMethods.addDepartment(department);
+      return await DepartmentController.createDepartment(department);
     },
     editDepartment: async (root: any, { department }: any) => {
-      return await DepartmentMethods.editDepartment(department);
+      return await DepartmentController.updateDepartment(department);
     },
     deleteDepartment: async (root: any, { department }: any) => {
-      return await DepartmentMethods.deleteDepartment(department);
+      return await DepartmentController.deleteDepartment(department);
     }
   }
 };

@@ -8,5 +8,4 @@ export default interface IDepartment extends Document {
   facultyId: string;
   faculty?: IFaculty;
   hodId: string;
-  hod?: IUser;
 }

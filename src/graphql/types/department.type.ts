@@ -7,7 +7,6 @@ export default gql`
     facultyId: String!
     faculty: Faculty
     hodId: String
-    hod: User
   }
   input DepartmentInput {
     departmentId: String
