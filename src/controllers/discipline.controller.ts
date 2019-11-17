@@ -1,33 +1,29 @@
-import { default as DisciplineModel } from '../models/discipline.model';
+import IDiscipline from 'interfaces/discipline.interface';
 
-let discipline = async (disciplineId: string) => {
-  return await DisciplineModel.findOne({ disciplineId: disciplineId });
-};
-let disciplines = async () => {
-  return await DisciplineModel.find({});
-};
-let addDiscipline = async (discipline: any) => {
-  const newDiscipline = await new DisciplineModel(discipline);
+import Discipline from '../models/discipline.model';
 
-  return await newDiscipline.save();
-};
-let editDiscipline = async (discipline: any) => {
-  return await DisciplineModel.findOneAndUpdate(
-    { disciplineId: discipline.disciplineId },
-    {
-      $set: discipline
-    },
-    { upsert: true }
-  );
-};
-let deleteDiscipline = async (discipline: any) => {
-  return await DisciplineModel.findOneAndRemove(discipline);
-};
+export default class DisciplineController {
+  constructor() {}
 
-export {
-  discipline,
-  disciplines,
-  addDiscipline,
-  editDiscipline,
-  deleteDiscipline
-};
+  public static async discipline(disciplineId: string) {
+    return await Discipline.findOne({ disciplineId: disciplineId });
+  }
+  public static async disciplines() {
+    return await Discipline.find({});
+  }
+  public static async createDiscipline(discipline: IDiscipline) {
+    return await discipline.save();
+  }
+  public static async updateDiscipline(discipline: IDiscipline) {
+    return await Discipline.findOneAndUpdate(
+      { disciplineId: discipline.disciplineId },
+      {
+        $set: discipline
+      },
+      { upsert: true }
+    );
+  }
+  public static async deleteDiscipline(discipline: IDiscipline) {
+    return await Discipline.findOneAndRemove(discipline);
+  }
+}
