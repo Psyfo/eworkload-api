@@ -1,23 +1,23 @@
-import * as PositionMethods from '../../controllers/position.controller';
+import PositionController from '../../controllers/position.controller';
 
 export default {
   Query: {
     position: async (root: any, { positionId }: any) => {
-      return await PositionMethods.position(positionId);
+      return await PositionController.position(positionId);
     },
     positions: async () => {
-      return await PositionMethods.positions();
+      return await PositionController.positions();
     }
   },
   Mutation: {
     addPosition: async (root: any, { position }: any) => {
-      return await PositionMethods.addPosition(position);
+      return await PositionController.createPosition(position);
     },
     editPosition: async (root: any, { position }: any) => {
-      return await PositionMethods.editPosition(position);
+      return await PositionController.updatePosition(position);
     },
     deletePosition: async (root: any, { position }: any) => {
-      return await PositionMethods.deletePosition(position);
+      return await PositionController.deletePosition(position);
     }
   }
 };

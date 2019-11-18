@@ -1,7 +1,7 @@
 import ICommunityInstructionActivity from 'interfaces/activity/community-instruction-activity.interface';
 import { Document } from 'mongoose';
 
-interface ICommunityInstructionWorkloadPerActivity {
+export interface ICommunityInstructionWorkloadPerActivity {
   activity: ICommunityInstructionActivity;
   totalHoursPerActivity: number;
   percentageOfWorkFocusPerActivity: number;

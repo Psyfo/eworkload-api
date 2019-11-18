@@ -1,36 +1,30 @@
-import * as FileMethods from '../../controllers/upload.controller';
+import UploadController from '../../controllers/upload.controller';
+import { logger } from './../../config/logger';
 
 export default {
   Query: {
     files: () => {
-      return FileMethods.files();
+      return UploadController.files();
     }
   },
   Mutation: {
     singleUpload: async () => {},
     uploadProfilePicture: async (root: any, { file, userId }: any) => {
-      console.log('uploadProfilePic resolver firing');
-      console.log('file: ', await file);
-      console.log('User ID: ', userId);
+      logger.info('uploadProfilePic resolver firing');
+      logger.info('file: ', await file);
+      logger.info('User ID: ', userId);
 
-      return await FileMethods.uploadProfilePictureAWS(file, userId);
-    },
-    uploadEvidence: async (root: any, { file, userId, activityId }: any) => {
-      console.log('uploadEvidence resolver firing');
-      console.log('file: ', await file);
-      console.log('activityId: ', activityId);
-
-      return await FileMethods.uploadEvidenceAWS(file, userId, activityId);
+      return await UploadController.uploadProfilePictureAWS(file, userId);
     },
     uploadAcademicAdministrationEvidenceAWS: async (
       root: any,
       { file, userId, activityId }: any
     ) => {
-      console.log('uploadAAEvidence resolver firing');
-      console.log('file: ', await file);
-      console.log('activityId: ', activityId);
+      logger.info('uploadAAEvidence resolver firing');
+      logger.info('file: ', await file);
+      logger.info('activityId: ', activityId);
 
-      return await FileMethods.uploadAcademicAdministrationEvidenceAWS(
+      return await UploadController.uploadAcademicAdministrationEvidenceAWS(
         file,
         userId,
         activityId
@@ -40,11 +34,11 @@ export default {
       root: any,
       { file, userId, activityId }: any
     ) => {
-      console.log('uploadAAEvidence resolver firing');
-      console.log('file: ', await file);
-      console.log('activityId: ', activityId);
+      logger.info('uploadAAEvidence resolver firing');
+      logger.info('file: ', await file);
+      logger.info('activityId: ', activityId);
 
-      return await FileMethods.uploadResearchEvidenceAWS(
+      return await UploadController.uploadResearchEvidenceAWS(
         file,
         userId,
         activityId

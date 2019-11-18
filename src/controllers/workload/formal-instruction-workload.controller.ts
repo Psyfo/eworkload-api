@@ -1,151 +1,155 @@
-import BlockController from './../block.controller';
+import IFormalInstructionActivity from 'interfaces/activity/formal-instruction-activity.interface';
+import IBlock from 'interfaces/block.interface';
+import IModule from 'interfaces/module.interface';
+import IOfferingType from 'interfaces/offering-type.interface';
+import IQualification from 'interfaces/qualification.interface';
+import IFormalInstructionWorkload, {
+  IFormalInstructionWorkloadPerActivity
+} from 'interfaces/workload/formal-instruction-workload.interface';
 
 import FormalInstructionWorkload from '../../models/workload/formal-instruction.model';
-import * as FormalInstructionMethods from '../activity/formal-instruction.controller';
-import * as ModuleMethods from '../module.controller';
-import * as OfferingTypeMethods from '../offering-type.controller';
-import * as QualificationMethods from '../qualification.controller';
+import FormalInstructionController from '../activity/formal-instruction-activity.controller';
+import BlockController from '../block.controller';
+import ModuleController from '../module.controller';
+import OfferingTypeController from '../offering-type.controller';
+import QualificationController from '../qualification.controller';
 
-let initializeFIWorkload = async (userId: string) => {
-  let fiWorkload = new FormalInstructionWorkload({
-    userId: userId
-  });
-
-  return await fiWorkload.save();
-};
-let formalInstructionWorkload = async (userId: string) => {
-  return await FormalInstructionWorkload.findOne({ userId: userId }).orFail();
-};
-let calculateFormalInstructionWorkload = async (userId: string) => {
-  let formalInstructionWorkloads = [];
-
-  let activities: any[] = await FormalInstructionMethods.formalInstructionActivitiesByUser(
-    userId
-  );
-
-  for (let activity of activities) {
-    let studentsEnrolled = await FormalInstructionMethods.formalInstructionStudentsEnrolled(
-      activity.activityId
-    );
-    let baseContactHours = await FormalInstructionMethods.formalInstructionBaseContactHours(
-      activity.activityId
-    );
-    let coordinationHours = await FormalInstructionMethods.formalInstructionCoordinationHours(
-      activity.activityId
-    );
-    let studentSupportHours = await FormalInstructionMethods.formalInstructionStudentSupportHours(
-      activity.activityId
-    );
-    let preparationTimeHours = await FormalInstructionMethods.formalInstructionPreparationTimeHours(
-      activity.activityId
-    );
-    let assessmentSettingHours = await FormalInstructionMethods.formalInstructionAssessmentSettingHours(
-      activity.activityId
-    );
-    let examMarkingHours = await FormalInstructionMethods.formalInstructionExamMarkingHours(
-      activity.activityId
-    );
-    let courseworkMarkingHours = await FormalInstructionMethods.formalInstructionCourseworkMarkingHours(
-      activity.activityId
-    );
-    let feedbackHours = await FormalInstructionMethods.formalInstructionFeedbackHours(
-      activity.activityId
-    );
-    let formativeAssessmentHours = await FormalInstructionMethods.formalInstructionFormativeAssessmentHours(
-      activity.activityId
-    );
-    let moderationHours = await FormalInstructionMethods.formalInstructionModerationHours(
-      activity.activityId
-    );
-    let otherHoursPerActivity = await FormalInstructionMethods.formalInstructionOtherHoursPerActivity(
-      activity.activityId
-    );
-    let totalHoursPerActivity = await FormalInstructionMethods.formalInstructionTotalHoursPerActivity(
-      activity.activityId
-    );
-    let percentageOfWorkFocusPerActivity = await FormalInstructionMethods.formalInstructionPercentageOfWorkFocusPerActivity(
-      activity.activityId
-    );
-    let percentageOfAnnualHoursPerActivity = await FormalInstructionMethods.formalInstructionPercentageOfAnnualHoursPerActivity(
-      activity.activityId
-    );
-    let percentageOfTotalHoursPerActivity = await FormalInstructionMethods.formalInstructionPercentageOfTotalHoursPerActivity(
-      activity.activityId
-    );
-    let module = await ModuleMethods._module(
-      activity.moduleId,
-      activity.blockId,
-      activity.offeringTypeId,
-      activity.qualificationId
-    );
-    let block = await BlockController.block(activity.blockId);
-    let offeringType = await OfferingTypeMethods.offeringType(
-      activity.offeringTypeId
-    );
-    let qualification = await QualificationMethods.qualification(
-      activity.qualificationId
-    );
-
-    formalInstructionWorkloads.push({
-      activity: activity,
-      module: module,
-      block: block,
-      offeringType: offeringType,
-      qualification: qualification,
-      studentsEnrolled: studentsEnrolled,
-      baseContactHours: baseContactHours,
-      coordinationHours: coordinationHours,
-      studentSupportHours: studentSupportHours,
-      preparationTimeHours: preparationTimeHours,
-      assessmentSettingHours: assessmentSettingHours,
-      examMarkingHours: examMarkingHours,
-      courseworkMarkingHours: courseworkMarkingHours,
-      feedbackHours: feedbackHours,
-      formativeAssessmentHours: formativeAssessmentHours,
-      moderationHours: moderationHours,
-      otherHoursPerActivity: otherHoursPerActivity,
-      totalHoursPerActivity: totalHoursPerActivity,
-      percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
-      percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
-      percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
-    });
+export default class FormalInstructionWorkloadController {
+  public static async initializeFIWorkload(userId: string) {
+    const fiWorkload: IFormalInstructionWorkload = new FormalInstructionWorkload(
+      {
+        userId: userId
+      }
+    ) as IFormalInstructionWorkload;
+    return await fiWorkload.save();
   }
-  let totalHoursPerUser = 0;
+  public static async formalInstructionWorkload(userId: string) {
+    return await FormalInstructionWorkload.findOne({ userId: userId }).orFail();
+  }
+  public static async calculateFormalInstructionWorkload(userId: string) {
+    let formalInstructionWorkloads: IFormalInstructionWorkloadPerActivity[] = [];
 
-  totalHoursPerUser = await FormalInstructionMethods.formalInstructionTotalHoursPerUser(
-    userId
-  );
-  let percentageOfWorkFocusPerUser = 0;
-  percentageOfWorkFocusPerUser = await FormalInstructionMethods.formalInstructionPercentageOfWorkFocusPerUser(
-    userId
-  );
-  let percentageOfAnnualHoursPerUser = 0;
-  percentageOfAnnualHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfAnnualHoursPerUser(
-    userId
-  );
-  let percentageOfTotalHoursPerUser = 0;
-  percentageOfTotalHoursPerUser = await FormalInstructionMethods.formalInstructionPercentageOfTotalHoursPerUser(
-    userId
-  );
+    let activities: IFormalInstructionActivity[] = (await FormalInstructionController.formalInstructionActivitiesByUser(
+      userId
+    )) as IFormalInstructionActivity[];
 
-  let formalInstructionWorkload = new FormalInstructionWorkload({
-    userId: userId,
-    formalInstructionWorkloads: formalInstructionWorkloads,
-    totalHoursPerUser: totalHoursPerUser,
-    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  });
+    for (let activity of activities) {
+      let studentsEnrolled: number = await FormalInstructionController.formalInstructionStudentsEnrolled(
+        activity.activityId
+      );
+      let baseContactHours: number = await FormalInstructionController.formalInstructionBaseContactHours(
+        activity.activityId
+      );
+      let coordinationHours: number = await FormalInstructionController.formalInstructionCoordinationHours(
+        activity.activityId
+      );
+      let studentSupportHours: number = await FormalInstructionController.formalInstructionStudentSupportHours(
+        activity.activityId
+      );
+      let preparationTimeHours: number = await FormalInstructionController.formalInstructionPreparationTimeHours(
+        activity.activityId
+      );
+      let assessmentSettingHours: number = await FormalInstructionController.formalInstructionAssessmentSettingHours(
+        activity.activityId
+      );
+      let examMarkingHours: number = await FormalInstructionController.formalInstructionExamMarkingHours(
+        activity.activityId
+      );
+      let courseworkMarkingHours: number = await FormalInstructionController.formalInstructionCourseworkMarkingHours(
+        activity.activityId
+      );
+      let feedbackHours: number = await FormalInstructionController.formalInstructionFeedbackHours(
+        activity.activityId
+      );
+      let formativeAssessmentHours: number = await FormalInstructionController.formalInstructionFormativeAssessmentHours(
+        activity.activityId
+      );
+      let otherHoursPerActivity: number = await FormalInstructionController.formalInstructionOtherHoursPerActivity(
+        activity.activityId
+      );
+      let totalHoursPerActivity: number = await FormalInstructionController.formalInstructionTotalHoursPerActivity(
+        activity.activityId
+      );
+      let percentageOfWorkFocusPerActivity: number = await FormalInstructionController.formalInstructionPercentageOfWorkFocusPerActivity(
+        activity.activityId
+      );
+      let percentageOfAnnualHoursPerActivity: number = await FormalInstructionController.formalInstructionPercentageOfAnnualHoursPerActivity(
+        activity.activityId
+      );
+      let percentageOfTotalHoursPerActivity: number = await FormalInstructionController.formalInstructionPercentageOfTotalHoursPerActivity(
+        activity.activityId
+      );
+      let module: IModule = (await ModuleController.module(
+        activity.moduleId,
+        activity.blockId,
+        activity.offeringTypeId,
+        activity.qualificationId
+      )) as IModule;
+      let block: IBlock = (await BlockController.block(
+        activity.blockId
+      )) as IBlock;
+      let offeringType: IOfferingType = (await OfferingTypeController.offeringType(
+        activity.offeringTypeId
+      )) as IOfferingType;
+      let qualification: IQualification = (await QualificationController.qualification(
+        activity.qualificationId
+      )) as IQualification;
 
-  return await formalInstructionWorkload.save();
-};
-let deleteFormalInstructionWorkload = async (userId: string) => {
-  return await FormalInstructionWorkload.findOneAndRemove({ userId: userId });
-};
+      formalInstructionWorkloads.push({
+        activity: activity,
+        module: module,
+        block: block,
+        offeringType: offeringType,
+        qualification: qualification,
+        studentsEnrolled: studentsEnrolled,
+        baseContactHours: baseContactHours,
+        coordinationHours: coordinationHours,
+        studentSupportHours: studentSupportHours,
+        preparationTimeHours: preparationTimeHours,
+        assessmentSettingHours: assessmentSettingHours,
+        examMarkingHours: examMarkingHours,
+        courseworkMarkingHours: courseworkMarkingHours,
+        feedbackHours: feedbackHours,
+        formativeAssessmentHours: formativeAssessmentHours,
+        otherHoursPerActivity: otherHoursPerActivity,
+        totalHoursPerActivity: totalHoursPerActivity,
+        percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
+        percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
+        percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+      });
+    }
+    let totalHoursPerUser: number = 0;
 
-export {
-  initializeFIWorkload,
-  formalInstructionWorkload,
-  calculateFormalInstructionWorkload,
-  deleteFormalInstructionWorkload
-};
+    totalHoursPerUser = await FormalInstructionController.formalInstructionTotalHoursPerUser(
+      userId
+    );
+    let percentageOfWorkFocusPerUser: number = 0;
+    percentageOfWorkFocusPerUser = await FormalInstructionController.formalInstructionPercentageOfWorkFocusPerUser(
+      userId
+    );
+    let percentageOfAnnualHoursPerUser: number = 0;
+    percentageOfAnnualHoursPerUser = await FormalInstructionController.formalInstructionPercentageOfAnnualHoursPerUser(
+      userId
+    );
+    let percentageOfTotalHoursPerUser: number = 0;
+    percentageOfTotalHoursPerUser = await FormalInstructionController.formalInstructionPercentageOfTotalHoursPerUser(
+      userId
+    );
+
+    const formalInstructionWorkload: IFormalInstructionWorkload = new FormalInstructionWorkload(
+      {
+        userId: userId,
+        formalInstructionWorkloads: formalInstructionWorkloads,
+        totalHoursPerUser: totalHoursPerUser,
+        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+      }
+    ) as IFormalInstructionWorkload;
+
+    return await formalInstructionWorkload.save();
+  }
+  public static async deleteFormalInstructionWorkload(userId: string) {
+    return await FormalInstructionWorkload.findOneAndRemove({ userId: userId });
+  }
+}

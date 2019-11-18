@@ -1,27 +1,27 @@
+import IPosition from 'interfaces/position.interface';
+
 import Position from '../models/position.model';
 
-let position = async (positionId: string) => {
-  return await Position.findOne({ positionId: positionId });
-};
-let positions = async () => {
-  return await Position.find({});
-};
-let addPosition = async (position: any) => {
-  const newPosition = new Position(position);
-
-  return await newPosition.save();
-};
-let editPosition = async (position: any) => {
-  return await Position.findOneAndUpdate(
-    { positionId: position.positionId },
-    {
-      $set: position
-    },
-    { upsert: true }
-  );
-};
-let deletePosition = async (position: any) => {
-  return await Position.findOneAndRemove(position);
-};
-
-export { position, positions, addPosition, editPosition, deletePosition };
+export default class PositionController {
+  public static async position(positionId: string) {
+    return await Position.findOne({ positionId: positionId });
+  }
+  public static async positions() {
+    return await Position.find({});
+  }
+  public static async createPosition(position: IPosition) {
+    return await position.save();
+  }
+  public static async updatePosition(position: IPosition) {
+    return await Position.findOneAndUpdate(
+      { positionId: position.positionId },
+      {
+        $set: position
+      },
+      { upsert: true }
+    );
+  }
+  public static async deletePosition(position: IPosition) {
+    return await Position.findOneAndRemove(position);
+  }
+}

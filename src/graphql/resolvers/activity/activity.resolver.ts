@@ -1,4 +1,5 @@
 import Activity from '../../../models/activity/activity.model';
+import ActivityController from './../../../controllers/activity/activity.controller';
 
 export default {
   Activity: {

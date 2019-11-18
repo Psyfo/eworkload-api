@@ -1,33 +1,27 @@
+import IOfferingType from 'interfaces/offering-type.interface';
+
 import OfferingType from '../models/offering-type.model';
 
-let offeringType = async (offeringTypeId: string) => {
-  return await OfferingType.findOne({ offeringTypeId: offeringTypeId });
-};
-let offeringTypes = async () => {
-  return await OfferingType.find({});
-};
-let addOfferingType = async (offeringType: any) => {
-  const newOfferingType = await new OfferingType(offeringType);
-
-  return await newOfferingType.save();
-};
-let editOfferingType = async (offeringType: any) => {
-  return await OfferingType.findOneAndUpdate(
-    { offeringTypeId: offeringType.offeringTypeId },
-    {
-      $set: offeringType
-    },
-    { upsert: true }
-  );
-};
-let deleteOfferingType = async (offeringType: any) => {
-  return await OfferingType.findOneAndRemove(offeringType);
-};
-
-export {
-  offeringType,
-  offeringTypes,
-  addOfferingType,
-  editOfferingType,
-  deleteOfferingType
-};
+export default class OfferingTypeController {
+  public static async offeringType(offeringTypeId: string) {
+    return await OfferingType.findOne({ offeringTypeId: offeringTypeId });
+  }
+  public static async offeringTypes() {
+    return await OfferingType.find({});
+  }
+  public static async createOfferingType(offeringType: IOfferingType) {
+    return await offeringType.save();
+  }
+  public static async updateOfferingType(offeringType: IOfferingType) {
+    return await OfferingType.findOneAndUpdate(
+      { offeringTypeId: offeringType.offeringTypeId },
+      {
+        $set: offeringType
+      },
+      { upsert: true }
+    );
+  }
+  public static async deleteOfferingType(offeringType: IOfferingType) {
+    return await OfferingType.findOneAndRemove(offeringType);
+  }
+}

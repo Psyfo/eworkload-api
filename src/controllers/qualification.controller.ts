@@ -1,56 +1,45 @@
-import { differenceBy } from 'lodash';
-
+import IQualification from 'interfaces/qualification.interface';
 import Enrollment from '../models/enrollment.model';
 import Qualification from '../models/qualification.model';
+import IEnrollment from 'interfaces/enrollment.interface';
 
-let qualification = async (qualificationId: string) => {
-  return await Qualification.findOne({
-    qualificationId: qualificationId
-  }).populate('department');
-};
-let qualifications = async () => {
-  return await Qualification.find({}).populate('department');
-};
-let qualificationsPostgraduate = async () => {
-  return await Qualification.find({
-    type: { $in: ['Masters', 'Doctorate'] }
-  }).populate('department');
-};
-let qualificationsNoEnrollment = async () => {
-  const year = new Date().getFullYear().toString();
-  let enrollments = await Enrollment.find({ enrollmentYear: year });
-  let qualifications = await Qualification.find({}).populate('department');
-  let filteredQual = differenceBy(
-    qualifications,
-    enrollments,
-    'qualificationId'
-  );
-  return filteredQual;
-};
-let addQualification = async (qualification: any) => {
-  const newQualification = new Qualification(qualification);
-
-  return await newQualification.save();
-};
-let editQualification = async (qualification: any) => {
-  return await Qualification.findOneAndUpdate(
-    { qualificationId: qualification.qualificationId },
-    {
-      $set: qualification
-    },
-    { upsert: true }
-  );
-};
-let deleteQualification = async (qualification: any) => {
-  return await Qualification.findOneAndRemove(qualification);
-};
-
-export {
-  qualification,
-  qualifications,
-  qualificationsPostgraduate,
-  qualificationsNoEnrollment,
-  addQualification,
-  editQualification,
-  deleteQualification
-};
+export default class QualificationController {
+  public static async qualification(qualificationId: string) {
+    return await Qualification.findOne({
+      qualificationId: qualificationId
+    }).populate('department');
+  }
+  public static async qualifications() {
+    return await Qualification.find({}).populate('department');
+  }
+  public static async qualificationsByLevel(level: string[]) {
+    return await Qualification.find({
+      type: { $in: level }
+    }).populate('department');
+  }
+  public static async qualificationsUnenrolled() {
+    const year = new Date().getFullYear().toString();
+    const enrollments: any = await Enrollment.find({ enrollmentYear: year });
+    const qualifications: string[] = enrollments.map(
+      (enrollment: IEnrollment) => {
+        return enrollment.qualificationId;
+      }
+    );
+    return Qualification.find({ qualificationId: { $nin: qualifications } });
+  }
+  public static async createQualification(qualification: IQualification) {
+    return await qualification.save();
+  }
+  public static async updateQualification(qualification: IQualification) {
+    return await Qualification.findOneAndUpdate(
+      { qualificationId: qualification.qualificationId },
+      {
+        $set: qualification
+      },
+      { upsert: true }
+    );
+  }
+  public static async deleteQualification(qualification: IQualification) {
+    return await Qualification.findOneAndRemove(qualification);
+  }
+}

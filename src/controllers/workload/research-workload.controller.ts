@@ -1,79 +1,80 @@
-import ResearchActivity from "../../models/activity/research-activity.model";
-import ResearchWorkload from "../../models/workload/research.model";
-import * as ResearchMethods from "../activity/research.controller";
+import IResearchActivity from 'interfaces/activity/research-activity.interface';
+import IResearchWorkload, {
+  IResearchWorkloadPerActivity
+} from 'interfaces/workload/research-workload.interface';
 
-let initializeRWorkload = async (userId: string) => {
-  let rWorkload = new ResearchWorkload({
-    userId: userId
-  });
-  return await rWorkload.save();
-};
-let researchWorkload = async (userId: string) => {
-  return await ResearchWorkload.findOne({ userId: userId }).orFail();
-};
-let calculateResearchWorkload = async (userId: string) => {
-  let researchWorkloads = [];
-  let activities: any[] = await ResearchActivity.find({
-    userId: userId
-  });
+import ResearchActivity from '../../models/activity/research-activity.model';
+import ResearchWorkload from '../../models/workload/research.model';
+import ResearchController from '../activity/research-activity.controller';
 
-  for (let activity of activities) {
-    let researchTotalHoursPerActivity = await ResearchMethods.researchTotalHoursPerActivity(
-      activity.activityId
+export default class ResearchWorkloadController {
+  public static async initializeRWorkload(userId: string) {
+    const rWorkload: IResearchWorkload = new ResearchWorkload({
+      userId: userId
+    }) as IResearchWorkload;
+    return await rWorkload.save();
+  }
+  public static async researchWorkload(userId: string) {
+    return await ResearchWorkload.findOne({
+      userId: userId
+    }).orFail();
+  }
+  public static async calculateResearchWorkload(userId: string) {
+    const researchWorkloads: IResearchWorkloadPerActivity[] = [];
+    const activities: IResearchActivity[] = (await ResearchActivity.find({
+      userId: userId
+    })) as IResearchActivity[];
+
+    for (let activity of activities) {
+      const researchTotalHoursPerActivity: number = await ResearchController.researchTotalHoursPerActivity(
+        activity.activityId
+      );
+      const percentageOfWorkFocusPerActivity: number = await ResearchController.researchPercentageOfWorkFocusPerActivity(
+        activity.activityId
+      );
+      const percentageOfAnnualHoursPerActivity: number = await ResearchController.researchPercentageOfAnnualHoursPerActivity(
+        activity.activityId
+      );
+      const percentageOfTotalHoursPerActivity: number = await ResearchController.researchPercentageOfTotalHoursPerActivity(
+        activity.activityId
+      );
+      researchWorkloads.push({
+        activity: activity,
+        totalHoursPerActivity: researchTotalHoursPerActivity,
+        percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
+        percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
+        percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+      });
+    }
+    const globalTarrif = await ResearchController.researchGlobalTarrif();
+    const totalHoursPerUser = await ResearchController.researchTotalHoursPerUser(
+      userId
     );
-    let percentageOfWorkFocusPerActivity = await ResearchMethods.researchPercentageOfWorkFocusPerActivity(
-      activity.activityId
+    const percentageOfWorkFocusPerUser = await ResearchController.researchPercentageOfWorkFocusPerUser(
+      userId
     );
-    let percentageOfAnnualHoursPerActivity = await ResearchMethods.researchPercentageOfAnnualHoursPerActivity(
-      activity.activityId
+    const percentageOfAnnualHoursPerUser = await ResearchController.researchPercentageOfAnnualHoursPerUser(
+      userId
     );
-    let percentageOfTotalHoursPerActivity = await ResearchMethods.researchPercentageOfTotalHoursPerActivity(
-      activity.activityId
+    const percentageOfTotalHoursPerUser = await ResearchController.researchPercentageOfTotalHoursPerUser(
+      userId
     );
-    researchWorkloads.push({
-      activity: activity,
-      totalHoursPerActivity: researchTotalHoursPerActivity,
-      percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
-      percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
-      percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+
+    const researchWorkload: IResearchWorkload = {
+      userId: userId,
+      researchWorkloads: researchWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    } as IResearchWorkload;
+
+    return await researchWorkload.save();
+  }
+  public static async deleteResearchWorkload(userId: string) {
+    return await ResearchWorkload.findOneAndRemove({
+      userId: userId
     });
   }
-  let globalTarrif = await ResearchMethods.researchGlobalTarrif();
-  let totalHoursPerUser = await ResearchMethods.researchTotalHoursPerUser(
-    userId
-  );
-  let percentageOfWorkFocusPerUser = await ResearchMethods.researchPercentageOfWorkFocusPerUser(
-    userId
-  );
-  let percentageOfAnnualHoursPerUser = await ResearchMethods.researchPercentageOfAnnualHoursPerUser(
-    userId
-  );
-  let percentageOfTotalHoursPerUser = await ResearchMethods.researchPercentageOfTotalHoursPerUser(
-    userId
-  );
-
-  let researchWorkload = await new ResearchWorkload();
-  researchWorkload = await new ResearchWorkload({
-    userId: userId,
-    researchWorkloads: researchWorkloads,
-    globalTarrif: globalTarrif,
-    totalHoursPerUser: totalHoursPerUser,
-    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  });
-
-  return await researchWorkload.save();
-};
-let deleteResearchWorkload = async (userId: string) => {
-  return await ResearchWorkload.findOneAndRemove({
-    userId: userId
-  });
-};
-
-export {
-  initializeRWorkload,
-  researchWorkload,
-  calculateResearchWorkload,
-  deleteResearchWorkload
-};
+}

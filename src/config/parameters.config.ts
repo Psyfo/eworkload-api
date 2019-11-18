@@ -1,4 +1,4 @@
-let parameters = {
+const parameters: any = {
   lecture_weeks_semester: 12,
   lecture_weeks_annual: 24,
   semester_1: '21',

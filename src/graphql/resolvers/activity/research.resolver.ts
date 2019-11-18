@@ -1,27 +1,27 @@
-import * as RMethods from '../../../controllers/activity/research.controller';
+import ResearchActivityController from '../../../controllers/activity/research-activity.controller';
 
 export default {
   Query: {
     researchActivity: async (root: any, { activityId }: any) => {
-      return await RMethods.researchActivity(activityId);
+      return await ResearchActivityController.researchActivity(activityId);
     },
     researchActivities: async () => {
-      return await RMethods.researchActivities();
+      return await ResearchActivityController.researchActivities();
     },
     researchActivitiesByUser: async (root: any, { userId }: any) => {
-      return await RMethods.researchActivitiesByUser(userId);
+      return await ResearchActivityController.researchActivitiesByUser(userId);
     }
   },
   Mutation: {
     // Research
     addResearchActivity: async (root: any, { activity }: any) => {
-      return await RMethods.addResearchActivity(activity);
+      return await ResearchActivityController.createResearchActivity(activity);
     },
     editResearchActivity: async (root: any, { activity }: any) => {
-      return await RMethods.editResearchActivity(activity);
+      return await ResearchActivityController.updateResearchActivity(activity);
     },
     deleteResearchActivity: async (root: any, { activity }: any) => {
-      return await RMethods.deleteResearchActivity(activity);
+      return await ResearchActivityController.deleteResearchActivity(activity);
     }
   }
 };

@@ -1,48 +1,48 @@
+import IEnrollment from 'interfaces/enrollment.interface';
+
 import Enrollment from '../models/enrollment.model';
 
-let enrollment = async (enrollmentYear: string, qualificationId: string) => {
-  return await Enrollment.findOne({
-    enrollmentYear: enrollmentYear,
-    qualificationId: qualificationId
-  }).populate('qualification');
-};
-let enrollments = async () => {
-  return await Enrollment.find({}).populate('qualification');
-};
-let enrollmentsByYear = async (enrollmentYear: string) => {
-  return await Enrollment.find({ enrollmentYear: enrollmentYear }).populate(
-    'qualification'
-  );
-};
-let enrollmentsByQualification = async (qualificationId: string) => {
-  return await Enrollment.find({ qualificationId: qualificationId }).populate(
-    'qualification'
-  );
-};
-let addEnrollment = async (enrollment: any) => {
-  const newEnrollment = await new Enrollment(enrollment);
-
-  return await newEnrollment.save();
-};
-let editEnrollment = async (enrollment: any) => {
-  return await Enrollment.findOneAndUpdate(
-    { enrollmentId: enrollment.enrollmentId },
-    {
-      $set: enrollment
-    },
-    { upsert: true }
-  );
-};
-let deleteEnrollment = async (enrollment: any) => {
-  return await Enrollment.findOneAndRemove(enrollment);
-};
-
-export {
-  enrollment,
-  enrollments,
-  enrollmentsByYear,
-  enrollmentsByQualification,
-  addEnrollment,
-  editEnrollment,
-  deleteEnrollment
-};
+export default class EnrollmentController {
+  public static async enrollment(
+    enrollmentYear: string,
+    qualificationId: string
+  ) {
+    return await Enrollment.findOne({
+      enrollmentYear: enrollmentYear,
+      qualificationId: qualificationId
+    }).populate('qualification');
+  }
+  public static async enrollments() {
+    return await Enrollment.find({}).populate('qualification');
+  }
+  public static async enrollmentsByYear(enrollmentYear: string) {
+    return await Enrollment.find({ enrollmentYear: enrollmentYear }).populate(
+      'qualification'
+    );
+  }
+  public static async enrollmentsByQualification(qualificationId: string) {
+    return await Enrollment.find({ qualificationId: qualificationId }).populate(
+      'qualification'
+    );
+  }
+  public static async createEnrollment(enrollment: IEnrollment) {
+    return await enrollment.save();
+  }
+  public static async updateEnrollment(enrollment: IEnrollment) {
+    return await Enrollment.findOneAndUpdate(
+      {
+        enrollmentYear: enrollment.enrollmentYear,
+        qualificationId: enrollment.qualificationId
+      },
+      {
+        $set: enrollment
+      },
+      { upsert: true }
+    ).populate('qualification');
+  }
+  public static async deleteEnrollment(enrollment: IEnrollment) {
+    return await Enrollment.findOneAndRemove(enrollment).populate(
+      'qualification'
+    );
+  }
+}

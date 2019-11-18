@@ -1,26 +1,26 @@
-import * as StudentMethods from '../../controllers/student.controller';
+import StudentController from '../../controllers/student.controller';
 
 export default {
   Query: {
     student: async (root: any, { studentId }: any) => {
-      return await StudentMethods.student(studentId);
+      return await StudentController.student(studentId);
     },
     students: async () => {
-      return await StudentMethods.students();
+      return await StudentController.students();
     },
     studentsUnassigned: async (root: any, { userId }: any) => {
-      return await StudentMethods.studentsUnassigned(userId);
+      return await StudentController.studentsUnassigned(userId);
     }
   },
   Mutation: {
     addStudent: async (root: any, { student }: any) => {
-      return await StudentMethods.addStudent(student);
+      return await StudentController.createStudent(student);
     },
     editStudent: async (root: any, { student }: any) => {
-      return await StudentMethods.editStudent(student);
+      return await StudentController.updateStudent(student);
     },
     deleteStudent: async (root: any, { student }: any) => {
-      return await StudentMethods.deleteStudent(student);
+      return await StudentController.deleteStudent(student);
     }
   }
 };

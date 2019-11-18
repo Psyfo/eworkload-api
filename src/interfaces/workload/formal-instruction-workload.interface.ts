@@ -5,7 +5,7 @@ import IOfferingType from 'interfaces/offering-type.interface';
 import IQualification from 'interfaces/qualification.interface';
 import { Document } from 'mongoose';
 
-interface IFormalInstructionWorkloadPerActivity {
+export interface IFormalInstructionWorkloadPerActivity {
   activity: IFormalInstructionActivity;
   module?: IModule;
   block?: IBlock;
@@ -16,12 +16,11 @@ interface IFormalInstructionWorkloadPerActivity {
   coordinationHours: number;
   studentSupportHours: number;
   preparationTimeHours: number;
-  assessmentSettingsHours: number;
+  assessmentSettingHours: number;
   examMarkingHours: number;
   courseworkMarkingHours: number;
   feedbackHours: number;
   formativeAssessmentHours: number;
-  moderationHours: number;
   otherHoursPerActivity: number;
   totalHoursPerActivity: number;
   percentageOfWorkFocusPerActivity: number;

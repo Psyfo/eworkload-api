@@ -1,23 +1,23 @@
-import * as OfferingTypeMethods from '../../controllers/offering-type.controller';
+import OfferingTypeController from '../../controllers/offering-type.controller';
 
 export default {
   Query: {
     offeringType: async (root: any, { offeringTypeId }: any) => {
-      return await OfferingTypeMethods.offeringType(offeringTypeId);
+      return await OfferingTypeController.offeringType(offeringTypeId);
     },
     offeringTypes: async () => {
-      return await OfferingTypeMethods.offeringTypes();
+      return await OfferingTypeController.offeringTypes();
     }
   },
   Mutation: {
     addOfferingType: async (root: any, { offeringType }: any) => {
-      return await OfferingTypeMethods.addOfferingType(offeringType);
+      return await OfferingTypeController.createOfferingType(offeringType);
     },
     editOfferingType: async (root: any, { offeringType }: any) => {
-      return await OfferingTypeMethods.editOfferingType(offeringType);
+      return await OfferingTypeController.updateOfferingType(offeringType);
     },
     deleteOfferingType: async (root: any, { offeringType }: any) => {
-      return await OfferingTypeMethods.deleteOfferingType(offeringType);
+      return await OfferingTypeController.deleteOfferingType(offeringType);
     }
   }
 };

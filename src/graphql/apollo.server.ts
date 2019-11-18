@@ -7,11 +7,12 @@ const SERVER = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
   formatResponse: (response: any) => {
-    logger.info(response);
+    logger.info(JSON.stringify(response));
     return response;
   },
   formatError: error => {
     logger.error(error);
+
     return error;
   },
   engine: false,
@@ -20,9 +21,7 @@ const SERVER = new ApolloServer({
     maxFileSize: 10000000,
     maxFiles: 20
   },
-  context: async (req: any) => {
-    logger.info('This is the request from context: ');
-  },
+  context: async (req: any) => {},
   tracing: false,
   debug: true,
   playground: {

@@ -1,87 +1,85 @@
-import * as AcademicAdministrationMethods from "../activity/academic-administration.controller";
+import IAcademicAdministrationActivity from 'interfaces/activity/academic-administration-activity.interface';
+import IAcademicAdministrationWorkload, {
+  IAcademicAdministrationWorkloadPerActivity
+} from 'interfaces/workload/academic-administration-workload.interface';
 
-import AcademicAdministrationWorkload from "../../models/workload/academic-administration.model";
-import IAcademicAdministrationActivity from "interfaces/activity/academic-administration-activity.interface";
-import IAcademicAdministrationWorkload from "interfaces/workload/academic-administration-workload.interface";
+import AcademicAdministrationWorkload from '../../models/workload/academic-administration.model';
+import AcademicAdministrationController from '../activity/academic-administration-activity.controller';
 
-let initializeAAWorkload = async (userId: string) => {
-  let aaWorkload = new AcademicAdministrationWorkload({
-    userId: userId
-  });
-  return await aaWorkload.save();
-};
-let academicAdministrationWorkload = async (userId: string) => {
-  return await AcademicAdministrationWorkload.findOne({
-    userId: userId
-  }).orFail();
-};
-let calculateAcademicAdministrationWorkload = async (userId: string) => {
-  let academicAdministrationWorkloads = [];
-  let activities: any[] = await AcademicAdministrationMethods.academicAdministrationActivitiesByUser(
-    userId
-  );
-
-  // Iterate through activities to calculate per-activity workloads
-  if (activities) {
-    for (let activity of activities) {
-      let academicAdministrationTotalHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerActivity(
-        activity.activityId
-      );
-      let percentageOfWorkFocusPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfWorkFocusPerActivity(
-        activity.activityId
-      );
-      let percentageOfAnnualHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfAnnualHoursPerActivity(
-        activity.activityId
-      );
-      let percentageOfTotalHoursPerActivity: number = await AcademicAdministrationMethods.academicAdministrationPercentageOfTotalHoursPerActivity(
-        activity.activityId
-      );
-
-      await academicAdministrationWorkloads.push({
-        activity: activity,
-        totalHoursPerActivity: academicAdministrationTotalHoursPerActivity,
-        percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
-        percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
-        percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
-      });
-    }
+export default class AcademicAdministrationWorkloadController {
+  public static async initializeAAWorkload(userId: string) {
+    let workload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
+      {
+        userId: userId
+      }
+    ) as IAcademicAdministrationWorkload;
+    return await workload.save();
   }
-  let globalTarrif = await AcademicAdministrationMethods.academicAdministrationGlobalTarrif();
-  let totalHoursPerUser = await AcademicAdministrationMethods.academicAdministrationTotalHoursPerUser(
-    userId
-  );
-  let percentageOfWorkFocusPerUser = await AcademicAdministrationMethods.academicAdministrationPercentageOfWorkFocusPerUser(
-    userId
-  );
-  let percentageOfAnnualHoursPerUser = await AcademicAdministrationMethods.academicAdministrationPercentageOfAnnualHoursPerUser(
-    userId
-  );
-  let percentageOfTotalHoursPerUser = await AcademicAdministrationMethods.academicAdministrationPercentageOfTotalHoursPerUser(
-    userId
-  );
+  public static async academicAdministrationWorkload(userId: string) {
+    return await AcademicAdministrationWorkload.findOne({
+      userId: userId
+    }).orFail();
+  }
+  public static async calculateAcademicAdministrationWorkload(userId: string) {
+    let academicAdministrationWorkloads: IAcademicAdministrationWorkloadPerActivity[] = [];
+    let activities: IAcademicAdministrationActivity[] = (await AcademicAdministrationController.academicAdministrationActivitiesByUser(
+      userId
+    )) as IAcademicAdministrationActivity[];
 
-  let academicAdministrationWorkload = await new AcademicAdministrationWorkload();
-  academicAdministrationWorkload = await new AcademicAdministrationWorkload({
-    userId: userId,
-    academicAdministrationWorkloads: academicAdministrationWorkloads,
-    globalTarrif: globalTarrif,
-    totalHoursPerUser: totalHoursPerUser,
-    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  });
+    // Iterate through activities to calculate per-activity workloads
+    if (activities) {
+      for (let activity of activities) {
+        const academicAdministrationTotalHoursPerActivity: number = await AcademicAdministrationController.academicAdministrationTotalHoursPerActivity(
+          activity.activityId
+        );
+        const percentageOfWorkFocusPerActivity: number = await AcademicAdministrationController.academicAdministrationPercentageOfWorkFocusPerActivity(
+          activity.activityId
+        );
+        const percentageOfAnnualHoursPerActivity: number = await AcademicAdministrationController.academicAdministrationPercentageOfAnnualHoursPerActivity(
+          activity.activityId
+        );
+        const percentageOfTotalHoursPerActivity: number = await AcademicAdministrationController.academicAdministrationPercentageOfTotalHoursPerActivity(
+          activity.activityId
+        );
 
-  return await academicAdministrationWorkload.save();
-};
-let deleteAcademicAdministrationWorkload = async (userId: string) => {
-  return await AcademicAdministrationWorkload.findOneAndRemove({
-    userId: userId
-  });
-};
+        await academicAdministrationWorkloads.push({
+          activity: activity,
+          totalHoursPerActivity: academicAdministrationTotalHoursPerActivity,
+          percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
+          percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
+          percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+        });
+      }
+    }
+    const globalTarrif: number = await AcademicAdministrationController.academicAdministrationGlobalTarrif();
+    const totalHoursPerUser: number = await AcademicAdministrationController.academicAdministrationTotalHoursPerUser(
+      userId
+    );
+    const percentageOfWorkFocusPerUser: number = await AcademicAdministrationController.academicAdministrationPercentageOfWorkFocusPerUser(
+      userId
+    );
+    const percentageOfAnnualHoursPerUser: number = await AcademicAdministrationController.academicAdministrationPercentageOfAnnualHoursPerUser(
+      userId
+    );
+    const percentageOfTotalHoursPerUser: number = await AcademicAdministrationController.academicAdministrationPercentageOfTotalHoursPerUser(
+      userId
+    );
 
-export {
-  initializeAAWorkload,
-  academicAdministrationWorkload,
-  calculateAcademicAdministrationWorkload,
-  deleteAcademicAdministrationWorkload
-};
+    const academicAdministrationWorkload: IAcademicAdministrationWorkload = {
+      userId: userId,
+      academicAdministrationWorkloads: academicAdministrationWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    } as IAcademicAdministrationWorkload;
+
+    return await academicAdministrationWorkload.save();
+  }
+  public static async deleteAcademicAdministrationWorkload(userId: string) {
+    return await AcademicAdministrationWorkload.findOneAndRemove({
+      userId: userId
+    });
+  }
+}

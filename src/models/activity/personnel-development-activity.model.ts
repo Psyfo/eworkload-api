@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import * as WorkloadMethods from '../../controllers/workload.controller';
+import * as WorkloadMethods from '../../controllers/workload/workload.controller';
 import Activity from './activity.model';
 
 const personnelDevelopmentActivitySchema = new mongoose.Schema({

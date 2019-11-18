@@ -1,38 +1,42 @@
-import mongoose from 'mongoose';
+import { model, Schema } from 'mongoose';
 
-const workloadSchema = new mongoose.Schema(
+const workloadSchema = new Schema(
   {
     userId: {
       type: String,
       ref: 'User'
     },
     year: {
-      type: String
+      type: String,
+      default: new Date().getFullYear()
     },
     workFocusName: {
       type: String,
       ref: 'WorkFocus'
     },
-    teachingEstimated: {
-      type: Number
+    academicAdministrationWorkload: {
+      type: Schema.Types.Mixed
     },
-    teachingActual: {
-      type: Number,
-      default: 0
+    communityInstructionWorkload: {
+      type: Schema.Types.Mixed
     },
-    researchEstimated: {
-      type: Number
+    executiveManagementWorkload: {
+      type: Schema.Types.Mixed
     },
-    researchActual: {
-      type: Number,
-      default: 0
+    formalInstructionWorkload: {
+      type: Schema.Types.Mixed
     },
-    serviceEstimated: {
-      type: Number
+    personnelDevelopmentWorkload: {
+      type: Schema.Types.Mixed
     },
-    serviceActual: {
-      type: Number,
-      default: 32
+    publicServiceWorkload: {
+      type: Schema.Types.Mixed
+    },
+    researchWorkload: {
+      type: Schema.Types.Mixed
+    },
+    supervisionWorkload: {
+      type: Schema.Types.Mixed
     }
   },
   {
@@ -63,5 +67,5 @@ workloadSchema.virtual('work-focus', {
   justOne: true
 });
 
-const Workload = mongoose.model('Workload', workloadSchema);
+const Workload = model('Workload', workloadSchema);
 export default Workload;

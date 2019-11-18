@@ -1,7 +1,7 @@
 import IExecutiveManagementActivity from 'interfaces/activity/executive-management-activity.interface';
 import { Document } from 'mongoose';
 
-interface IExecutiveManagementWorkloadPerActivity {
+export interface IExecutiveManagementWorkloadPerActivity {
   activity: IExecutiveManagementActivity;
   totalHoursPerActivity: number;
   percentageOfWorkFocusPerActivity: number;

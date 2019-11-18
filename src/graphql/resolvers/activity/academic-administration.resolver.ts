@@ -1,36 +1,46 @@
-import * as AAMethods from '../../../controllers/activity/academic-administration.controller';
+import AcademicAdministrationActivityController from '../../../controllers/activity/academic-administration-activity.controller';
 
 export default {
   Query: {
     academicAdministrationActivity: async (root: any, { activityId }: any) => {
-      return await AAMethods.academicAdministrationActivity(activityId);
+      return await AcademicAdministrationActivityController.academicAdministrationActivity(
+        activityId
+      );
     },
     academicAdministrationActivities: async () => {
-      return await AAMethods.academicAdministrationActivities();
+      return await AcademicAdministrationActivityController.academicAdministrationActivities();
     },
     academicAdministrationActivitiesByUser: async (
       root: any,
       { userId }: any
     ) => {
-      return await AAMethods.academicAdministrationActivitiesByUser(userId);
+      return await AcademicAdministrationActivityController.academicAdministrationActivitiesByUser(
+        userId
+      );
     }
   },
   Mutation: {
     // AcademicAdministration
     addAcademicAdministrationActivity: async (root: any, { activity }: any) => {
-      return await AAMethods.addAcademicAdministrationActivity(activity);
+      return await AcademicAdministrationActivityController.createAcademicAdministrationActivity(
+        activity
+      );
     },
     editAcademicAdministrationActivity: async (
       root: any,
       { activity }: any
     ) => {
-      return await AAMethods.editAcademicAdministrationActivity(activity);
+      return await AcademicAdministrationActivityController.updateAcademicAdministrationActivity(
+        activity
+      );
     },
     deleteAcademicAdministrationActivity: async (
       root: any,
       { activity }: any
     ) => {
-      return await AAMethods.deleteAcademicAdministrationActivity(activity);
+      return await AcademicAdministrationActivityController.deleteAcademicAdministrationActivity(
+        activity
+      );
     }
   }
 };

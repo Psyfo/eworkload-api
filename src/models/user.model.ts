@@ -1,8 +1,10 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt-nodejs";
-import validator from "validator";
-import transporter from "../config/mail.config";
-import * as WorkloadMethods from "../controllers/workload.controller";
+import bcrypt from 'bcrypt-nodejs';
+import IUser from 'interfaces/user.interface';
+import mongoose from 'mongoose';
+import validator from 'validator';
+
+import transporter from '../config/mail.config';
+import WorkloadController from '../controllers/workload/workload.controller';
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,16 +36,16 @@ const userSchema = new mongoose.Schema(
     disciplineIds: [
       {
         type: String,
-        ref: "Discipline"
+        ref: 'Discipline'
       }
     ],
     positionId: {
       type: String,
-      ref: "Position"
+      ref: 'Position'
     },
     departmentId: {
       type: String,
-      ref: "Department"
+      ref: 'Department'
     },
     gender: {
       type: String
@@ -53,8 +55,8 @@ const userSchema = new mongoose.Schema(
     },
     workFocusName: {
       type: String,
-      default: "Balanced",
-      ref: "WorkFocus"
+      default: 'Balanced',
+      ref: 'WorkFocus'
     },
     createdAt: {
       type: Date
@@ -69,66 +71,66 @@ const userSchema = new mongoose.Schema(
 );
 
 // VIRTUALS
-userSchema.virtual("disciplines", {
-  ref: "Discipline",
-  localField: "disciplineIds",
-  foreignField: "disciplineId"
+userSchema.virtual('disciplines', {
+  ref: 'Discipline',
+  localField: 'disciplineIds',
+  foreignField: 'disciplineId'
 });
-userSchema.virtual("position", {
-  ref: "Position",
-  localField: "positionId",
-  foreignField: "positionId",
+userSchema.virtual('position', {
+  ref: 'Position',
+  localField: 'positionId',
+  foreignField: 'positionId',
   justOne: true
 });
-userSchema.virtual("workFocus", {
-  ref: "WorkFocus",
-  localField: "workFocusName",
-  foreignField: "name",
+userSchema.virtual('workFocus', {
+  ref: 'WorkFocus',
+  localField: 'workFocusName',
+  foreignField: 'name',
   justOne: true
 });
-userSchema.virtual("workFocus", {
-  ref: "WorkFocus",
-  localField: "workFocusName",
-  foreignField: "name",
+userSchema.virtual('workFocus', {
+  ref: 'WorkFocus',
+  localField: 'workFocusName',
+  foreignField: 'name',
   justOne: true
 });
-userSchema.virtual("department", {
-  ref: "Department",
-  localField: "departmentId",
-  foreignField: "departmentId",
+userSchema.virtual('department', {
+  ref: 'Department',
+  localField: 'departmentId',
+  foreignField: 'departmentId',
   justOne: true
 });
-userSchema.virtual("full").get(function() {
+userSchema.virtual('full').get(function() {
   return (
     this.userId +
-    "." +
+    '.' +
     this.email +
-    "." +
+    '.' +
     this.firstName +
-    "." +
+    '.' +
     this.lastName +
-    "." +
+    '.' +
     this.photoUrl +
-    "." +
+    '.' +
     this.workFocusName +
-    "." +
+    '.' +
     this.disciplineId +
-    "." +
+    '.' +
     this.positionId +
-    "." +
+    '.' +
     this.gender +
-    "." +
+    '.' +
     this.nationality
   );
 });
 
 // HOOKS
 // Pre-hook to hash password. Make sure to use function and not arrow (lexical 'this' problem)
-userSchema.pre("save", async function() {
-  const user: any = this;
+userSchema.pre('save', async function() {
+  const user: IUser = this as IUser;
 
   // Generate default Work Focus
-  user.workFocusName = "Balanced";
+  user.workFocusName = 'Balanced';
 
   // Generate random password
   user.password = Math.random()
@@ -137,9 +139,9 @@ userSchema.pre("save", async function() {
 
   // Prepare and send user account mail
   const mailOptions = {
-    from: "c4mahlangu@gmail.com", // sender address
+    from: 'c4mahlangu@gmail.com', // sender address
     to: user.email, // list of receivers
-    subject: "Eworkload Credentials", // Subject line
+    subject: 'Eworkload Credentials', // Subject line
     html: `<p>Welcome to the Eworkload system. Please find default credentials below</p>
           <p>User ID: ${user.userId}</p>
           <p>Password: ${user.password}</p>
@@ -148,7 +150,7 @@ userSchema.pre("save", async function() {
           <p>Kind regards</p>
           <p>Administrator</p>` // plain text body
   };
-  console.log("Mail options", mailOptions);
+  console.log('Mail options', mailOptions);
   await transporter.sendMail(mailOptions, (err: any, info: any) => {
     if (err) console.log(err);
     else console.log(info);
@@ -162,7 +164,7 @@ userSchema.pre("save", async function() {
   user.password = hash;
 
   // Initialize workloads
-  await WorkloadMethods.initializeWorkloads(user.userId);
+  await WorkloadController.initializeWorkloads(user.userId);
 });
 
 // INSTANCE METHODS
@@ -177,5 +179,5 @@ userSchema.methods.isValidPassword = async (password: string) => {
   return compare;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 export default User;

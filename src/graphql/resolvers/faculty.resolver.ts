@@ -1,23 +1,23 @@
-import * as FacultyMethods from '../../controllers/faculty.controller';
+import FacultyController from '../../controllers/faculty.controller';
 
 export default {
   Query: {
     faculty: async (root: any, { facultyId }: any) => {
-      return await FacultyMethods.faculty(facultyId);
+      return await FacultyController.faculty(facultyId);
     },
     faculties: async () => {
-      return await FacultyMethods.faculties();
+      return await FacultyController.faculties();
     }
   },
   Mutation: {
     addFaculty: async (root: any, { faculty }: any) => {
-      return await FacultyMethods.addFaculty(faculty);
+      return await FacultyController.createFaculty(faculty);
     },
     editFaculty: async (root: any, { faculty }: any) => {
-      return await FacultyMethods.editFaculty(faculty);
+      return await FacultyController.updateFaculty(faculty);
     },
     deleteFaculty: async (root: any, { faculty }: any) => {
-      return await FacultyMethods.deleteFaculty(faculty);
+      return await FacultyController.deleteFaculty(faculty);
     }
   }
 };

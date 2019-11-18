@@ -1,80 +1,82 @@
-import * as PublicServiceMethods from "../activity/public-service.controller";
+import IPublicServiceActivity from 'interfaces/activity/public-service-activity.interface';
+import IPublicServiceWorkload, {
+  IPublicServiceWorkloadPerActivity
+} from 'interfaces/workload/public-service-workload.interface';
 
-import PublicServiceActivity from "../../models/activity/public-service-activity.model";
-import PublicServiceWorkload from "../../models/workload/public-service.model";
+import PublicServiceActivity from '../../models/activity/public-service-activity.model';
+import PublicServiceWorkload from '../../models/workload/public-service.model';
+import PublicServiceController from '../activity/public-service-activity.controller';
 
-let initializePSWorkload = async (userId: string) => {
-  let psWorkload = new PublicServiceWorkload({
-    userId: userId
-  });
-  return await psWorkload.save();
-};
-let publicServiceWorkload = async (userId: string) => {
-  return await PublicServiceWorkload.findOne({ userId: userId }).orFail();
-};
-let calculatePublicServiceWorkload = async (userId: string) => {
-  let publicServiceWorkloads = [];
-  let activities: any[] = await PublicServiceActivity.find({
-    userId: userId
-  });
+export default class PublicServiceWorkloadController {
+  public static async initializePSWorkload(userId: string) {
+    const psWorkload: IPublicServiceWorkload = new PublicServiceWorkload({
+      userId: userId
+    }) as IPublicServiceWorkload;
+    return await psWorkload.save();
+  }
+  public static async publicServiceWorkload(userId: string) {
+    return await PublicServiceWorkload.findOne({
+      userId: userId
+    }).orFail();
+  }
+  public static async calculatePublicServiceWorkload(userId: string) {
+    const publicServiceWorkloads: IPublicServiceWorkloadPerActivity[] = [];
+    const activities: IPublicServiceActivity[] = (await PublicServiceActivity.find(
+      {
+        userId: userId
+      }
+    )) as IPublicServiceActivity[];
 
-  for (let activity of activities) {
-    let publicServiceTotalHoursPerActivity = await PublicServiceMethods.publicServiceTotalHoursPerActivity(
-      activity.activityId
+    for (let activity of activities) {
+      const publicServiceTotalHoursPerActivity: number = await PublicServiceController.publicServiceTotalHoursPerActivity(
+        activity.activityId
+      );
+      const percentageOfWorkFocusPerActivity: number = await PublicServiceController.publicServicePercentageOfWorkFocusPerActivity(
+        activity.activityId
+      );
+      const percentageOfAnnualHoursPerActivity: number = await PublicServiceController.publicServicePercentageOfAnnualHoursPerActivity(
+        activity.activityId
+      );
+      const percentageOfTotalHoursPerActivity: number = await PublicServiceController.publicServicePercentageOfTotalHoursPerActivity(
+        activity.activityId
+      );
+      publicServiceWorkloads.push({
+        activity: activity,
+        totalHoursPerActivity: publicServiceTotalHoursPerActivity,
+        percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
+        percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
+        percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+      });
+    }
+    const globalTarrif = await PublicServiceController.publicServiceGlobalTarrif();
+    const totalHoursPerUser = await PublicServiceController.publicServiceTotalHoursPerUser(
+      userId
     );
-    let percentageOfWorkFocusPerActivity = await PublicServiceMethods.publicServicePercentageOfWorkFocusPerActivity(
-      activity.activityId
+    const percentageOfWorkFocusPerUser = await PublicServiceController.publicServicePercentageOfWorkFocusPerUser(
+      userId
     );
-    let percentageOfAnnualHoursPerActivity = await PublicServiceMethods.publicServicePercentageOfAnnualHoursPerActivity(
-      activity.activityId
+    const percentageOfAnnualHoursPerUser = await PublicServiceController.publicServicePercentageOfAnnualHoursPerUser(
+      userId
     );
-    let percentageOfTotalHoursPerActivity = await PublicServiceMethods.publicServicePercentageOfTotalHoursPerActivity(
-      activity.activityId
+    const percentageOfTotalHoursPerUser = await PublicServiceController.publicServicePercentageOfTotalHoursPerUser(
+      userId
     );
-    publicServiceWorkloads.push({
-      activity: activity,
-      totalHoursPerActivity: publicServiceTotalHoursPerActivity,
-      percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
-      percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
-      percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+
+    const publicServiceWorkload: IPublicServiceWorkload = {
+      userId: userId,
+      publicServiceWorkloads: publicServiceWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    } as IPublicServiceWorkload;
+
+    return await publicServiceWorkload.save();
+  }
+  public static async deletePublicServiceWorkload(userId: string) {
+    return await PublicServiceWorkload.findOneAndRemove({
+      userId: userId
     });
   }
-  let globalTarrif = await PublicServiceMethods.publicServiceGlobalTarrif();
-  let totalHoursPerUser = await PublicServiceMethods.publicServiceTotalHoursPerUser(
-    userId
-  );
-  let percentageOfWorkFocusPerUser = await PublicServiceMethods.publicServicePercentageOfWorkFocusPerUser(
-    userId
-  );
-  let percentageOfAnnualHoursPerUser = await PublicServiceMethods.publicServicePercentageOfAnnualHoursPerUser(
-    userId
-  );
-  let percentageOfTotalHoursPerUser = await PublicServiceMethods.publicServicePercentageOfTotalHoursPerUser(
-    userId
-  );
-
-  let publicServiceWorkload = await new PublicServiceWorkload();
-  publicServiceWorkload = await new PublicServiceWorkload({
-    userId: userId,
-    publicServiceWorkloads: publicServiceWorkloads,
-    globalTarrif: globalTarrif,
-    totalHoursPerUser: totalHoursPerUser,
-    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  });
-
-  return await publicServiceWorkload.save();
-};
-let deletePublicServiceWorkload = async (userId: string) => {
-  return await PublicServiceWorkload.findOneAndRemove({
-    userId: userId
-  });
-};
-
-export {
-  initializePSWorkload,
-  publicServiceWorkload,
-  calculatePublicServiceWorkload,
-  deletePublicServiceWorkload
-};
+}

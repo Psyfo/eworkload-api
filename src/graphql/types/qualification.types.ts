@@ -19,8 +19,8 @@ export default gql`
   type Query {
     qualification(qualificationId: String!): Qualification
     qualifications: [Qualification]
-    qualificationsPostgraduate: [Qualification]
-    qualificationsNoEnrollment: [Qualification]
+    qualificationsByLevel: [Qualification]
+    qualificationsUnenrolled: [Qualification]
   }
 
   type Mutation {

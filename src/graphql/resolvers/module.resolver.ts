@@ -1,4 +1,4 @@
-import * as ModuleMethods from '../../controllers/module.controller';
+import ModuleController from '../../controllers/module.controller';
 
 export default {
   Query: {
@@ -6,7 +6,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId }: any
     ) => {
-      return await ModuleMethods._module(
+      return await ModuleController.module(
         moduleId,
         blockId,
         offeringTypeId,
@@ -14,57 +14,57 @@ export default {
       );
     },
     modules: async () => {
-      return await ModuleMethods.modules();
+      return await ModuleController.modules();
     },
     modulesByDiscipline: async (root: any, { disciplineIds }: any) => {
-      return await ModuleMethods.modulesByDiscipline(disciplineIds);
+      return await ModuleController.modulesByDiscipline(disciplineIds);
     },
     modulesByUnassigned: async () => {
-      return await ModuleMethods.modulesByUnassigned();
+      return await ModuleController.modulesByUnassigned();
     },
     modulesByAssigned: async () => {
-      return await ModuleMethods.modulesByAssigned();
+      return await ModuleController.modulesByAssigned();
     },
     modulesByUnassignedAndDiscipline: async (
       root: any,
       { userId, disciplineIds }: any
     ) => {
-      return await ModuleMethods.modulesByUnassignedAndDiscipline(
+      return await ModuleController.modulesByUnassignedAndDiscipline(
         userId,
         disciplineIds
       );
     },
     modulesByUser: async (root: any, { userId }: any) => {
-      return await ModuleMethods.modulesByUser(userId);
+      return await ModuleController.modulesByUser(userId);
     },
     modulesByModerator: async (root: any, { moderatorId }: any) => {
-      return await ModuleMethods.modulesByModerator(moderatorId);
+      return await ModuleController.modulesByModerator(moderatorId);
     },
     modulesByCoordinator: async (root: any, { coordinatorId }: any) => {
-      return await ModuleMethods.modulesByCoordinator(coordinatorId);
+      return await ModuleController.modulesByCoordinator(coordinatorId);
     },
     modulesByStack: async (root: any, { stackId }: any) => {
-      return await ModuleMethods.modulesByStack(stackId);
+      return await ModuleController.modulesByStack(stackId);
     }
   },
   Mutation: {
     addModule: async (root: any, { module }: any) => {
-      return await ModuleMethods.addModule(module);
+      return await ModuleController.createModule(module);
     },
     addModules: async (root: any, { modules }: any) => {
-      return await ModuleMethods.addModules(modules);
+      return await ModuleController.createModules(modules);
     },
     editModule: async (root: any, { module }: any) => {
-      return await ModuleMethods.editModule(module);
+      return await ModuleController.updateModule(module);
     },
     deleteModule: async (root: any, { module }: any) => {
-      return await ModuleMethods.deleteModule(module);
+      return await ModuleController.deleteModule(module);
     },
     assignUserToModule: async (
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }: any
     ) => {
-      return await ModuleMethods.assignUserToModule(
+      return await ModuleController.assignUserToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -76,7 +76,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId }: any
     ) => {
-      return await ModuleMethods.unassignUserFromModule(
+      return await ModuleController.unassignUserFromModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -87,7 +87,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }: any
     ) => {
-      return await ModuleMethods.assignCoordinatorToModule(
+      return await ModuleController.assignCoordinatorToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -99,7 +99,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId }: any
     ) => {
-      return await ModuleMethods.unassignCoordinatorFromModule(
+      return await ModuleController.unassignCoordinatorFromModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -110,7 +110,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId, userId }: any
     ) => {
-      return await ModuleMethods.assignModeratorToModule(
+      return await ModuleController.assignModeratorToModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -122,7 +122,7 @@ export default {
       root: any,
       { moduleId, blockId, offeringTypeId, qualificationId }: any
     ) => {
-      return await ModuleMethods.unassignModeratorFromModule(
+      return await ModuleController.unassignModeratorFromModule(
         moduleId,
         blockId,
         offeringTypeId,
@@ -130,19 +130,19 @@ export default {
       );
     },
     unassignAllModules: async () => {
-      return await ModuleMethods.unassignAllModules();
+      return await ModuleController.unassignAllModules();
     },
     stackModules: async (root: any, { modules }: any) => {
-      return await ModuleMethods.stackModules(modules);
+      return await ModuleController.stackModules(modules);
     },
     addModuleToStack: async (root: any, { module, stackId }: any) => {
-      return await ModuleMethods.addModuleToStack(module, stackId);
+      return await ModuleController.addModuleToStack(module, stackId);
     },
     resetStacks: async () => {
-      return await ModuleMethods.resetStacks();
+      return await ModuleController.resetStacks();
     },
     resetEnrollments: async () => {
-      return await ModuleMethods.resetEnrollments();
+      return await ModuleController.resetEnrollments();
     }
   }
 };

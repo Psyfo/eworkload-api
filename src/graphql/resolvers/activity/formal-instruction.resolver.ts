@@ -1,49 +1,69 @@
-import * as FiMethods from '../../../controllers/activity/formal-instruction.controller';
-import * as SMethods from '../../../controllers/activity/supervision.controller';
+import FormalInstructionActivityController from '../../../controllers/activity/formal-instruction-activity.controller';
+import SupervisionActivityController from '../../../controllers/activity/supervision-activity.controller';
 
 export default {
   Query: {
     // Formal Instruction
     formalInstructionActivity: async (root: any, { activityId }: any) => {
-      return await FiMethods.formalInstructionActivity(activityId);
+      return await FormalInstructionActivityController.formalInstructionActivity(
+        activityId
+      );
     },
     formalInstructionActivities: async () => {
-      return await FiMethods.formalInstructionActivities();
+      return await FormalInstructionActivityController.formalInstructionActivities();
     },
     formalInstructionActivitiesByUser: async (root: any, { userId }: any) => {
-      return await FiMethods.formalInstructionActivitiesByUser(userId);
+      return await FormalInstructionActivityController.formalInstructionActivitiesByUser(
+        userId
+      );
     },
     // Supervision
     supervisionActivity: async (root: any, { activityId }: any) => {
-      return await SMethods.supervisionActivity(activityId);
+      return await SupervisionActivityController.supervisionActivity(
+        activityId
+      );
     },
     supervisionActivities: async () => {
-      return await SMethods.supervisionActivities();
+      return await SupervisionActivityController.supervisionActivities();
     },
     supervisionActivitiesByUser: async (root: any, { userId }: any) => {
-      return await SMethods.supervisionActivitiesByUser(userId);
+      return await SupervisionActivityController.supervisionActivitiesByUser(
+        userId
+      );
     }
   },
   Mutation: {
     // Formal Instruction
     addFormalInstructionActivity: async (root: any, { activity }: any) => {
-      return await FiMethods.addFormalInstructionActivity(activity);
+      return await FormalInstructionActivityController.createFormalInstructionActivity(
+        activity
+      );
     },
     editFormalInstructionActivity: async (root: any, { activity }: any) => {
-      return await FiMethods.editFormalInstructionActivity(activity);
+      return await FormalInstructionActivityController.updateFormalInstructionActivity(
+        activity
+      );
     },
     deleteFormalInstructionActivity: async (root: any, { activity }: any) => {
-      return await FiMethods.deleteFormalInstructionActivity(activity);
+      return await FormalInstructionActivityController.deleteFormalInstructionActivity(
+        activity
+      );
     },
     // Supervision
     addSupervisionActivity: async (root: any, { activity }: any) => {
-      return await SMethods.addSupervisionActivity(activity);
+      return await SupervisionActivityController.createSupervisionActivity(
+        activity
+      );
     },
     editSupervisionActivity: async (root: any, { activity }: any) => {
-      return await SMethods.editSupervisionActivity(activity);
+      return await SupervisionActivityController.updateSupervisionActivity(
+        activity
+      );
     },
     deleteSupervisionActivity: async (root: any, { activity }: any) => {
-      return await SMethods.deleteSupervisionActivity(activity);
+      return await SupervisionActivityController.deleteSupervisionActivity(
+        activity
+      );
     }
   }
 };

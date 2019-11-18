@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import * as WorkloadMethods from '../../controllers/workload.controller';
+import WorkloadController from '../../controllers/workload/workload.controller';
 import Activity from './activity.model';
 
 const supervisionActivitySchema = new mongoose.Schema({
@@ -30,15 +30,15 @@ supervisionActivitySchema.index(
 // HOOKS
 supervisionActivitySchema.post('save', async function() {
   const activity: any = this;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 supervisionActivitySchema.post('findOneAndUpdate', async function(doc) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 supervisionActivitySchema.post('findOneAndRemove', async function(doc) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 
 // VIRTUALS

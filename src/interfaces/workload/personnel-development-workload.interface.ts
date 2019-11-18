@@ -1,7 +1,7 @@
 import IPersonnelDevelopmentActivity from 'interfaces/activity/personnel-development-activity.interface';
 import { Document } from 'mongoose';
 
-interface IPersonnelDevelopmentWorkloadPerActivity {
+export interface IPersonnelDevelopmentWorkloadPerActivity {
   activity: IPersonnelDevelopmentActivity;
   totalHoursPerActivity: number;
   percentageOfWorkFocusPerActivity: number;

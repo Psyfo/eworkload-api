@@ -1,82 +1,84 @@
-import * as CommunityInstructionMethods from "../activity/community-instruction.controller";
+import ICommunityInstructionActivity from 'interfaces/activity/community-instruction-activity.interface';
+import ICommunityInstructionWorkload, {
+  ICommunityInstructionWorkloadPerActivity
+} from 'interfaces/workload/community-instruction-workload.interface';
 
-import CommunityInstructionActivity from "../../models/activity/community-instruction-activity.model";
-import CommunityInstructionWorkload from "../../models/workload/community-instruction.model";
+import CommunityInstructionActivity from '../../models/activity/community-instruction-activity.model';
+import CommunityInstructionWorkload from '../../models/workload/community-instruction.model';
+import CommunityInstructionController from '../activity/community-instruction-activity.controller';
 
-let initializeCIWorkload = async (userId: string) => {
-  let ciWorkload = new CommunityInstructionWorkload({
-    userId: userId
-  });
-  return await ciWorkload.save();
-};
-let communityInstructionWorkload = async (userId: string) => {
-  return await CommunityInstructionWorkload.findOne({
-    userId: userId
-  }).orFail();
-};
-let calculateCommunityInstructionWorkload = async (userId: string) => {
-  let communityInstructionWorkloads = [];
-  let activities: any[] = await CommunityInstructionActivity.find({
-    userId: userId
-  });
+export default class CommunityInstructionWorkloadController {
+  public static async initializeCIWorkload(userId: string) {
+    const ciWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload(
+      {
+        userId: userId
+      }
+    ) as ICommunityInstructionWorkload;
+    return await ciWorkload.save();
+  }
+  public static async communityInstructionWorkload(userId: string) {
+    return await CommunityInstructionWorkload.findOne({
+      userId: userId
+    }).orFail();
+  }
+  public static async calculateCommunityInstructionWorkload(userId: string) {
+    let communityInstructionWorkloads: ICommunityInstructionWorkloadPerActivity[] = [];
+    const activities: ICommunityInstructionActivity[] = (await CommunityInstructionActivity.find(
+      {
+        userId: userId
+      }
+    )) as ICommunityInstructionActivity[];
 
-  for (let activity of activities) {
-    let communityInstructionTotalHoursPerActivity = await CommunityInstructionMethods.communityInstructionTotalHoursPerActivity(
-      activity.activityId
+    for (let activity of activities) {
+      let communityInstructionTotalHoursPerActivity: number = await CommunityInstructionController.communityInstructionTotalHoursPerActivity(
+        activity.activityId
+      );
+      let percentageOfWorkFocusPerActivity: number = await CommunityInstructionController.communityInstructionPercentageOfWorkFocusPerActivity(
+        activity.activityId
+      );
+      let percentageOfAnnualHoursPerActivity: number = await CommunityInstructionController.communityInstructionPercentageOfAnnualHoursPerActivity(
+        activity.activityId
+      );
+      let percentageOfTotalHoursPerActivity: number = await CommunityInstructionController.communityInstructionPercentageOfTotalHoursPerActivity(
+        activity.activityId
+      );
+      communityInstructionWorkloads.push({
+        activity: activity,
+        totalHoursPerActivity: communityInstructionTotalHoursPerActivity,
+        percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
+        percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
+        percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+      });
+    }
+    const globalTarrif: number = await CommunityInstructionController.communityInstructionGlobalTarrif();
+    const totalHoursPerUser: number = await CommunityInstructionController.communityInstructionTotalHoursPerUser(
+      userId
     );
-    let percentageOfWorkFocusPerActivity = await CommunityInstructionMethods.communityInstructionPercentageOfWorkFocusPerActivity(
-      activity.activityId
+    const percentageOfWorkFocusPerUser: number = await CommunityInstructionController.communityInstructionPercentageOfWorkFocusPerUser(
+      userId
     );
-    let percentageOfAnnualHoursPerActivity = await CommunityInstructionMethods.communityInstructionPercentageOfAnnualHoursPerActivity(
-      activity.activityId
+    const percentageOfAnnualHoursPerUser: number = await CommunityInstructionController.communityInstructionPercentageOfAnnualHoursPerUser(
+      userId
     );
-    let percentageOfTotalHoursPerActivity = await CommunityInstructionMethods.communityInstructionPercentageOfTotalHoursPerActivity(
-      activity.activityId
+    const percentageOfTotalHoursPerUser: number = await CommunityInstructionController.communityInstructionPercentageOfTotalHoursPerUser(
+      userId
     );
-    communityInstructionWorkloads.push({
-      activity: activity,
-      totalHoursPerActivity: communityInstructionTotalHoursPerActivity,
-      percentageOfWorkFocusPerActivity: percentageOfWorkFocusPerActivity,
-      percentageOfAnnualHoursPerActivity: percentageOfAnnualHoursPerActivity,
-      percentageOfTotalHoursPerActivity: percentageOfTotalHoursPerActivity
+
+    const communityInstructionWorkload: ICommunityInstructionWorkload = {
+      userId: userId,
+      communityInstructionWorkloads: communityInstructionWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    } as ICommunityInstructionWorkload;
+
+    return await communityInstructionWorkload.save();
+  }
+  public static async deleteCommunityInstructionWorkload(userId: string) {
+    return await CommunityInstructionWorkload.findOneAndRemove({
+      userId: userId
     });
   }
-  let globalTarrif = await CommunityInstructionMethods.communityInstructionGlobalTarrif();
-  let totalHoursPerUser = await CommunityInstructionMethods.communityInstructionTotalHoursPerUser(
-    userId
-  );
-  let percentageOfWorkFocusPerUser = await CommunityInstructionMethods.communityInstructionPercentageOfWorkFocusPerUser(
-    userId
-  );
-  let percentageOfAnnualHoursPerUser = await CommunityInstructionMethods.communityInstructionPercentageOfAnnualHoursPerUser(
-    userId
-  );
-  let percentageOfTotalHoursPerUser = await CommunityInstructionMethods.communityInstructionPercentageOfTotalHoursPerUser(
-    userId
-  );
-
-  let communityInstructionWorkload = await new CommunityInstructionWorkload();
-  communityInstructionWorkload = await new CommunityInstructionWorkload({
-    userId: userId,
-    communityInstructionWorkloads: communityInstructionWorkloads,
-    globalTarrif: globalTarrif,
-    totalHoursPerUser: totalHoursPerUser,
-    percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-    percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-    percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-  });
-
-  return await communityInstructionWorkload.save();
-};
-let deleteCommunityInstructionWorkload = async (userId: string) => {
-  return await CommunityInstructionWorkload.findOneAndRemove({
-    userId: userId
-  });
-};
-
-export {
-  initializeCIWorkload,
-  communityInstructionWorkload,
-  calculateCommunityInstructionWorkload,
-  deleteCommunityInstructionWorkload
-};
+}

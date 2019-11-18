@@ -1,27 +1,26 @@
 import Faculty from '../models/faculty.model';
+import IFaculty from 'interfaces/faculty.interface';
 
-let faculty = async (facultyId: string) => {
-  return await Faculty.findOne({ facultyId: facultyId });
-};
-let faculties = async () => {
-  return await Faculty.find({});
-};
-let addFaculty = async (faculty: any) => {
-  const newFaculty = await new Faculty(faculty);
-
-  return await newFaculty.save();
-};
-let editFaculty = async (faculty: any) => {
-  return await Faculty.findOneAndUpdate(
-    { facultyId: faculty.facultyId },
-    {
-      $set: faculty
-    },
-    { upsert: true }
-  );
-};
-let deleteFaculty = async (faculty: any) => {
-  return await Faculty.findOneAndRemove(faculty);
-};
-
-export { faculty, faculties, addFaculty, editFaculty, deleteFaculty };
+export default class FacultyController {
+  public static async faculty(facultyId: string) {
+    return await Faculty.findOne({ facultyId: facultyId });
+  }
+  public static async faculties() {
+    return await Faculty.find({});
+  }
+  public static async createFaculty(faculty: IFaculty) {
+    return await faculty.save();
+  }
+  public static async updateFaculty(faculty: IFaculty) {
+    return await Faculty.findOneAndUpdate(
+      { facultyId: faculty.facultyId },
+      {
+        $set: faculty
+      },
+      { upsert: true }
+    );
+  }
+  public static async deleteFaculty(faculty: IFaculty) {
+    return await Faculty.findOneAndRemove(faculty);
+  }
+}

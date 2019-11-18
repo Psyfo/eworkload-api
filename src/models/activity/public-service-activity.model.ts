@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+
+import WorkloadController from '../../controllers/workload/workload.controller';
 import Activity from './activity.model';
-import * as WorkloadMethods from '../../controllers/workload.controller';
 
 const publicServiceActivitySchema = new mongoose.Schema({
   title: {
@@ -21,15 +22,15 @@ const publicServiceActivitySchema = new mongoose.Schema({
 // HOOKS
 publicServiceActivitySchema.post('save', async function() {
   const activity: any = this;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 publicServiceActivitySchema.post('findOneAndUpdate', async function(doc) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 publicServiceActivitySchema.post('findOneAndRemove', async function(doc) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 
 // VIRTUALS

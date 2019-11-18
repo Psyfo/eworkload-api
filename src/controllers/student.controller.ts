@@ -1,46 +1,38 @@
 import Student from '../models/student.model';
-import * as SupervisionMethods from './activity/supervision.controller';
+import SupervisionActivityController from './activity/supervision-activity.controller';
+import IStudent from 'interfaces/student.interface';
 
-let student = async (studentId: string) => {
-  return await Student.findOne({ studentId: studentId });
-};
-let students = async () => {
-  return await Student.find({});
-};
-let studentsUnassigned = async (userId: string) => {
-  // supervision activities
-  const activities: any = await SupervisionMethods.supervisionActivitiesByUser(
-    userId
-  );
-  // students already assigned
-  const students: string[] = activities.map((activity: any) => {
-    return activity.student.studentId;
-  });
+export default class StudentController {
+  public static async student(studentId: string) {
+    return await Student.findOne({ studentId: studentId });
+  }
+  public static async students() {
+    return await Student.find({});
+  }
+  public static async studentsUnassigned(userId: string) {
+    // supervision activities
+    const activities: any = await SupervisionActivityController.supervisionActivitiesByUser(
+      userId
+    );
+    // students already assigned
+    const students: string[] = activities.map((activity: any) => {
+      return activity.student.studentId;
+    });
 
-  return await Student.find({ studentId: { $nin: students } });
-};
-let addStudent = async (student: any) => {
-  const newStudent = new Student(student);
-
-  return await newStudent.save();
-};
-let editStudent = async (student: any) => {
-  return await Student.findOneAndUpdate(
-    { studentId: student.studentId },
-    {
-      $set: student
-    }
-  );
-};
-let deleteStudent = async (student: any) => {
-  return await Student.findOneAndRemove(student);
-};
-
-export {
-  student,
-  students,
-  studentsUnassigned,
-  addStudent,
-  editStudent,
-  deleteStudent
-};
+    return await Student.find({ studentId: { $nin: students } });
+  }
+  public static async createStudent(student: IStudent) {
+    return await student.save();
+  }
+  public static async updateStudent(student: IStudent) {
+    return await Student.findOneAndUpdate(
+      { studentId: student.studentId },
+      {
+        $set: student
+      }
+    );
+  }
+  public static async deleteStudent(student: IStudent) {
+    return await Student.findOneAndRemove(student);
+  }
+}

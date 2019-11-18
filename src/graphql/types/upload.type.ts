@@ -17,7 +17,6 @@ export default gql`
     singleUpload(file: Upload!): File!
     multipleUpload(files: [Upload!]!): [File!]!
     uploadProfilePicture(file: Upload!, userId: String!): Location
-    uploadEvidence(file: Upload!, activityId: String!): Location
     uploadAcademicAdministrationEvidenceAWS(
       file: Upload!
       userId: String!

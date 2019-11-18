@@ -1,23 +1,23 @@
-import * as DutyMethods from '../../controllers/duty.controller';
+import DutyController from '../../controllers/duty.controller';
 
 export default {
   Query: {
     duty: async (root: any, { dutyId }: any) => {
-      return await DutyMethods.duty(dutyId);
+      return await DutyController.duty(dutyId);
     },
     duties: async () => {
-      return await DutyMethods.duties();
+      return await DutyController.duties();
     }
   },
   Mutation: {
     addDuty: async (root: any, { duty }: any) => {
-      return await DutyMethods.addDuty(duty);
+      return await DutyController.createDuty(duty);
     },
     editDuty: async (root: any, { duty }: any) => {
-      return await DutyMethods.editDuty(duty);
+      return await DutyController.updateDuty(duty);
     },
     deleteDuty: async (root: any, { duty }: any) => {
-      return await DutyMethods.deleteDuty(duty);
+      return await DutyController.deleteDuty(duty);
     }
   }
 };
