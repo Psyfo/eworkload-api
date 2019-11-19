@@ -60,7 +60,7 @@ export default class ResearchWorkloadController {
       userId
     );
 
-    const researchWorkload: IResearchWorkload = {
+    const researchWorkload: IResearchWorkload = new ResearchWorkload({
       userId: userId,
       researchWorkloads: researchWorkloads,
       globalTarrif: globalTarrif,
@@ -68,7 +68,7 @@ export default class ResearchWorkloadController {
       percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
       percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
       percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as IResearchWorkload;
+    }) as IResearchWorkload;
 
     return await researchWorkload.save();
   }

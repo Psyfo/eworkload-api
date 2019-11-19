@@ -48,7 +48,8 @@ export default class ExecutiveManagementActivityController {
   public static async createExecutiveManagementActivity(
     activity: IExecutiveManagementActivity
   ) {
-    return await activity.save();
+    const newActivity = new ExecutiveManagementActivity(activity);
+    return await newActivity.save();
   }
   public static async updateExecutiveManagementActivity(
     activity: IExecutiveManagementActivity

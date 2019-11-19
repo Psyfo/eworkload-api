@@ -84,15 +84,12 @@ export default {
   Mutation: {
     initializeWorkloads: async (root: any, { userId }: any) => {
       return await WorkloadController.initializeWorkloads(userId);
-      //   return 'Workload initialized';
     },
     updateWorkloads: async (root: any, { userId }: any) => {
       return await WorkloadController.calculateTotalWorkload(userId);
-      //   return `Workloads updated for User: ${userId}`;
     },
     deleteWorkloads: async (root: any, { userId }: any) => {
       return await WorkloadController.deleteWorkloads(userId);
-      //   return `Workloads deleted for User: ${userId}`;
     }
   }
 };

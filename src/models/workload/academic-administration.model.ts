@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import {logger} from './../../config/logger'
 const academicAdministrationWorkloadSchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -52,7 +52,7 @@ const academicAdministrationWorkloadSchema = new mongoose.Schema({
 
 // HOOKS
 academicAdministrationWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Academic Administration Workload created");
+  logger.info("Academic Administration Workload created");
 });
 
 // INDEX

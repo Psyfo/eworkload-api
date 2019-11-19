@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import * as WorkloadMethods from '../../controllers/workload/workload.controller';
+import WorkloadController from '../../controllers/workload/workload.controller';
 import Activity from './activity.model';
 
 const personnelDevelopmentActivitySchema = new mongoose.Schema({
@@ -27,19 +27,19 @@ const personnelDevelopmentActivitySchema = new mongoose.Schema({
 // HOOKS
 personnelDevelopmentActivitySchema.post('save', async function() {
   const activity: any = this;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 personnelDevelopmentActivitySchema.post('findOneAndUpdate', async function(
   doc
 ) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 personnelDevelopmentActivitySchema.post('findOneAndRemove', async function(
   doc
 ) {
   const activity: any = doc;
-  await WorkloadMethods.calculateTotalWorkload(activity.userId);
+  await WorkloadController.calculateTotalWorkload(activity.userId);
 });
 
 const PersonnelDevelopmentActivity = Activity.discriminator(

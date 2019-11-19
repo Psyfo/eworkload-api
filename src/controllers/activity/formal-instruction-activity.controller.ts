@@ -104,7 +104,10 @@ export default class FormalInstructionActivityController {
   public static async createFormalInstructionActivity(
     activity: IFormalInstructionActivity
   ) {
-    return await activity.save();
+    const newActivity: IFormalInstructionActivity = new FormalInstructionActivity(
+      activity
+    ) as IFormalInstructionActivity;
+    return await newActivity.save();
   }
   public static async updateFormalInstructionActivity(
     activity: IFormalInstructionActivity

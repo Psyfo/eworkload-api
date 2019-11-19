@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-
+import mongoose from 'mongoose';
+import { logger } from './../../config/logger';
 const formalInstructionWorkloadSchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -107,23 +107,23 @@ const formalInstructionWorkloadSchema = new mongoose.Schema({
 });
 
 // HOOKS
-formalInstructionWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Formal Instruction Workload created");
+formalInstructionWorkloadSchema.post('save', async function(doc: any) {
+  logger.info('Formal Instruction Workload created');
 });
 
 // INDEX
 formalInstructionWorkloadSchema.index({ userId: 1 }, { unique: true });
 
 // VIRTUALS
-formalInstructionWorkloadSchema.virtual("formal-instruction-activity", {
-  ref: "FormalInstructionActivity",
-  localField: "activityId",
-  foreignField: "activityId",
+formalInstructionWorkloadSchema.virtual('formal-instruction-activity', {
+  ref: 'FormalInstructionActivity',
+  localField: 'activityId',
+  foreignField: 'activityId',
   justOne: true
 });
 
 const FormalInstructionWorkload = mongoose.model(
-  "FormalInstructionWorkload",
+  'FormalInstructionWorkload',
   formalInstructionWorkloadSchema
 );
 export default FormalInstructionWorkload;

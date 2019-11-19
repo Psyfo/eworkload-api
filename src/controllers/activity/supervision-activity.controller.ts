@@ -27,7 +27,8 @@ export default class SupervisionActivityController {
   public static async createSupervisionActivity(
     activity: ISupervisionActivity
   ) {
-    return await activity.save();
+    const newActivity = new SupervisionActivity(activity);
+    return await newActivity.save();
   }
   public static async updateSupervisionActivity(
     activity: ISupervisionActivity

@@ -59,14 +59,14 @@ export default class SupervisionWorkloadController {
       userId
     );
 
-    const supervisionWorkload: ISupervisionWorkload = {
+    const supervisionWorkload: ISupervisionWorkload = new SupervisionWorkload({
       userId: userId,
       supervisionWorkloads: supervisionWorkloads,
       totalHoursPerUser: totalHoursPerUser,
       percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
       percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
       percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as ISupervisionWorkload;
+    }) as ISupervisionWorkload;
 
     return await supervisionWorkload.save();
   }

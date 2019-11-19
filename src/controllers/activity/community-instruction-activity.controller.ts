@@ -50,7 +50,8 @@ export default class CommunityInstructionActivityController {
   public static async createCommunityInstructionActivity(
     activity: ICommunityInstructionActivity
   ) {
-    return await activity.save();
+    const newActivity = new CommunityInstructionActivity(activity);
+    return await newActivity.save();
   }
   public static async updateCommunityInstructionActivity(
     activity: ICommunityInstructionActivity

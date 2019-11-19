@@ -64,15 +64,17 @@ export default class PersonnelDevelopmentWorkloadController {
       userId
     );
 
-    const personnelDevelopmentWorkload: IPersonnelDevelopmentWorkload = {
-      userId: userId,
-      personnelDevelopmentWorkloads: personnelDevelopmentWorkloads,
-      globalTarrif: globalTarrif,
-      totalHoursPerUser: totalHoursPerUser,
-      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as IPersonnelDevelopmentWorkload;
+    const personnelDevelopmentWorkload: IPersonnelDevelopmentWorkload = new PersonnelDevelopmentWorkload(
+      {
+        userId: userId,
+        personnelDevelopmentWorkloads: personnelDevelopmentWorkloads,
+        globalTarrif: globalTarrif,
+        totalHoursPerUser: totalHoursPerUser,
+        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+      }
+    ) as IPersonnelDevelopmentWorkload;
 
     return await personnelDevelopmentWorkload.save();
   }

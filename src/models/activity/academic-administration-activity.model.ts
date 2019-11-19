@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import Activity from './activity.model';
+
 import WorkloadController from '../../controllers/workload/workload.controller';
+import Activity from './activity.model';
 
 const academicAdministrationActivitySchema = new mongoose.Schema({
   title: {

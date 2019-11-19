@@ -54,7 +54,8 @@ export default class AcademicAdministrationActivityController {
   public static async createAcademicAdministrationActivity(
     activity: IAcademicAdministrationActivity
   ) {
-    return await activity.save();
+    const newActivity = new AcademicAdministrationActivity(activity);
+    return await newActivity.save();
   }
   public static async updateAcademicAdministrationActivity(
     activity: IAcademicAdministrationActivity

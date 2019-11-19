@@ -46,7 +46,8 @@ export default class ResearchActivityController {
       .populate('duty');
   }
   public static async createResearchActivity(activity: IResearchActivity) {
-    return await activity.save();
+    const newActivity = new ResearchActivity(activity);
+    return await newActivity.save();
   }
   public static async updateResearchActivity(activity: IResearchActivity) {
     return await ResearchActivity.findOneAndUpdate(
@@ -64,15 +65,10 @@ export default class ResearchActivityController {
     return parameters.global_research_tarrif;
   }
   public static async researchTotalHoursPerActivity(activityId: string) {
-    const activity: IResearchActivity = (await this.researchActivity(
-      activityId
-    )) as IResearchActivity;
+    const activity: any = await this.researchActivity(activityId);
 
     let totalHours: number = 60;
-    if (
-      activity.output === 'Conference Proceedings' &&
-      activity.conferenceActivities.length
-    ) {
+    if (activity.output === 'Conference Proceedings') {
       if (
         activity.conferenceActivities.find(
           (detail: string) => detail === 'Presented Paper'

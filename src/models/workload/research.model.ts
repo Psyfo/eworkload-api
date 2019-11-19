@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+import { logger } from '../../config/logger';
 
 const researchWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -51,23 +53,23 @@ const researchWorkloadSchema = new mongoose.Schema({
 });
 
 // HOOKS
-researchWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Research Workload created");
+researchWorkloadSchema.post('save', async function(doc: any) {
+  logger.info('Research Workload created');
 });
 
 // INDEX
 researchWorkloadSchema.index({ userId: 1 }, { unique: true });
 
 // VIRTUALS
-researchWorkloadSchema.virtual("research-activity", {
-  ref: "ResearchActivity",
-  localField: "activityId",
-  foreignField: "activityId",
+researchWorkloadSchema.virtual('research-activity', {
+  ref: 'ResearchActivity',
+  localField: 'activityId',
+  foreignField: 'activityId',
   justOne: true
 });
 
 const ResearchWorkload = mongoose.model(
-  "ResearchWorkload",
+  'ResearchWorkload',
   researchWorkloadSchema
 );
 export default ResearchWorkload;

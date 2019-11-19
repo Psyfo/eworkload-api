@@ -7,8 +7,8 @@ const SERVER = new ApolloServer({
   typeDefs: typeDefs,
   resolvers: resolvers,
   formatResponse: (response: any) => {
-    logger.info(JSON.stringify(response));
-    return response;
+    // logger.info(JSON.stringify(response));
+    // return response;
   },
   formatError: error => {
     logger.error(error);

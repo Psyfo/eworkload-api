@@ -64,15 +64,17 @@ export default class CommunityInstructionWorkloadController {
       userId
     );
 
-    const communityInstructionWorkload: ICommunityInstructionWorkload = {
-      userId: userId,
-      communityInstructionWorkloads: communityInstructionWorkloads,
-      globalTarrif: globalTarrif,
-      totalHoursPerUser: totalHoursPerUser,
-      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as ICommunityInstructionWorkload;
+    const communityInstructionWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload(
+      {
+        userId: userId,
+        communityInstructionWorkloads: communityInstructionWorkloads,
+        globalTarrif: globalTarrif,
+        totalHoursPerUser: totalHoursPerUser,
+        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+      }
+    ) as ICommunityInstructionWorkload;
 
     return await communityInstructionWorkload.save();
   }

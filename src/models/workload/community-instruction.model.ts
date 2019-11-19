@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-
+import mongoose from 'mongoose';
+import { logger } from './../../config/logger';
 const communityInstructionWorkloadSchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -51,23 +51,23 @@ const communityInstructionWorkloadSchema = new mongoose.Schema({
 });
 
 // HOOKS
-communityInstructionWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Community Instruction Workload created");
+communityInstructionWorkloadSchema.post('save', async function(doc: any) {
+  logger.info('Community Instruction Workload created');
 });
 
 // INDEX
 communityInstructionWorkloadSchema.index({ userId: 1 }, { unique: true });
 
 // VIRTUALS
-communityInstructionWorkloadSchema.virtual("community-instruction-activity", {
-  ref: "CommunityInstructionActivity",
-  localField: "activityId",
-  foreignField: "activityId",
+communityInstructionWorkloadSchema.virtual('community-instruction-activity', {
+  ref: 'CommunityInstructionActivity',
+  localField: 'activityId',
+  foreignField: 'activityId',
   justOne: true
 });
 
 const CommunityInstructionWorkload = mongoose.model(
-  "CommunityInstructionWorkload",
+  'CommunityInstructionWorkload',
   communityInstructionWorkloadSchema
 );
 export default CommunityInstructionWorkload;

@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+import { logger } from '../../config/logger';
 
 const personnelDevelopmentWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -51,23 +53,23 @@ const personnelDevelopmentWorkloadSchema = new mongoose.Schema({
 });
 
 // HOOKS
-personnelDevelopmentWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Personnel Development Workload created");
+personnelDevelopmentWorkloadSchema.post('save', async function(doc: any) {
+  logger.info('Personnel Development Workload created');
 });
 
 // INDEX
 personnelDevelopmentWorkloadSchema.index({ userId: 1 }, { unique: true });
 
 // VIRTUALS
-personnelDevelopmentWorkloadSchema.virtual("personnel-development-activity", {
-  ref: "PersonnelDevelopmentActivity",
-  localField: "activityId",
-  foreignField: "activityId",
+personnelDevelopmentWorkloadSchema.virtual('personnel-development-activity', {
+  ref: 'PersonnelDevelopmentActivity',
+  localField: 'activityId',
+  foreignField: 'activityId',
   justOne: true
 });
 
 const PersonnelDevelopmentWorkload = mongoose.model(
-  "PersonnelDevelopmentWorkload",
+  'PersonnelDevelopmentWorkload',
   personnelDevelopmentWorkloadSchema
 );
 export default PersonnelDevelopmentWorkload;

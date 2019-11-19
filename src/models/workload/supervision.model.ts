@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+import { logger } from '../../config/logger';
 
 const supervisionWorkloadSchema = new mongoose.Schema({
   userId: {
@@ -47,23 +49,23 @@ const supervisionWorkloadSchema = new mongoose.Schema({
 });
 
 // HOOKS
-supervisionWorkloadSchema.post("save", async function(doc: any) {
-  console.log("Supervision Workload created");
+supervisionWorkloadSchema.post('save', async function(doc: any) {
+  logger.info('Supervision Workload created');
 });
 
 // INDEX
 supervisionWorkloadSchema.index({ userId: 1 }, { unique: true });
 
 // VIRTUALS
-supervisionWorkloadSchema.virtual("supervision-activity", {
-  ref: "SupervisionActivity",
-  localField: "activityId",
-  foreignField: "activityId",
+supervisionWorkloadSchema.virtual('supervision-activity', {
+  ref: 'SupervisionActivity',
+  localField: 'activityId',
+  foreignField: 'activityId',
   justOne: true
 });
 
 const SupervisionWorkload = mongoose.model(
-  "SupervisionWorkload",
+  'SupervisionWorkload',
   supervisionWorkloadSchema
 );
 export default SupervisionWorkload;

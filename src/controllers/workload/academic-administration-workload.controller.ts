@@ -8,7 +8,7 @@ import AcademicAdministrationController from '../activity/academic-administratio
 
 export default class AcademicAdministrationWorkloadController {
   public static async initializeAAWorkload(userId: string) {
-    let workload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
+    const workload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
       {
         userId: userId
       }
@@ -65,15 +65,17 @@ export default class AcademicAdministrationWorkloadController {
       userId
     );
 
-    const academicAdministrationWorkload: IAcademicAdministrationWorkload = {
-      userId: userId,
-      academicAdministrationWorkloads: academicAdministrationWorkloads,
-      globalTarrif: globalTarrif,
-      totalHoursPerUser: totalHoursPerUser,
-      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as IAcademicAdministrationWorkload;
+    const academicAdministrationWorkload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
+      {
+        userId: userId,
+        academicAdministrationWorkloads: academicAdministrationWorkloads,
+        globalTarrif: globalTarrif,
+        totalHoursPerUser: totalHoursPerUser,
+        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+      }
+    ) as IAcademicAdministrationWorkload;
 
     return await academicAdministrationWorkload.save();
   }

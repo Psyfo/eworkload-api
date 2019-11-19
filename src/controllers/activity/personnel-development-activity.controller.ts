@@ -50,7 +50,8 @@ export default class PersonnelDevelopmentActivityController {
   public static async createPersonnelDevelopmentActivity(
     activity: IPersonnelDevelopmentActivity
   ) {
-    return await activity.save();
+    const newActivity = new PersonnelDevelopmentActivity(activity);
+    return await newActivity.save();
   }
   public static async updatePersonnelDevelopmentActivity(
     activity: IPersonnelDevelopmentActivity

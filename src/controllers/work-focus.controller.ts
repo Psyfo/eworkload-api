@@ -1,7 +1,9 @@
 import IUser from 'interfaces/user.interface';
 import IWorkFocus from 'interfaces/work-focus.interface';
 
+import { logger } from '../config/logger';
 import parameters from '../config/parameters.config';
+import UserController from '../controllers/user.controller';
 import User from '../models/user.model';
 import WorkFocus from '../models/work-focus.model';
 
@@ -33,9 +35,7 @@ export default class WorkFocusController {
     return (researchFocusPercentage / 100) * parameters.annual_total_hours;
   }
   public static async serviceHours(userId: string) {
-    const user: IUser = (await User.findOne({ userId: userId }).populate(
-      'work-focus'
-    )) as IUser;
+    const user: IUser = (await UserController.user(userId)) as IUser;
     const workFocus: IWorkFocus = (await this.workFocus(
       user.workFocusName
     )) as IWorkFocus;

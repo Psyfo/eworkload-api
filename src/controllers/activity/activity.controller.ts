@@ -13,7 +13,8 @@ export default class ActivityController {
     return await Activity.find({ userId: userId });
   }
   public static async createActivity(activity: IActivity) {
-    return await activity.save();
+    const newActivity = new Activity(activity);
+    return await newActivity.save();
   }
   public static async updateActivity(activity: IActivity) {
     return await Activity.findOneAndUpdate(

@@ -142,7 +142,7 @@ export default class WorkloadController {
     return `Workloads deleted for User: ${userId}`;
   }
   public static async calculateTotalWorkload(userId: string) {
-    // Delete current workloads for user
+    // Delete and reinitialize current workloads for user
     await this.deleteWorkloads(userId);
 
     // Calculate and save workloads
@@ -166,10 +166,11 @@ export default class WorkloadController {
     );
     await ResearchWorkloadController.calculateResearchWorkload(userId);
     await SupervisionWorkloadController.calculateSupervisionWorkload(userId);
-    logger.info('Workloads calculated!');
+    logger.info(`Workloads updated for User: ${userId}`);
 
     // Return totalWorkload only afterwards;
-    return await this.totalWorkload(userId);
+    // return await this.totalWorkload(userId);
+    return `Workloads updated for User: ${userId}`;
   }
   public static async totalWorkload(userId: string) {
     const aaWorkload: IAcademicAdministrationWorkload = (await AcademicAdministrationWorkloadController.academicAdministrationWorkload(

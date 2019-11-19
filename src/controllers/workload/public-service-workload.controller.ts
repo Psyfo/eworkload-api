@@ -62,15 +62,17 @@ export default class PublicServiceWorkloadController {
       userId
     );
 
-    const publicServiceWorkload: IPublicServiceWorkload = {
-      userId: userId,
-      publicServiceWorkloads: publicServiceWorkloads,
-      globalTarrif: globalTarrif,
-      totalHoursPerUser: totalHoursPerUser,
-      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-    } as IPublicServiceWorkload;
+    const publicServiceWorkload: IPublicServiceWorkload = new PublicServiceWorkload(
+      {
+        userId: userId,
+        publicServiceWorkloads: publicServiceWorkloads,
+        globalTarrif: globalTarrif,
+        totalHoursPerUser: totalHoursPerUser,
+        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+      }
+    ) as IPublicServiceWorkload;
 
     return await publicServiceWorkload.save();
   }

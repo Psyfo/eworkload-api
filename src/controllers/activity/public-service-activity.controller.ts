@@ -48,7 +48,8 @@ export default class PublicServiceActivityController {
   public static async createPublicServiceActivity(
     activity: IPublicServiceActivity
   ) {
-    return await activity.save();
+    const newActivity = new PublicServiceActivity(activity);
+    return await newActivity.save();
   }
   public static async updatePublicServiceActivity(
     activity: IPublicServiceActivity
