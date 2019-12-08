@@ -1,4 +1,8 @@
+import IModule from 'interfaces/module.interface';
 import mongoose from 'mongoose';
+
+import GroupController from '../controllers/group.controller';
+import IGroup from 'interfaces/group.interface';
 
 const moduleSchema = new mongoose.Schema(
   {
@@ -57,36 +61,19 @@ const moduleSchema = new mongoose.Schema(
     studyPeriod: {
       type: String
     },
-    groups: [
-      {
-        groupCode: {
-          type: String
-        },
-        enrolled: {
-          type: Number
-        },
-        lecturerIds: [
-          {
-            type: String,
-            ref: 'User'
-          }
-        ],
-        repeat: {
-          type: Number,
-          default: 1
-        }
-      }
-    ],
     lecturedBy: {
-      type: String
+      type: String,
+      ref: 'Department'
     },
     enrolled: {
+      type: Number
+    },
+    studentsEnrolled: {
       type: Number
     },
     moderation: {
       type: String
     },
-
     createdAt: {
       type: Date
     },
@@ -105,13 +92,24 @@ const moduleSchema = new mongoose.Schema(
   }
 );
 
-// Index
-moduleSchema.index(
-  { moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 },
-  { unique: true }
-);
+// INDEX
+moduleSchema.index({ moduleId: 1, blockId: 1, offeringTypeId: 1, qualificationId: 1 }, { unique: true });
 
-// Virtuals
+// HOOKS
+// Add group by default
+moduleSchema.post('save', async function(doc) {
+  const module: IModule = doc as IModule;
+  const newGroup: IGroup = {
+    groupId: 'A',
+    moduleId: module.id,
+    studentsEnrolled: module.studentsEnrolled,
+    modularity: 1
+  } as IGroup;
+  // create default group
+  await GroupController.createGroup(newGroup);
+});
+
+// VIRTUALS
 moduleSchema.virtual('discipline', {
   ref: 'Discipline',
   localField: 'disciplineId',
@@ -142,16 +140,10 @@ moduleSchema.virtual('block', {
   foreignField: 'blockId',
   justOne: true
 });
-moduleSchema.virtual('user', {
-  ref: 'User',
-  localField: 'userId',
-  foreignField: 'userId',
-  justOne: true
-});
-moduleSchema.virtual('coordinator', {
-  ref: 'User',
-  localField: 'coordinatorId',
-  foreignField: 'userId',
+moduleSchema.virtual('lectured-by', {
+  ref: 'Department',
+  localField: 'lecturedBy',
+  foreignField: 'departmentId',
   justOne: true
 });
 moduleSchema.virtual('moderator', {
@@ -159,12 +151,6 @@ moduleSchema.virtual('moderator', {
   localField: 'moderatorId',
   foreignField: 'userId',
   justOne: true
-});
-moduleSchema.virtual('lecturers', {
-  ref: 'User',
-  localField: 'lecturerIds',
-  foreignField: 'userId',
-  justOne: false
 });
 
 const Module = mongoose.model('Module', moduleSchema);

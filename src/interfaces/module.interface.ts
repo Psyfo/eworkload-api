@@ -4,19 +4,10 @@ import IBlock from './block.interface';
 import IDiscipline from './discipline.interface';
 import IOfferingType from './offering-type.interface';
 import IQualification from './qualification.interface';
-import IUser from './user.interface';
 import IVenue from './venue.interface';
 
-interface IGroup {
-  groupCode: string;
-  enrolled: number;
-  lecturerIds: string[];
-  lectures?: IUser[];
-  repeat: string;
-  modularity: number;
-}
-
 export default interface IModule extends Document {
+  id: string;
   moduleId: string;
   blockId: string;
   block?: IBlock;
@@ -35,8 +26,7 @@ export default interface IModule extends Document {
   credits: number;
   stackId: string;
   studyPeriod: string;
-  groups: IGroup[];
   lecturedBy: string;
-  enrolled: string;
+  studentsEnrolled: number;
   moderation: string;
 }
