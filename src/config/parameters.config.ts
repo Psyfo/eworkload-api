@@ -1,6 +1,6 @@
 const parameters: any = {
-  lecture_weeks_semester: 12,
-  lecture_weeks_annual: 24,
+  lecture_weeks_semester: 10,
+  lecture_weeks_annual: 10,
   semester_1: '21',
   semester_2: '22',
   annual: '11',
