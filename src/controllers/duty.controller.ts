@@ -9,7 +9,7 @@ export default class DutyController {
     return await Duty.find({});
   }
   public static async createDuty(duty: IDuty) {
-    return await duty.save();
+    return await new Duty(duty).save();
   }
   public static async updateDuty(duty: IDuty) {
     return await Duty.findOneAndUpdate(

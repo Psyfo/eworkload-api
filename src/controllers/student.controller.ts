@@ -22,7 +22,7 @@ export default class StudentController {
     return await Student.find({ studentId: { $nin: students } });
   }
   public static async createStudent(student: IStudent) {
-    return await student.save();
+    return await new Student(student).save();
   }
   public static async updateStudent(student: IStudent) {
     return await Student.findOneAndUpdate(

@@ -3,13 +3,9 @@ import IEnrollment from 'interfaces/enrollment.interface';
 import Enrollment from '../models/enrollment.model';
 
 export default class EnrollmentController {
-  public static async enrollment(
-    enrollmentYear: string,
-    qualificationId: string
-  ) {
+  public static async enrollment(id: string) {
     return await Enrollment.findOne({
-      enrollmentYear: enrollmentYear,
-      qualificationId: qualificationId
+      _id: id
     }).populate('qualification');
   }
   public static async enrollments() {
@@ -26,13 +22,12 @@ export default class EnrollmentController {
     );
   }
   public static async createEnrollment(enrollment: IEnrollment) {
-    return await enrollment.save();
+    return await new Enrollment(enrollment).save();
   }
   public static async updateEnrollment(enrollment: IEnrollment) {
     return await Enrollment.findOneAndUpdate(
       {
-        enrollmentYear: enrollment.enrollmentYear,
-        qualificationId: enrollment.qualificationId
+        _id: enrollment.id
       },
       {
         $set: enrollment

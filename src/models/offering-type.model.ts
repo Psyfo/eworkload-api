@@ -6,12 +6,13 @@ const offeringTypeSchema = new mongoose.Schema(
     offeringTypeId: {
       type: String,
       required: true,
-      unique: true,
-      default: uuidv4
+      unique: true
+    },
+    name: {
+      type: String
     },
     description: {
-      type: String,
-      required: true
+      type: String
     },
     createdAt: {
       type: Date

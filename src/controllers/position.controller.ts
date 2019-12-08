@@ -10,7 +10,7 @@ export default class PositionController {
     return await Position.find({});
   }
   public static async createPosition(position: IPosition) {
-    return await position.save();
+    return await new Position(position).save();
   }
   public static async updatePosition(position: IPosition) {
     return await Position.findOneAndUpdate(

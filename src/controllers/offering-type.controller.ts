@@ -10,7 +10,7 @@ export default class OfferingTypeController {
     return await OfferingType.find({});
   }
   public static async createOfferingType(offeringType: IOfferingType) {
-    return await offeringType.save();
+    return await new OfferingType(offeringType).save();
   }
   public static async updateOfferingType(offeringType: IOfferingType) {
     return await OfferingType.findOneAndUpdate(

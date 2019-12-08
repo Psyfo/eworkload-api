@@ -12,7 +12,7 @@ export default class DisciplineController {
     return await Discipline.find({});
   }
   public static async createDiscipline(discipline: IDiscipline) {
-    return await discipline.save();
+    return await new Discipline(discipline).save();
   }
   public static async updateDiscipline(discipline: IDiscipline) {
     return await Discipline.findOneAndUpdate(

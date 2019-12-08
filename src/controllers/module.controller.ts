@@ -1,20 +1,16 @@
+import IGroup from 'interfaces/group.interface';
 import IModule from 'interfaces/module.interface';
 import uuidv4 from 'uuid/v4';
 
+import GroupController from '../controllers/group.controller';
 import Module from '../models/module.model';
+import FormalInstructionActivityController from './activity/formal-instruction-activity.controller';
+import FormalInstructionActivity from './../models/activity/formal-instruction-activity.model';
 
 export default class ModuleController {
-  public static async module(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string
-  ) {
+  public static async module(id: String) {
     return await Module.findOne({
-      moduleId: moduleId,
-      blockId: blockId,
-      offeringTypeId: offeringTypeId,
-      qualificationId: qualificationId
+      _id: id
     })
       .populate('discipline')
       .populate({
@@ -31,12 +27,8 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
       .populate('venue')
-      .populate('lecturers');
+      .populate('lectured-by');
   }
   public static async modules() {
     return await Module.find({})
@@ -55,12 +47,8 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
       .populate('venue')
-      .populate('lecturers');
+      .populate('lectured-by');
   }
   public static async modulesByDiscipline(disciplineIds: string[]) {
     return await Module.find({ disciplineId: { $in: disciplineIds } })
@@ -79,108 +67,8 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
       .populate('venue')
-      .populate('lecturers');
-  }
-  public static async modulesByUnassigned() {
-    return await Module.find({ userId: null })
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue')
-      .populate('lecturers');
-  }
-  public static async modulesByAssigned() {
-    return await Module.find({ userId: { $nin: [null, ''] } })
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue')
-      .populate('lecturers');
-  }
-  public static async modulesByUser(userId: string) {
-    return await Module.find({ userId: userId })
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue')
-      .populate('lecturers');
-  }
-  public static async modulesByModerator(moderatorId: string) {
-    return await Module.find({ moderatorId: moderatorId })
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue')
-      .populate('lecturers');
+      .populate('lectured-by');
   }
   public static async modulesByCoordinator(coordinatorId: string) {
     return await Module.find({ coordinatorId: coordinatorId })
@@ -199,12 +87,28 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
       .populate('venue')
-      .populate('lecturers');
+      .populate('lectured-by');
+  }
+  public static async modulesByDepartment(departmentId: string) {
+    return await Module.find({ departmentId: departmentId })
+      .populate('discipline')
+      .populate({
+        path: 'qualification',
+        model: 'Qualification',
+        populate: {
+          path: 'department',
+          model: 'Department',
+          populate: {
+            path: 'faculty',
+            model: 'Faculty'
+          }
+        }
+      })
+      .populate('offeringType')
+      .populate('block')
+      .populate('venue')
+      .populate('lectured-by');
   }
   public static async modulesByStack(stackId: string) {
     return await Module.find({ stackId: stackId })
@@ -223,46 +127,11 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
       .populate('venue')
-      .populate('lecturers');
+      .populate('lectured-by');
   }
-  public static async modulesByUnassignedAndDiscipline(
-    userId: string,
-    disciplineIds: string[]
-  ) {
-    return await Module.find({
-      disciplineId: { $in: disciplineIds }
-    })
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue')
-      .populate('lecturers');
-  }
-  public static async createModule(module: any) {
-    const newModule = await new Module(module);
-
-    return await newModule.save();
+  public static async createModule(module: IModule) {
+    return await new Module(module).save();
   }
   public static async createModules(modules: IModule[]) {
     let newModules: IModule[] = [];
@@ -276,13 +145,10 @@ export default class ModuleController {
     console.log('Bulk upload complete');
     return result;
   }
-  public static async updateModule(module: any) {
+  public static async updateModule(module: IModule) {
     return await Module.findOneAndUpdate(
       {
-        moduleId: module.moduleId,
-        blockId: module.blockId,
-        offeringTypeId: module.offeringTypeId,
-        qualificationId: module.qualificationId
+        _id: module.id
       },
       {
         $set: module
@@ -304,13 +170,10 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
+      .populate('venue')
+      .populate('lectured-by');
   }
-  public static async deleteModule(module: any) {
+  public static async deleteModule(module: IModule) {
     return await Module.findOneAndRemove(module)
       .populate('discipline')
       .populate({
@@ -327,327 +190,16 @@ export default class ModuleController {
       })
       .populate('offeringType')
       .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
+      .populate('venue')
+      .populate('lectured-by');
   }
-  public static async assignUserToModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string,
-    userId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          userId: userId
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async unassignUserFromModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          userId: null
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async assignCoordinatorToModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string,
-    userId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          coordinatorId: userId
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async unassignCoordinatorFromModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          coordinatorId: null
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async assignModeratorToModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string,
-    userId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          moderatorId: userId
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async unassignModeratorFromModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          moderatorId: null
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async unassignAllFromModule(
-    moduleId: string,
-    blockId: string,
-    offeringTypeId: string,
-    qualificationId: string
-  ) {
-    return await Module.findOneAndUpdate(
-      {
-        moduleId: moduleId,
-        blockId: blockId,
-        offeringTypeId: offeringTypeId,
-        qualificationId: qualificationId
-      },
-      {
-        $set: {
-          userId: null,
-          coordinatorId: null,
-          moderatorId: null
-        }
-      },
-      { upsert: true }
-    )
-      .populate('discipline')
-      .populate({
-        path: 'qualification',
-        model: 'Qualification',
-        populate: {
-          path: 'department',
-          model: 'Department',
-          populate: {
-            path: 'faculty',
-            model: 'Faculty'
-          }
-        }
-      })
-      .populate('offeringType')
-      .populate('block')
-      .populate('user')
-      .populate('coordinator')
-      .populate('moderator')
-      .populate('coordinator')
-      .populate('venue');
-  }
-  public static async unassignAllModules() {
-    await Module.updateMany(
-      { userId: { $nin: [null, ''] } },
-      {
-        $set: {
-          userId: null,
-          coordinatorId: null,
-          moderatorId: null
-        }
-      }
-    );
-    return 'All modules unassigned';
-  }
-  public static async stackModules(modules: IModule[]) {
+  public static async stackModules(ids: string[]) {
     const stackId: string = uuidv4();
 
-    const updatedModules = modules.map(async (module: IModule) => {
+    const updatedModules: any = ids.map(async (id: string) => {
       return await Module.findOneAndUpdate(
         {
-          moduleId: module.moduleId,
-          blockId: module.blockId,
-          offeringTypeId: module.offeringTypeId,
-          qualificationId: module.qualificationId
+          _Id: id
         },
         {
           $set: {
@@ -663,13 +215,10 @@ export default class ModuleController {
     }
     return updatedModules;
   }
-  public static async addModuleToStack(module: IModule, stackId: string) {
+  public static async addModuleToStack(id: string, stackId: string) {
     return await Module.findOneAndUpdate(
       {
-        moduleId: module.moduleId,
-        blockId: module.blockId,
-        offeringTypeId: module.offeringTypeId,
-        qualificationId: module.qualificationId
+        _id: id
       },
       {
         $set: {
@@ -679,16 +228,51 @@ export default class ModuleController {
       { upsert: true }
     );
   }
+  public static async stackedWith(id: string, stackId: string) {
+    return await Module.find({ _id: { $ne: id }, stackId: stackId });
+  }
+  public static async unstackedModules() {
+    const modules: IModule[] = (await this.modules()) as IModule[];
+    let unstackedModules: IModule[] = [];
+    for (let module of modules) {
+      const count = await Module.countDocuments({ stackId: module.stackId });
+      if (count > 0) {
+        unstackedModules.push(module);
+      }
+    }
+    return unstackedModules;
+  }
+  public static async unstackModule(id: string) {
+    return await Module.findOneAndUpdate({ _id: id }, { $set: { stackId: uuidv4 } }, { upsert: true });
+  }
+  public static async defaultGroupsAllModules() {
+    const modules: IModule[] = (await this.modules()) as IModule[];
+    await modules.map(async module => {
+      // Check for group
+      const group = await GroupController.groupsByModule(module.id);
+      console.log('Group?: ', group);
+
+      if (!group.length) {
+        // Add default if not group
+        const newGroup: IGroup = {
+          groupId: 'A',
+          moduleId: module.id,
+          studentsEnrolled: module.studentsEnrolled,
+          modularity: 1
+        } as IGroup;
+        // save group to db
+        await GroupController.createGroup(newGroup);
+      }
+    });
+    return 'All modules assigned a group';
+  }
   public static async resetStacks() {
     const modules: IModule[] = (await Module.find().orFail()) as IModule[];
 
     await modules.map(async (module: IModule) => {
       await Module.findOneAndUpdate(
         {
-          moduleId: module.moduleId,
-          blockId: module.blockId,
-          offeringTypeId: module.offeringTypeId,
-          qualificationId: module.qualificationId
+          _id: module.id
         },
         {
           $set: {
@@ -703,24 +287,11 @@ export default class ModuleController {
   public static async resetEnrollments() {
     const modules: IModule[] = (await Module.find().orFail()) as IModule[];
 
-    await modules.map(async module => {
-      const enrolled: number = Math.floor(
-        Math.random() * (400 - 100 + 1) + 100
-      );
-      await Module.findOneAndUpdate(
-        {
-          moduleId: module.moduleId,
-          blockId: module.blockId,
-          offeringTypeId: module.offeringTypeId,
-          qualificationId: module.qualificationId
-        },
-        {
-          $set: {
-            enrolled: enrolled
-          }
-        },
-        { upsert: true }
-      );
+    await Module.update({}, { $rename: { enrolled: 'studentsEnrolled' } }, { multi: true }, function(err, blocks) {
+      if (err) {
+        throw err;
+      }
+      console.log('Module enrollments changed to studentsEnrolled');
     });
     return 'All module have been given enrollments';
   }

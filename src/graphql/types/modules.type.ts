@@ -2,22 +2,8 @@ import { ModuleInput } from './../../../../eworkload-client/src/app/shared/gener
 import { gql } from 'apollo-server-express';
 
 export default gql`
-  type ModuleGroup {
-    groupCode: String
-    enrolled: Int
-    lecturerIds: [String]
-    lecturers: [User]
-    repeat: Int
-  }
-
-  input ModuleGroupInput {
-    groupCode: String
-    enrolled: Int
-    lecturerIds: [String]
-    repeat: Int
-  }
-
   type Module {
+    id: String
     moduleId: String
     name: String
     type: String
@@ -36,13 +22,13 @@ export default gql`
     block: Block
     stackId: String
     studyPeriod: String
-    groups: [ModuleGroup]
     lecturedBy: String
-    enrolled: Int
+    studentsEnrolled: Int
     moderation: String
   }
 
   input ModuleInput {
+    id: String
     moduleId: String
     name: String
     type: String
@@ -56,78 +42,33 @@ export default gql`
     blockId: String
     stackId: String
     studyPeriod: String
-    groups: [ModuleGroupInput]
     lecturedBy: String
-    enrolled: Int
+    studentsEnrolled: Int
     moderation: String
   }
 
   type Query {
-    module(
-      moduleId: String!
-      blockId: String!
-      offeringTypeId: String!
-      qualificationId: String!
-    ): Module
+    module(id: String!): Module
     modules: [Module]
-    modulesByDiscipline(disciplineIds: [String!]): [Module]
-    modulesByUnassigned: [Module]
-    modulesByAssigned: [Module]
-    modulesByUnassignedAndDiscipline(disciplineIds: [String]): [Module]
-    modulesByUser(userId: String): [Module]
-    modulesByModerator(moderatorId: String): [Module]
-    modulesByCoordinator(coordinatorId: String): [Module]
-    modulesByStack(stackId: String): [Module]
+    modulesByDiscipline(disciplineIds: [String!]!): [Module]
+    modulesByModerator(moderatorId: String!): [Module]
+    modulesByStack(stackId: String!): [Module]
+    stackedWith(id: String!, stackId: String): [Module]
+    unstackedModules: [Module]
+    modulesByDepartment(departmentId: String!): [Module]
   }
 
   type Mutation {
-    addModule(module: ModuleInput): Module
-    addModules(modules: [ModuleInput]): [Module]
-    editModule(module: ModuleInput): Module
-    deleteModule(module: ModuleInput): Module
-    assignUserToModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-      userId: String
-    ): Module
-    unassignUserFromModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-    ): Module
-    assignCoordinatorToModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-      userId: String
-    ): Module
-    unassignCoordinatorFromModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-    ): Module
-    assignModeratorToModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-      userId: String
-    ): Module
-    unassignModeratorFromModule(
-      moduleId: String
-      blockId: String
-      offeringTypeId: String
-      qualificationId: String
-    ): Module
+    addModule(module: ModuleInput!): Module
+    addModules(modules: [ModuleInput!]!): [Module]
+    editModule(module: ModuleInput!): Module
+    deleteModule(module: ModuleInput!): Module
     unassignAllModules: String
-    stackModules(modules: [ModuleInput]): [Module]
-    addModuleToStack(module: ModuleInput, stackId: String): Module
-    resetStacks: String
-    resetEnrollments: String
+    stackModules(ids: [String!]!): [Module]
+    addModuleToStack(id: String!, stackId: String): Module
+    unstackModule(id: String!): Module
+    resetStacks: String!
+    resetEnrollments: String!
+    defaultGroupsAllModules: String!
   }
 `;

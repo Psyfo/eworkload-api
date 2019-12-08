@@ -34,22 +34,11 @@ export default gql`
     nationality: String
   }
 
-  type AuthData {
-    userId: String!
-    token: String!
-    tokenExpiration: Int!
-  }
-
-  type ExistData {
-    exists: Boolean
-  }
-
   type Query {
     user(userId: String!): User
     users: [User]
     usersByPosition: [User]
-    login(userId: String!, password: String!): AuthData
-    userExists(userId: String): ExistData
+    userExists(userId: String): Boolean
     # profilePicture: [File]
   }
 
@@ -57,11 +46,6 @@ export default gql`
     addUser(user: UserInput): User
     editUser(user: UserInput): User
     deleteUser(user: UserInput): User
-    changePassword(
-      userId: String
-      oldPassword: String
-      newPassword: String
-    ): User
     assignProfilePicture(userId: String, photoUrl: String): User
   }
 `;

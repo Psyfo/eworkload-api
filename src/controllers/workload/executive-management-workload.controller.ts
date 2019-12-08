@@ -9,25 +9,21 @@ import ExecutiveManagementController from '../activity/executive-management-acti
 
 export default class ExecutiveManagementWorkloadController {
   public static async initializeEMWorkload(userId: string) {
-    const emWorkload: IExecutiveManagementWorkload = new ExecutiveManagementWorkload(
-      {
-        userId: userId
-      }
-    ) as IExecutiveManagementWorkload;
+    const emWorkload: IExecutiveManagementWorkload = new ExecutiveManagementWorkload({
+      userId: userId
+    }) as IExecutiveManagementWorkload;
     return await emWorkload.save();
   }
   public static async executiveManagementWorkload(userId: string) {
     return await ExecutiveManagementWorkload.findOne({
       userId: userId
-    }).orFail();
+    });
   }
   public static async calculateExecutiveManagementWorkload(userId: string) {
     const executiveManagementWorkloads: IExecutiveManagementWorkloadPerActivity[] = [];
-    const activities: IExecutiveManagementActivity[] = (await ExecutiveManagementActivity.find(
-      {
-        userId: userId
-      }
-    )) as IExecutiveManagementActivity[];
+    const activities: IExecutiveManagementActivity[] = (await ExecutiveManagementActivity.find({
+      userId: userId
+    })) as IExecutiveManagementActivity[];
 
     for (let activity of activities) {
       const executiveManagementTotalHoursPerActivity: number = await ExecutiveManagementController.executiveManagementTotalHoursPerActivity(
@@ -51,9 +47,7 @@ export default class ExecutiveManagementWorkloadController {
       });
     }
     const globalTarrif = await ExecutiveManagementController.executiveManagementGlobalTarrif();
-    const totalHoursPerUser = await ExecutiveManagementController.executiveManagementTotalHoursPerUser(
-      userId
-    );
+    const totalHoursPerUser = await ExecutiveManagementController.executiveManagementTotalHoursPerUser(userId);
     const percentageOfWorkFocusPerUser = await ExecutiveManagementController.executiveManagementPercentageOfWorkFocusPerUser(
       userId
     );
@@ -64,17 +58,15 @@ export default class ExecutiveManagementWorkloadController {
       userId
     );
 
-    const executiveManagementWorkload: IExecutiveManagementWorkload = new ExecutiveManagementWorkload(
-      {
-        userId: userId,
-        executiveManagementWorkloads: executiveManagementWorkloads,
-        globalTarrif: globalTarrif,
-        totalHoursPerUser: totalHoursPerUser,
-        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-      }
-    ) as IExecutiveManagementWorkload;
+    const executiveManagementWorkload: IExecutiveManagementWorkload = new ExecutiveManagementWorkload({
+      userId: userId,
+      executiveManagementWorkloads: executiveManagementWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    }) as IExecutiveManagementWorkload;
 
     return await executiveManagementWorkload.save();
   }

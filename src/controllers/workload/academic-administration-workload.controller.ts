@@ -8,17 +8,15 @@ import AcademicAdministrationController from '../activity/academic-administratio
 
 export default class AcademicAdministrationWorkloadController {
   public static async initializeAAWorkload(userId: string) {
-    const workload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
-      {
-        userId: userId
-      }
-    ) as IAcademicAdministrationWorkload;
+    const workload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload({
+      userId: userId
+    }) as IAcademicAdministrationWorkload;
     return await workload.save();
   }
   public static async academicAdministrationWorkload(userId: string) {
     return await AcademicAdministrationWorkload.findOne({
       userId: userId
-    }).orFail();
+    });
   }
   public static async calculateAcademicAdministrationWorkload(userId: string) {
     let academicAdministrationWorkloads: IAcademicAdministrationWorkloadPerActivity[] = [];
@@ -65,17 +63,15 @@ export default class AcademicAdministrationWorkloadController {
       userId
     );
 
-    const academicAdministrationWorkload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload(
-      {
-        userId: userId,
-        academicAdministrationWorkloads: academicAdministrationWorkloads,
-        globalTarrif: globalTarrif,
-        totalHoursPerUser: totalHoursPerUser,
-        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-      }
-    ) as IAcademicAdministrationWorkload;
+    const academicAdministrationWorkload: IAcademicAdministrationWorkload = new AcademicAdministrationWorkload({
+      userId: userId,
+      academicAdministrationWorkloads: academicAdministrationWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    }) as IAcademicAdministrationWorkload;
 
     return await academicAdministrationWorkload.save();
   }

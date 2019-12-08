@@ -12,7 +12,7 @@ export default class BlockController {
     return await Block.find({});
   }
   public static async createBlock(block: IBlock) {
-    return block.save();
+    return await new Block(block).save();
   }
   public static async updateBlock(block: IBlock) {
     return await Block.findOneAndUpdate(

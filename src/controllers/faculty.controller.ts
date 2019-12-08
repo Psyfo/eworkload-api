@@ -9,7 +9,7 @@ export default class FacultyController {
     return await Faculty.find({});
   }
   public static async createFaculty(faculty: IFaculty) {
-    return await faculty.save();
+    return await new Faculty(faculty).save();
   }
   public static async updateFaculty(faculty: IFaculty) {
     return await Faculty.findOneAndUpdate(

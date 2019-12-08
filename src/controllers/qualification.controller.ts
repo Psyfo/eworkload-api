@@ -28,7 +28,7 @@ export default class QualificationController {
     return Qualification.find({ qualificationId: { $nin: qualifications } });
   }
   public static async createQualification(qualification: IQualification) {
-    return await qualification.save();
+    return await new Qualification(qualification).save();
   }
   public static async updateQualification(qualification: IQualification) {
     return await Qualification.findOneAndUpdate(

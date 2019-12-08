@@ -9,25 +9,21 @@ import CommunityInstructionController from '../activity/community-instruction-ac
 
 export default class CommunityInstructionWorkloadController {
   public static async initializeCIWorkload(userId: string) {
-    const ciWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload(
-      {
-        userId: userId
-      }
-    ) as ICommunityInstructionWorkload;
+    const ciWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload({
+      userId: userId
+    }) as ICommunityInstructionWorkload;
     return await ciWorkload.save();
   }
   public static async communityInstructionWorkload(userId: string) {
     return await CommunityInstructionWorkload.findOne({
       userId: userId
-    }).orFail();
+    });
   }
   public static async calculateCommunityInstructionWorkload(userId: string) {
     let communityInstructionWorkloads: ICommunityInstructionWorkloadPerActivity[] = [];
-    const activities: ICommunityInstructionActivity[] = (await CommunityInstructionActivity.find(
-      {
-        userId: userId
-      }
-    )) as ICommunityInstructionActivity[];
+    const activities: ICommunityInstructionActivity[] = (await CommunityInstructionActivity.find({
+      userId: userId
+    })) as ICommunityInstructionActivity[];
 
     for (let activity of activities) {
       let communityInstructionTotalHoursPerActivity: number = await CommunityInstructionController.communityInstructionTotalHoursPerActivity(
@@ -64,17 +60,15 @@ export default class CommunityInstructionWorkloadController {
       userId
     );
 
-    const communityInstructionWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload(
-      {
-        userId: userId,
-        communityInstructionWorkloads: communityInstructionWorkloads,
-        globalTarrif: globalTarrif,
-        totalHoursPerUser: totalHoursPerUser,
-        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-      }
-    ) as ICommunityInstructionWorkload;
+    const communityInstructionWorkload: ICommunityInstructionWorkload = new CommunityInstructionWorkload({
+      userId: userId,
+      communityInstructionWorkloads: communityInstructionWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    }) as ICommunityInstructionWorkload;
 
     return await communityInstructionWorkload.save();
   }

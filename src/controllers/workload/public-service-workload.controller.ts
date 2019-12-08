@@ -17,15 +17,13 @@ export default class PublicServiceWorkloadController {
   public static async publicServiceWorkload(userId: string) {
     return await PublicServiceWorkload.findOne({
       userId: userId
-    }).orFail();
+    });
   }
   public static async calculatePublicServiceWorkload(userId: string) {
     const publicServiceWorkloads: IPublicServiceWorkloadPerActivity[] = [];
-    const activities: IPublicServiceActivity[] = (await PublicServiceActivity.find(
-      {
-        userId: userId
-      }
-    )) as IPublicServiceActivity[];
+    const activities: IPublicServiceActivity[] = (await PublicServiceActivity.find({
+      userId: userId
+    })) as IPublicServiceActivity[];
 
     for (let activity of activities) {
       const publicServiceTotalHoursPerActivity: number = await PublicServiceController.publicServiceTotalHoursPerActivity(
@@ -49,9 +47,7 @@ export default class PublicServiceWorkloadController {
       });
     }
     const globalTarrif = await PublicServiceController.publicServiceGlobalTarrif();
-    const totalHoursPerUser = await PublicServiceController.publicServiceTotalHoursPerUser(
-      userId
-    );
+    const totalHoursPerUser = await PublicServiceController.publicServiceTotalHoursPerUser(userId);
     const percentageOfWorkFocusPerUser = await PublicServiceController.publicServicePercentageOfWorkFocusPerUser(
       userId
     );
@@ -62,17 +58,15 @@ export default class PublicServiceWorkloadController {
       userId
     );
 
-    const publicServiceWorkload: IPublicServiceWorkload = new PublicServiceWorkload(
-      {
-        userId: userId,
-        publicServiceWorkloads: publicServiceWorkloads,
-        globalTarrif: globalTarrif,
-        totalHoursPerUser: totalHoursPerUser,
-        percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
-        percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
-        percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
-      }
-    ) as IPublicServiceWorkload;
+    const publicServiceWorkload: IPublicServiceWorkload = new PublicServiceWorkload({
+      userId: userId,
+      publicServiceWorkloads: publicServiceWorkloads,
+      globalTarrif: globalTarrif,
+      totalHoursPerUser: totalHoursPerUser,
+      percentageOfWorkFocusPerUser: percentageOfWorkFocusPerUser,
+      percentageOfAnnualHoursPerUser: percentageOfAnnualHoursPerUser,
+      percentageOfTotalHoursPerUser: percentageOfTotalHoursPerUser
+    }) as IPublicServiceWorkload;
 
     return await publicServiceWorkload.save();
   }

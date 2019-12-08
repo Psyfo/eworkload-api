@@ -50,9 +50,7 @@ export default class UserController {
       .populate('workFocus');
   }
   public static async createUser(user: IUser) {
-    const newUser = new User(user);
-
-    return await newUser.save();
+    return await new User(user).save();
   }
   public static async updateUser(user: IUser) {
     return await User.findOneAndUpdate(
@@ -76,45 +74,6 @@ export default class UserController {
     }
 
     return result;
-  }
-  public static async login(userId: string, password: string) {
-    // CHECK USER EXISTS
-    const exists: boolean = await this.exists(userId);
-    if (!exists) {
-      throw new Error('User does not exist');
-    }
-
-    const user: IUser = (await User.findOne({ userId: userId })) as IUser;
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (isMatch) {
-      const token = jwt.sign({ userId: user.userId }, 'secret', {
-        expiresIn: '1h'
-      });
-
-      const payload = {
-        userId: user.userId,
-        token: token,
-        tokenExpiration: 1
-      };
-      logger.info(payload);
-      return payload;
-    } else {
-      throw new Error('Passwords do not match');
-    }
-  }
-  public static async changePassword(
-    userId: string,
-    oldPassword: string,
-    newPassword: string
-  ) {
-    let user: IUser = (await User.findOne({ userId: userId })) as IUser;
-    let comparison = await bcrypt.compare(oldPassword, user.password);
-    if (comparison !== true) {
-      throw new Error('Password incorrect');
-    }
-    user.password = newPassword;
-    return user.save();
   }
   public static async assignProfilePicture(userId: string, photoUrl: string) {
     return await User.findOneAndUpdate(
