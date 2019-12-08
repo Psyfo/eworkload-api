@@ -2,11 +2,8 @@ import EnrollmentController from '../../controllers/enrollment.controller';
 
 export default {
   Query: {
-    enrollment: async (root: any, { enrollmentYear, qualificationId }: any) => {
-      return await EnrollmentController.enrollment(
-        enrollmentYear,
-        qualificationId
-      );
+    enrollment: async (root: any, { id }: any) => {
+      return await EnrollmentController.enrollment(id);
     },
     enrollments: async () => {
       return await EnrollmentController.enrollments();
