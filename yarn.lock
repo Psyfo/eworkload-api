@@ -437,16 +437,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/bcrypt-nodejs@^0.0.30":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@types/bcrypt-nodejs/-/bcrypt-nodejs-0.0.30.tgz#4cdd96b49293b3932122e4b7e29543e35e6bae58"
-  integrity sha1-TN2WtJKTs5MhIuS34pVD415rrlg=
-
-"@types/bcrypt@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
-  integrity sha512-nohgNyv+1ViVcubKBh0+XiNJ3dO8nYu///9aJ4cgSqv70gBL+94SNy/iC2NLzKPT2Zt/QavrOkBVbZRLZmw6NQ==
-
 "@types/bcryptjs@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
@@ -677,6 +667,13 @@
   integrity sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==
   dependencies:
     "@types/node" "*"
+
+"@types/moment@^2.13.0":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@types/moment/-/moment-2.13.0.tgz#604ebd189bc3bc34a1548689404e61a2a4aac896"
+  integrity sha1-YE69GJvDvDShVIaJQE5hoqSqyJY=
+  dependencies:
+    moment "*"
 
 "@types/mongodb@*", "@types/mongodb@^3.3.10":
   version "3.3.10"
@@ -1355,7 +1352,7 @@ basic-auth@~2.0.0:
   dependencies:
     safe-buffer "5.1.2"
 
-bcrypt-nodejs@0.0.3:
+bcrypt-nodejs@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/bcrypt-nodejs/-/bcrypt-nodejs-0.0.3.tgz#c60917f26dc235661566c681061c303c2b28842b"
   integrity sha1-xgkX8m3CNWYVZsaBBhwwPCsohCs=
@@ -1366,14 +1363,6 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
-
-bcrypt@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-3.0.7.tgz#1187d29df2e1cde44268152b13e3d4a655a7c7de"
-  integrity sha512-K5UglF9VQvBMHl/1elNyyFvAfOY9Bj+rpKrCSR9sFwcW8FywAYJSRwTURNej5TaAK2TEJkcJ6r6lh1YPmspx5Q==
-  dependencies:
-    nan "2.14.0"
-    node-pre-gyp "0.13.0"
 
 bcryptjs@^2.4.3:
   version "2.4.3"
@@ -4091,6 +4080,11 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+moment@*, moment@^2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
 mongodb@3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.3.3.tgz#509cad2225a1c56c65a331ed73a0d5d4ed5cbe67"
@@ -4199,7 +4193,7 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nan@2.14.0, nan@^2.12.1:
+nan@^2.12.1:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -4280,22 +4274,6 @@ node-notifier@^5.4.2:
     semver "^5.5.0"
     shellwords "^0.1.1"
     which "^1.3.0"
-
-node-pre-gyp@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz#df9ab7b68dd6498137717838e4f92a33fc9daa42"
-  integrity sha512-Md1D3xnEne8b/HGVQkZZwV27WUi1ZRuZBij24TNaZwUPU3ZAFtvT6xxJGaUVillfmMKnn5oD1HoGsp2Ftik7SQ==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4"
 
 node-pre-gyp@^0.12.0:
   version "0.12.0"
