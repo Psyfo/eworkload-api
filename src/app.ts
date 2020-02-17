@@ -8,6 +8,9 @@ import path from 'path';
 import { default as dbConfig } from './config/keys.config';
 import { logger } from './config/logger';
 import SERVER from './graphql/apollo.server';
+import passport from 'passport';
+import AuthController from './auth/auth.controller';
+import { json } from 'body-parser';
 
 // CONFIG VARIABLES
 const app = express();
@@ -42,6 +45,12 @@ app.use(
 app.use(cors());
 app.use(compression());
 
+app.get('/test', async (req, res) => {
+  res.json({
+    response: 'response'
+  });
+});
+
 // GRAPHQL SERVER
 SERVER.applyMiddleware({
   app: app
@@ -49,6 +58,4 @@ SERVER.applyMiddleware({
 
 // SERVE & LISTEN
 const httpServer = createServer(app);
-httpServer.listen({ port: PORT }, () =>
-  logger.info(`Server running at: http://localhost:${PORT}/graphql`)
-);
+httpServer.listen({ port: PORT }, () => logger.info(`Server running at: http://localhost:${PORT}/graphql`));
