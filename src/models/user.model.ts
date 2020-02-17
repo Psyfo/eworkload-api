@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcryptjs';
 import IUser from 'interfaces/user.interface';
 import mongoose from 'mongoose';
 import validator from 'validator';
