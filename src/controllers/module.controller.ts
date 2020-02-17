@@ -4,8 +4,6 @@ import uuidv4 from 'uuid/v4';
 
 import GroupController from '../controllers/group.controller';
 import Module from '../models/module.model';
-import FormalInstructionActivityController from './activity/formal-instruction-activity.controller';
-import FormalInstructionActivity from './../models/activity/formal-instruction-activity.model';
 
 export default class ModuleController {
   public static async module(id: String) {
@@ -131,6 +129,12 @@ export default class ModuleController {
       .populate('lectured-by');
   }
   public static async createModule(module: IModule) {
+    // Check if module exists
+    const exists = await this.moduleExists(module);
+    if (exists === true) {
+      throw new Error('This Module already exists');
+    }
+    // Add to DB
     return await new Module(module).save();
   }
   public static async createModules(modules: IModule[]) {
@@ -294,5 +298,19 @@ export default class ModuleController {
       console.log('Module enrollments changed to studentsEnrolled');
     });
     return 'All module have been given enrollments';
+  }
+  public static async moduleExists(module: IModule) {
+    let result: boolean = false;
+    let data: number = await Module.countDocuments({
+      moduleId: module.moduleId,
+      blockId: module.blockId,
+      offeringTypeId: module.offeringTypeId,
+      qualificationId: module.qualificationId
+    });
+    if (data !== 0) {
+      result = true;
+    }
+
+    return result;
   }
 }
