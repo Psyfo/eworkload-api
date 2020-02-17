@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-core';
 import bcrypt from 'bcryptjs';
 import IUser from 'interfaces/user.interface';
 import jwt from 'jsonwebtoken';
