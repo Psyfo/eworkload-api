@@ -1,4 +1,10 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+"editor.formatOnSave": true,
+"appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+],
+"appService.defaultWebAppToDeploy": "/subscriptions/05b5dde6-57b1-46a2-a8b8-6816bc4b9372/resourceGroups/eworkload/providers/Microsoft.Web/sites/eworkload-api",
+"appService.deploySubpath": "build\\dist"
 }
