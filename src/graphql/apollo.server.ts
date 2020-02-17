@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import { logger } from './../config/logger';
 import resolvers from './resolvers/index';
 import typeDefs from './types/index';
@@ -8,7 +8,7 @@ const SERVER = new ApolloServer({
   resolvers: resolvers,
   formatResponse: (response: any) => {
     // logger.info(JSON.stringify(response));
-    // return response;
+    return response;
   },
   formatError: error => {
     logger.error(error);
