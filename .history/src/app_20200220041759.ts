@@ -17,7 +17,7 @@ import config from './config/config';
 // CONFIG VARIABLES
 const app = express();
 const db = dbConfig.MongoURI;
-const PORT = config.PORT || 80;
+const PORT = config.PORT || 5000;
 
 // MONGOOSE CONFIG
 mongoose

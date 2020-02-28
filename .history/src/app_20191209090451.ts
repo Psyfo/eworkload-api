@@ -12,12 +12,10 @@ import passport from 'passport';
 import AuthController from './auth/auth.controller';
 import { json } from 'body-parser';
 
-import config from './config/config';
-
 // CONFIG VARIABLES
 const app = express();
 const db = dbConfig.MongoURI;
-const PORT = config.PORT || 80;
+const PORT = process.env.PORT || 5000;
 
 // MONGOOSE CONFIG
 mongoose
@@ -60,6 +58,4 @@ SERVER.applyMiddleware({
 
 // SERVE & LISTEN
 const httpServer = createServer(app);
-httpServer.listen({ port: PORT }, () =>
-  logger.info(`Server running at: http://localhost:${PORT}/graphql and the URL is ${config.ENDPOINT}`)
-);
+httpServer.listen({ port: PORT }, () => logger.info(`Server running at: http://localhost:${PORT}/graphql`));
