@@ -1,3 +1,4 @@
+import { ModuleInput } from './../../../../eworkload-client/src/app/shared/generated/output';
 import { gql } from 'apollo-server-express';
 
 export default gql`
