@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "prod": "tsc && node -r dotenv/config ./build/dist/app.js",
-    "dev": "ts-node-dev --respawn --transpileOnly -r dotenv/config  ./src/app.ts",
-    "dev2": "ts-node -r dotenv/config ./src/app.ts",
+    "prod": "tsc && node -r ./build/dist/app.js",
+    "dev": "ts-node-dev --respawn --transpileOnly -r ./src/app.ts",
+    "dev2": "ts-node -r ./src/app.ts",
     "test": "jest",
     "coverage": "jest --coverage"
   },
