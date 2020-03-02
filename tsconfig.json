@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
+    "target": "ES5",
+    "module": "CommonJS",
     "allowJs": true,
     "checkJs": true,
     "baseUrl": "./src",
@@ -14,7 +14,7 @@
     "noImplicitThis": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "lib": ["ES2015", "dom"],
+    "lib": ["ES2015", "ES2016", "ES2017", "dom"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
