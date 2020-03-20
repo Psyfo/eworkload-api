@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm install -g yarn
-    npm install -g typescript
-    npm install -g ts-node
+    yarn global add typescript
+    yarn global add ts-node
     yarn dev
   displayName: 'npm install yarn/ts-node/typescript'
