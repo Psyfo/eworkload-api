@@ -16,6 +16,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    npm install -g yarn
+    npm install -g typescript
+    npm install -g ts-node
+    yarn prod
+  displayName: 'npm install yarn/ts-node/typescript'
