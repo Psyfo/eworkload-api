@@ -16,7 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g yarn
+    sudo apt-get install -y yarn
     yarn global add typescript
     yarn global add ts-node
     yarn dev
